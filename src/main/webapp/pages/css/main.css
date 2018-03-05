@@ -1,0 +1,164 @@
+.login-container {
+	margin: 108px auto 0;
+	width: 375px;
+}
+
+.user-info {
+	color: white;
+	display: inline-block;
+	line-height: 18px;
+	max-width: 100px;
+	overflow: hidden;
+	position: relative;
+	text-align: left;
+	text-overflow: ellipsis;
+	top: 14px;
+	vertical-align: top;
+	white-space: nowrap;
+	cursor: pointer;
+	margin-right: 11px;
+}
+
+.sidebar {
+	float: left;
+	padding-left: 0;
+	padding-right: 0;
+	position: static;
+	width: 146px;
+}
+
+.sidebar.menu-min .nav-list>li>.submenu {
+	display: none;
+	left: 42px;
+	margin-top: 40px;
+	padding-bottom: 2px;
+	position: absolute;
+	top: -1px;
+	width: 106px;
+	z-index: 1026;
+}
+
+.sidebar.menu-min .nav-list>li>a>.menu-text {
+	border: 1px solid;
+	display: none;
+	height: 41px;
+	left: 42px;
+	line-height: 38px;
+	padding-left: 12px;
+	position: absolute;
+	text-align: left;
+	top: -1px;
+	width: 106px;
+	z-index: 1025;
+}
+
+.profile-info-name {
+	background-color: transparent;
+	border-top: 1px dotted #d5e4f1;
+	color: #667e99;
+	display: table-cell;
+	font-weight: normal;
+	padding: 6px 10px 6px 4px;
+	text-align: left;
+	vertical-align: middle;
+	width: 137px;
+}
+
+.clear-boder {
+	border-left: 0px solid #e3e3e3;
+}
+
+.grids-btn {
+	background: none !important;
+	border: none !important;
+}
+
+.grid-btn:hover {
+	background: none !important;
+}
+
+.btn-user-tag {
+	min-width: 100px;
+}
+
+#sex_chosen .chosen-single {
+	border-radius: 0px;
+	margin-top: 0px;
+}
+
+#selfSex_chosen .chosen-single {
+	border-radius: 0px;
+	margin-top: 0px;
+}
+
+.ace-nav>li {
+	line-height: 20px;
+	height: 45px;
+	padding: 0;
+	position: relative;
+	float: left;
+}
+
+.dropdown-navbar .msg-body {
+	display: block;
+	line-height: 20px;
+	white-space: normal;
+	vertical-align: middle;
+	margin-left: 0px;
+}
+
+.mask {
+	position: absolute;
+	z-index: 100;
+	filter: alpha(opacity = 50); /*IE滤镜，透明度50%* ie89 支持*/
+	-moz-opacity: 0.5; /*Firefox私有，透明度50%*/
+	opacity: 0.5; /*其他，透明度50%*/
+	background-color: black;
+	font-size: 105px;
+	text-align: center;
+	font-weight: bold;
+}
+
+.navbar {
+	margin: 0;
+	padding-left: 0;
+	padding-right: 0;
+	border-width: 0;
+	border-radius: 0;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	min-height: 45px;
+	/* background: #d15b47; */
+}
+
+.input-group-addon {
+    padding: 0px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1;
+    color: #555555;
+    text-align: center;
+    background-color: #eeeeee;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    min-width: 100px;
+}
+
+hr {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border: 0;
+    border-top: 1px solid #eeeeee;
+}
+
+.mineral-spinner{
+	padding:0px !important;
+}
+
+.form-control {
+    height: 23px;
+}
+
+.btn-sm, .btn-group-sm > .btn {
+    padding: 0px 0px;
+}

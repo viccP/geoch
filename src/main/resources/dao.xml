@@ -1,0 +1,11 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation=" http://www.springframework.org/schema/beans 
+					      http://www.springframework.org/schema/beans/spring-beans-4.3.xsd ">
+	<bean id="tmUserDao" class="com.jlu.magmalab.dao.tables.daos.TmUserDao">
+		<constructor-arg ref="config" />
+	</bean>
+	<bean id="applyInfoDao" class="com.jlu.magmalab.dao.tables.daos.ApplyInfoDao">
+		<constructor-arg ref="config" />
+	</bean>
+</beans>

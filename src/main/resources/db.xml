@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<configuration xmlns="http://www.jooq.org/xsd/jooq-codegen-3.9.0.xsd">
+	<jdbc>
+		<driver>com.mysql.jdbc.Driver</driver>
+		<url>jdbc:mysql://localhost:3306/system</url>
+		<user>root</user>
+		<password>bonc1q2w3e</password>
+	</jdbc>
+
+	<generator>
+		<name>org.jooq.util.JavaGenerator</name>
+		<generate>
+			<pojos>true</pojos>
+			<daos>true</daos>
+		</generate>
+		<database>
+			<name>org.jooq.util.mysql.MySQLDatabase</name>
+			<inputSchema>system</inputSchema>
+			<includes>.*</includes>
+			<excludes></excludes>
+		</database>
+		<target>
+			<packageName>com.ycf.dao</packageName>
+			<directory>/Users/lbqrcy/git/magmaLab/src/main/java</directory>
+		</target>
+	</generator>
+</configuration>
