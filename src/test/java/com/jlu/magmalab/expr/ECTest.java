@@ -3,6 +3,8 @@ package com.jlu.magmalab.expr;
 import org.junit.Test;
 import org.ujmp.core.Matrix;
 
+import com.jlu.magmalab.expr.impl.EC;
+
 /**
  * 
  * ClassName: CystalExpr <br/>

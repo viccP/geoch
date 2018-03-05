@@ -1,6 +1,9 @@
-package com.jlu.magmalab.expr;
+package com.jlu.magmalab.expr.impl;
 
 import org.ujmp.core.Matrix;
+
+import com.jlu.magmalab.expr.IExpr;
+import com.jlu.magmalab.expr.Parameter;
 
 /**
  * 
