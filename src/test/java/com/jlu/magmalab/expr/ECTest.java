@@ -13,14 +13,18 @@ import org.ujmp.core.Matrix;
  * @version
  * @since JDK 1.6
  */
-public class CystalExprTest {
+public class ECTest {
 
 	@Test
 	public void testEc() {
 		Matrix C0=Matrix.Factory.importFromArray(new double[] {1,2,3,4});
 		Matrix D=Matrix.Factory.importFromArray(new double[] {1,2,3,4});
 		double F=0.15;
-		Matrix res = CrystalExpr.EC(C0, F, D);
+		Parameter prm=new Parameter();
+		prm.setC0(C0);
+		prm.setD(D);
+		prm.setF(F);
+		Matrix res = new EC().expr(prm);
 		System.out.println(res);
 	}
 	
