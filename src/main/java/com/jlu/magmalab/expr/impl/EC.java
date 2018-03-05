@@ -8,7 +8,7 @@ import com.jlu.magmalab.expr.Parameter;
 /**
  * 
  * ClassName: CystalExpr <br/>
- * Function: 结晶公式. <br/>
+ * Function: 封闭体系下平衡结晶公式. <br/>
  * date: 2018年3月5日 上午8:59:07 <br/>
  * 
  * @author liboqiang
@@ -17,10 +17,10 @@ import com.jlu.magmalab.expr.Parameter;
  */
 public class EC implements IExpr {
 
+
 	/**
-	 *  ec:(封闭体系下平衡结晶公式).
-	 *   y=C0/(F+D*(1-F))
-	* TODO 简单描述该方法的实现功能（可选）. 
+	 * 
+	* y=C0/(F+D*(1-F)). 
 	* @see com.jlu.magmalab.expr.IExpr#expr(com.jlu.magmalab.expr.Parameter)
 	 */
 	public Matrix expr(Parameter prm) {

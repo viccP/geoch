@@ -1,8 +1,9 @@
-package com.jlu.magmalab.expr;
+package com.jlu.magmalab.expr.impl;
 
 import org.junit.Test;
 import org.ujmp.core.Matrix;
 
+import com.jlu.magmalab.expr.Parameter;
 import com.jlu.magmalab.expr.impl.EC;
 
 /**
