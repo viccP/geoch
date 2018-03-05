@@ -12,14 +12,14 @@ import org.ujmp.core.Matrix;
  * @version
  * @since JDK 1.6
  */
-public class CystalExpr {
+public class CrystalExpr {
 
 	/**
 	 * 
 	 * 私有构造函数：CystalExpr.
 	 *
 	 */
-	private CystalExpr() {
+	private CrystalExpr() {
 	}
 
 	/**
