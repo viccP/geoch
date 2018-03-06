@@ -4,18 +4,25 @@
 package com.jlu.magmalab.dao;
 
 
+import com.jlu.magmalab.dao.tables.TmDistributeValue;
+import com.jlu.magmalab.dao.tables.TmMeltType;
+import com.jlu.magmalab.dao.tables.TmMixType;
+import com.jlu.magmalab.dao.tables.TmMixValue;
+import com.jlu.magmalab.dao.tables.TmRole;
+import com.jlu.magmalab.dao.tables.TmStdType;
+import com.jlu.magmalab.dao.tables.TmStdValue;
+import com.jlu.magmalab.dao.tables.TmUser;
+import com.jlu.magmalab.dao.tables.TmUserRole;
+
 import javax.annotation.Generated;
 
 import org.jooq.Index;
 import org.jooq.OrderField;
 import org.jooq.impl.AbstractKeys;
 
-import com.jlu.magmalab.dao.tables.ApplyInfo;
-import com.jlu.magmalab.dao.tables.TmUser;
-
 
 /**
- * A class modelling indexes of tables of the <code>system</code> schema.
+ * A class modelling indexes of tables of the <code>magmLab</code> schema.
  */
 @Generated(
     value = {
@@ -31,15 +38,35 @@ public class Indexes {
     // INDEX definitions
     // -------------------------------------------------------------------------
 
-    public static final Index APPLY_INFO_PRIMARY = Indexes0.APPLY_INFO_PRIMARY;
+    public static final Index TM_DISTRIBUTE_VALUE_PRIMARY = Indexes0.TM_DISTRIBUTE_VALUE_PRIMARY;
+    public static final Index TM_MELT_TYPE_PRIMARY = Indexes0.TM_MELT_TYPE_PRIMARY;
+    public static final Index TM_MIX_TYPE_PRIMARY = Indexes0.TM_MIX_TYPE_PRIMARY;
+    public static final Index TM_MIX_VALUE_FK_RELATIONSHIP_1 = Indexes0.TM_MIX_VALUE_FK_RELATIONSHIP_1;
+    public static final Index TM_MIX_VALUE_PRIMARY = Indexes0.TM_MIX_VALUE_PRIMARY;
+    public static final Index TM_ROLE_PRIMARY = Indexes0.TM_ROLE_PRIMARY;
+    public static final Index TM_STD_TYPE_PRIMARY = Indexes0.TM_STD_TYPE_PRIMARY;
+    public static final Index TM_STD_VALUE_FK_RELATIONSHIP_2 = Indexes0.TM_STD_VALUE_FK_RELATIONSHIP_2;
+    public static final Index TM_STD_VALUE_PRIMARY = Indexes0.TM_STD_VALUE_PRIMARY;
     public static final Index TM_USER_PRIMARY = Indexes0.TM_USER_PRIMARY;
+    public static final Index TM_USER_ROLE_FK_RELATIONSHIP_6 = Indexes0.TM_USER_ROLE_FK_RELATIONSHIP_6;
+    public static final Index TM_USER_ROLE_PRIMARY = Indexes0.TM_USER_ROLE_PRIMARY;
 
     // -------------------------------------------------------------------------
     // [#1459] distribute members to avoid static initialisers > 64kb
     // -------------------------------------------------------------------------
 
     private static class Indexes0 extends AbstractKeys {
-        public static Index APPLY_INFO_PRIMARY = createIndex("PRIMARY", ApplyInfo.APPLY_INFO, new OrderField[] { ApplyInfo.APPLY_INFO.APPLY_ID }, true);
+        public static Index TM_DISTRIBUTE_VALUE_PRIMARY = createIndex("PRIMARY", TmDistributeValue.TM_DISTRIBUTE_VALUE, new OrderField[] { TmDistributeValue.TM_DISTRIBUTE_VALUE.ELE_NAME, TmDistributeValue.TM_DISTRIBUTE_VALUE.MINERAL_ID, TmDistributeValue.TM_DISTRIBUTE_VALUE.MELT_TYPE }, true);
+        public static Index TM_MELT_TYPE_PRIMARY = createIndex("PRIMARY", TmMeltType.TM_MELT_TYPE, new OrderField[] { TmMeltType.TM_MELT_TYPE.MELT_TYPE }, true);
+        public static Index TM_MIX_TYPE_PRIMARY = createIndex("PRIMARY", TmMixType.TM_MIX_TYPE, new OrderField[] { TmMixType.TM_MIX_TYPE.MIX_ID, TmMixType.TM_MIX_TYPE.MIX_NAME }, true);
+        public static Index TM_MIX_VALUE_FK_RELATIONSHIP_1 = createIndex("FK_Relationship_1", TmMixValue.TM_MIX_VALUE, new OrderField[] { TmMixValue.TM_MIX_VALUE.MIX_ID }, false);
+        public static Index TM_MIX_VALUE_PRIMARY = createIndex("PRIMARY", TmMixValue.TM_MIX_VALUE, new OrderField[] { TmMixValue.TM_MIX_VALUE.ELE_NAME, TmMixValue.TM_MIX_VALUE.MIX_ID }, true);
+        public static Index TM_ROLE_PRIMARY = createIndex("PRIMARY", TmRole.TM_ROLE, new OrderField[] { TmRole.TM_ROLE.ROLE_ID }, true);
+        public static Index TM_STD_TYPE_PRIMARY = createIndex("PRIMARY", TmStdType.TM_STD_TYPE, new OrderField[] { TmStdType.TM_STD_TYPE.STD_ID }, true);
+        public static Index TM_STD_VALUE_FK_RELATIONSHIP_2 = createIndex("FK_Relationship_2", TmStdValue.TM_STD_VALUE, new OrderField[] { TmStdValue.TM_STD_VALUE.STD_ID }, false);
+        public static Index TM_STD_VALUE_PRIMARY = createIndex("PRIMARY", TmStdValue.TM_STD_VALUE, new OrderField[] { TmStdValue.TM_STD_VALUE.ELE_NAME }, true);
         public static Index TM_USER_PRIMARY = createIndex("PRIMARY", TmUser.TM_USER, new OrderField[] { TmUser.TM_USER.USER_ID }, true);
+        public static Index TM_USER_ROLE_FK_RELATIONSHIP_6 = createIndex("FK_Relationship_6", TmUserRole.TM_USER_ROLE, new OrderField[] { TmUserRole.TM_USER_ROLE.ROLE_ID }, false);
+        public static Index TM_USER_ROLE_PRIMARY = createIndex("PRIMARY", TmUserRole.TM_USER_ROLE, new OrderField[] { TmUserRole.TM_USER_ROLE.USER_ID }, true);
     }
 }

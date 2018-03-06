@@ -5,7 +5,10 @@
 	<bean id="tmUserDao" class="com.jlu.magmalab.dao.tables.daos.TmUserDao">
 		<constructor-arg ref="config" />
 	</bean>
-	<bean id="applyInfoDao" class="com.jlu.magmalab.dao.tables.daos.ApplyInfoDao">
+	<bean id="tmMixTypeDao" class="com.jlu.magmalab.dao.tables.daos.TmMixTypeDao">
+		<constructor-arg ref="config" />
+	</bean>
+	<bean id="tmStdTypeDao" class="com.jlu.magmalab.dao.tables.daos.TmStdTypeDao">
 		<constructor-arg ref="config" />
 	</bean>
 </beans>

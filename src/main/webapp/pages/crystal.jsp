@@ -34,26 +34,16 @@
 		<div>
 			<label for="form-field-select-3">混染物</label>
 			<br>
-			<select class="chosen-select form-control" id="melt-style" data-placeholder="请选择混染物...">
+			<select class="chosen-select form-control" id="mix-obj" data-placeholder="请选择混染物...">
 				<option value=""></option>
-				<option value="1">呼兰群数据</option>
-				<option value="2">亏损地幔成分估值（McDonough.2003）</option>
-				<option value="3">原始地幔成分估值(Palme et al.2003)</option>
-				<option value="4">原始地幔成分估值(McDonough.2003）</option>
-				<option value="5">上地壳成分估值（Rudnick and Gao.2003）</option>
-				<option value="6">下地壳成分估值（Rudnick and Gao.2003）</option>
 			</select>
 		</div>
 		<hr>
 		<div>
 			<label for="form-field-select-3">标准化值</label>
 			<br>
-			<select class="chosen-select form-control" id="melt-style" data-placeholder="请选择标准化值...">
+			<select class="chosen-select form-control" id="std-val" data-placeholder="请选择标准化值...">
 				<option value=""></option>
-				<option value="1">球粒陨石（Masuda et al.(1973）</option>
-				<option value="2">N-MORB (Sun & McDonough 1989)</option>
-				<option value="3">PM (Sun & McDonough 1989)</option>
-				<option value="3">C1-chondrite (Sun & McDonough 1989)</option>
 			</select>
 		</div>
 		<hr>

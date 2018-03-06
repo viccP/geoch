@@ -95,7 +95,7 @@ $(function() {
 	validatePwd();
 	
 	//初始化待办列表
-	initTodoList();
+	//initTodoList();
 	
 	//初始化登出按钮
 	$("#logout").on("click",function(){

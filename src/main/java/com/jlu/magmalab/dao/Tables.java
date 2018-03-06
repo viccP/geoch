@@ -4,14 +4,22 @@
 package com.jlu.magmalab.dao;
 
 
-import javax.annotation.Generated;
-
-import com.jlu.magmalab.dao.tables.ApplyInfo;
+import com.jlu.magmalab.dao.tables.TmDistributeValue;
+import com.jlu.magmalab.dao.tables.TmMeltType;
+import com.jlu.magmalab.dao.tables.TmMineral;
+import com.jlu.magmalab.dao.tables.TmMixType;
+import com.jlu.magmalab.dao.tables.TmMixValue;
+import com.jlu.magmalab.dao.tables.TmRole;
+import com.jlu.magmalab.dao.tables.TmStdType;
+import com.jlu.magmalab.dao.tables.TmStdValue;
 import com.jlu.magmalab.dao.tables.TmUser;
+import com.jlu.magmalab.dao.tables.TmUserRole;
+
+import javax.annotation.Generated;
 
 
 /**
- * Convenience access to all tables in system
+ * Convenience access to all tables in magmLab
  */
 @Generated(
     value = {
@@ -24,12 +32,52 @@ import com.jlu.magmalab.dao.tables.TmUser;
 public class Tables {
 
     /**
-     * The table <code>system.apply_info</code>.
+     * The table <code>magmLab.TM_DISTRIBUTE_VALUE</code>.
      */
-    public static final ApplyInfo APPLY_INFO = com.jlu.magmalab.dao.tables.ApplyInfo.APPLY_INFO;
+    public static final TmDistributeValue TM_DISTRIBUTE_VALUE = com.jlu.magmalab.dao.tables.TmDistributeValue.TM_DISTRIBUTE_VALUE;
 
     /**
-     * The table <code>system.tm_user</code>.
+     * The table <code>magmLab.TM_MELT_TYPE</code>.
+     */
+    public static final TmMeltType TM_MELT_TYPE = com.jlu.magmalab.dao.tables.TmMeltType.TM_MELT_TYPE;
+
+    /**
+     * The table <code>magmLab.TM_MINERAL</code>.
+     */
+    public static final TmMineral TM_MINERAL = com.jlu.magmalab.dao.tables.TmMineral.TM_MINERAL;
+
+    /**
+     * The table <code>magmLab.TM_MIX_TYPE</code>.
+     */
+    public static final TmMixType TM_MIX_TYPE = com.jlu.magmalab.dao.tables.TmMixType.TM_MIX_TYPE;
+
+    /**
+     * The table <code>magmLab.TM_MIX_VALUE</code>.
+     */
+    public static final TmMixValue TM_MIX_VALUE = com.jlu.magmalab.dao.tables.TmMixValue.TM_MIX_VALUE;
+
+    /**
+     * The table <code>magmLab.TM_ROLE</code>.
+     */
+    public static final TmRole TM_ROLE = com.jlu.magmalab.dao.tables.TmRole.TM_ROLE;
+
+    /**
+     * The table <code>magmLab.TM_STD_TYPE</code>.
+     */
+    public static final TmStdType TM_STD_TYPE = com.jlu.magmalab.dao.tables.TmStdType.TM_STD_TYPE;
+
+    /**
+     * The table <code>magmLab.TM_STD_VALUE</code>.
+     */
+    public static final TmStdValue TM_STD_VALUE = com.jlu.magmalab.dao.tables.TmStdValue.TM_STD_VALUE;
+
+    /**
+     * 用户表
      */
     public static final TmUser TM_USER = com.jlu.magmalab.dao.tables.TmUser.TM_USER;
+
+    /**
+     * The table <code>magmLab.TM_USER_ROLE</code>.
+     */
+    public static final TmUserRole TM_USER_ROLE = com.jlu.magmalab.dao.tables.TmUserRole.TM_USER_ROLE;
 }

@@ -2,7 +2,7 @@
 <configuration xmlns="http://www.jooq.org/xsd/jooq-codegen-3.9.0.xsd">
 	<jdbc>
 		<driver>com.mysql.jdbc.Driver</driver>
-		<url>jdbc:mysql://localhost:3306/system</url>
+		<url>jdbc:mysql://localhost:3306/magmLab</url>
 		<user>root</user>
 		<password>bonc1q2w3e</password>
 	</jdbc>
@@ -15,13 +15,13 @@
 		</generate>
 		<database>
 			<name>org.jooq.util.mysql.MySQLDatabase</name>
-			<inputSchema>system</inputSchema>
+			<inputSchema>magmLab</inputSchema>
 			<includes>.*</includes>
 			<excludes></excludes>
 		</database>
 		<target>
-			<packageName>com.ycf.dao</packageName>
-			<directory>/Users/lbqrcy/git/magmaLab/src/main/java</directory>
+			<packageName>com.jlu.magmalab.dao</packageName>
+			<directory>/Users/lbqrcy/git/geoch/src/main/java</directory>
 		</target>
 	</generator>
 </configuration>

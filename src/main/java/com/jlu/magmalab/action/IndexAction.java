@@ -1,17 +1,9 @@
 package com.jlu.magmalab.action;
 
-import static com.jlu.magmalab.dao.tables.ApplyInfo.APPLY_INFO;
 import static com.jlu.magmalab.dao.tables.TmUser.TM_USER;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
-import org.jooq.impl.DSL;
 import org.jooq.impl.DefaultDSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jlu.cst.CST;
-import com.jlu.magmalab.bean.TodoForm;
 import com.jlu.magmalab.dao.tables.pojos.TmUser;
 import com.jlu.utils.Ajax;
 import com.jlu.utils.Session;
@@ -198,102 +189,41 @@ public class IndexAction {
 		}
 	}
 
-	/**
-	 * 
-	 * getTodoList:(获取待办列表). <br/>
-	 * 
-	 * @author liboqiang
-	 * @return
-	 * @since JDK 1.6
-	 */
-	@RequestMapping(value = "/getTodoList", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
-	@ResponseBody
-	public String getTodoList() {
-		try {
-			// 管理员查看所有申请
-			if (Session.isSuperAdmin()) {
-				List<TodoForm> reslst = dsl
-						.select(APPLY_INFO.APPLY_ID,
-								DSL.field("date_format({0},'%Y%m%d%H%i%s')", String.class, APPLY_INFO.APPLY_TIME)
-										.as("applyTime"),
-								APPLY_INFO.APPLY_CAR, APPLY_INFO.PRO_TYPE, TM_USER.USER_NAME.as("applyUser"))
-						.from(APPLY_INFO).leftJoin(TM_USER).on(TM_USER.USER_ID.eq(APPLY_INFO.APPLY_USER))
-						.where(APPLY_INFO.STATUS.eq(CST.APPLY_STATUS_WAITE)).orderBy(APPLY_INFO.APPLY_TIME).limit(5)
-						.fetchInto(TodoForm.class);
 
-				// 添加自定义信息
-				reslst.stream().map(apply -> {
-					apply.setApplyTime(resetTime(apply.getApplyTime()));
-					apply.setProType("发起了报件申请");
-					return apply;
-				}).collect(Collectors.toList());
-
-				return Ajax.responseString(CST.RES_SUCCESS, reslst);
-			} else {
-				List<TodoForm> reslst = dsl
-						.select(APPLY_INFO.APPLY_ID,
-								DSL.field("date_format({0},'%Y%m%d%H%i%s')", String.class, APPLY_INFO.APPLY_TIME)
-										.as("applyTime"),
-								APPLY_INFO.APPLY_CAR, APPLY_INFO.PRO_TYPE, TM_USER.USER_NAME.as("applyUser"),
-								APPLY_INFO.STATUS)
-						.from(APPLY_INFO).leftJoin(TM_USER).on(TM_USER.USER_ID.eq(APPLY_INFO.APPLY_USER))
-						.where(APPLY_INFO.STATUS.notEqual(CST.APPLY_STATUS_FINISH))
-						.and(APPLY_INFO.APPLY_USER.eq(Session.getUser().getUserId())).orderBy(APPLY_INFO.APPLY_TIME)
-						.limit(5).fetchInto(TodoForm.class);
-				// 添加自定义信息
-				reslst.stream().map(apply -> {
-					apply.setApplyTime(resetTime(apply.getApplyTime()));
-					apply.setApplyUser("我");
-					if (CST.APPLY_STATUS_REJECTED == apply.getStatus()) {
-						apply.setProType("报件申请被驳回");
-					} else {
-						apply.setProType("报件申请等待管理员审批中");
-					}
-					return apply;
-				}).collect(Collectors.toList());
-
-				return Ajax.responseString(CST.RES_SUCCESS, reslst);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
-		}
-	}
-
-	/**
-	 * 
-	 * resetTime:(重置时间). <br/>
-	 * 
-	 * @author liboqiang
-	 * @param applyTime
-	 * @return
-	 * @throws ParseException
-	 * @since JDK 1.6
-	 */
-	private String resetTime(String applyTime) {
-		try {
-			long applyTimeNum = new SimpleDateFormat("yyyyMMddHHmmss").parse(applyTime).getTime();
-			long now = new Date().getTime();
-			long recTime = (now - applyTimeNum) / 1000;
-			if (recTime < 60) {
-				return recTime + "秒前";
-			} else {
-				recTime = recTime / 60;
-				if (recTime < 60) {
-					return recTime + "分前";
-				} else {
-					recTime = recTime / 60;
-					if (recTime < 24) {
-						return recTime + "小时前";
-					} else {
-						recTime = recTime / 24;
-						return recTime + "天前";
-					}
-				}
-			}
-		} catch (ParseException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
+//	/**
+//	 * 
+//	 * resetTime:(重置时间). <br/>
+//	 * 
+//	 * @author liboqiang
+//	 * @param applyTime
+//	 * @return
+//	 * @throws ParseException
+//	 * @since JDK 1.6
+//	 */
+//	private String resetTime(String applyTime) {
+//		try {
+//			long applyTimeNum = new SimpleDateFormat("yyyyMMddHHmmss").parse(applyTime).getTime();
+//			long now = new Date().getTime();
+//			long recTime = (now - applyTimeNum) / 1000;
+//			if (recTime < 60) {
+//				return recTime + "秒前";
+//			} else {
+//				recTime = recTime / 60;
+//				if (recTime < 60) {
+//					return recTime + "分前";
+//				} else {
+//					recTime = recTime / 60;
+//					if (recTime < 24) {
+//						return recTime + "小时前";
+//					} else {
+//						recTime = recTime / 24;
+//						return recTime + "天前";
+//					}
+//				}
+//			}
+//		} catch (ParseException e) {
+//			e.printStackTrace();
+//			return null;
+//		}
+//	}
 }

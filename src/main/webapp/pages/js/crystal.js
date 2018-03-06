@@ -2,7 +2,13 @@
  * 
  */
 $(function() {
-
+	
+	//初始化混染物类型
+	initMixStyle($.cxt + '/common/mixType',"#mix-obj");
+	
+	//初始化标准化值类型
+	initMixStyle($.cxt + '/common/stdType',"#std-val");
+	
 	$(".chosen-select").chosen({
 		disable_search : true
 	});
@@ -226,3 +232,32 @@ $(function() {
 		                    
 	traceSpiderChart.setOption(option3);
 });
+
+/**
+ * 获取下拉菜单
+ * @param url
+ * @param id
+ * @returns
+ */
+function initMixStyle(url,id){
+	//增加提示值
+	$(id)
+	.append(
+		$("<option></option>").attr("value","-1").append($(id).attr("data-placeholder"))	
+	)
+	
+	$.ajax({
+		url : url,
+		type : "POST",
+		dataType:"json",
+		async:false,
+		success : function(json) {
+			$.each(json.data,function(index,val){
+				$(id)
+				.append(
+					$("<option></option>").attr("value",val.code).append(val.value)
+				)
+			});
+		}
+	});
+}
