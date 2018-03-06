@@ -5,7 +5,7 @@ import org.ujmp.core.calculation.Calculation.Ret;
 
 /**
  * 
- * ClassName: Distribute <br/>
+ * ClassName: SigamaD <br/>
  * Function: 分配系数类. <br/>
  * date: 2018年3月5日 下午2:33:01 <br/>
  * 
@@ -13,14 +13,14 @@ import org.ujmp.core.calculation.Calculation.Ret;
  * @version
  * @since JDK 1.6
  */
-public class Distribute {
+public class SigamaD {
 
 	/**
 	 * 
-	 * 私有构造函数：Distribute.
+	 * 私有构造函数：SigamaD.
 	 *
 	 */
-	private Distribute() {
+	private SigamaD() {
 	}
 
 	/**

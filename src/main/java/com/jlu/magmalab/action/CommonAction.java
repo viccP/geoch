@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jlu.cst.CST;
-import com.jlu.magmalab.bean.SelectBean;
+import com.jlu.magmalab.bean.Select;
 import com.jlu.magmalab.dao.tables.daos.TmMixTypeDao;
 import com.jlu.magmalab.dao.tables.daos.TmStdTypeDao;
 import com.jlu.magmalab.dao.tables.pojos.TmMixType;
@@ -51,8 +51,8 @@ public class CommonAction {
 		try {
 			
 			List<TmMixType> record = tmMixTypeDao.findAll();
-			List<SelectBean> res = record.stream().map(rs->{
-				SelectBean bean=new SelectBean();
+			List<Select> res = record.stream().map(rs->{
+				Select bean=new Select();
 				bean.setCode(rs.getMixId());
 				bean.setValue(rs.getMixName());
 				return bean;
@@ -79,8 +79,8 @@ public class CommonAction {
 		try {
 			
 			List<TmStdType> record = tmStdTypeDao.findAll();
-			List<SelectBean> res = record.stream().map(rs->{
-				SelectBean bean=new SelectBean();
+			List<Select> res = record.stream().map(rs->{
+				Select bean=new Select();
 				bean.setCode(rs.getStdId());
 				bean.setValue(rs.getStdName());
 				return bean;

@@ -11,4 +11,7 @@
 	<bean id="tmStdTypeDao" class="com.jlu.magmalab.dao.tables.daos.TmStdTypeDao">
 		<constructor-arg ref="config" />
 	</bean>
+	<bean id="tmDistributeValueDao" class="com.jlu.magmalab.dao.tables.daos.TmDistributeValueDao">
+		<constructor-arg ref="config" />
+	</bean>
 </beans>

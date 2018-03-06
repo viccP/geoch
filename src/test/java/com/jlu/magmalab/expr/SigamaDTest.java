@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.ujmp.core.Matrix;
 import org.ujmp.core.SparseMatrix;
 
-public class DistributeTest {
+public class SigamaDTest {
 	
 	@Test
 	public void test() {
@@ -12,7 +12,7 @@ public class DistributeTest {
 		Matrix percent=Matrix.Factory.importFromArray(new double[] {0.9,0.1,0,0,0,0,0,0,0});
 		System.out.println(d);
 		System.out.println(percent);
-		System.out.println(Distribute.sigma(d, percent));
+		System.out.println(SigamaD.sigma(d, percent));
 	}
 
 }

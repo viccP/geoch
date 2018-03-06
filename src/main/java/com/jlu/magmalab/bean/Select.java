@@ -1,6 +1,6 @@
 package com.jlu.magmalab.bean;
 
-public class SelectBean {
+public class Select {
 
 	/**编号**/
 	private String code;
