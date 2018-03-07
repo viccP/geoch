@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/ace/css/select2.css" />
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/ace/css/chosen.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/bootstrapvalidator/css/bootstrapValidator.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/resource/tipped/tipped.css">
 
 <!--[if lte IE 9]>
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/resource/ace/css/ace-part2.css" class="ace-main-stylesheet" />
@@ -332,6 +333,8 @@
 	<script src="<%=request.getContextPath()%>/resource/ace/js/chosen.jquery.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/bootstrapvalidator/js/bootstrapValidator.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/echart/echarts.min.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/jquery-ui.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/tipped/tipped.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/common/md5.js"></script>
 	<script src="<%=request.getContextPath()%>/pages/js/main.js"></script>
 </body>

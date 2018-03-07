@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TmMeltType extends TableImpl<TmMeltTypeRecord> {
 
-    private static final long serialVersionUID = 1587113567;
+    private static final long serialVersionUID = 925890907;
 
     /**
      * The reference instance of <code>magmLab.TM_MELT_TYPE</code>
@@ -54,14 +54,14 @@ public class TmMeltType extends TableImpl<TmMeltTypeRecord> {
     }
 
     /**
-     * The column <code>magmLab.TM_MELT_TYPE.MELT_NAME</code>.
-     */
-    public final TableField<TmMeltTypeRecord, String> MELT_NAME = createField("MELT_NAME", org.jooq.impl.SQLDataType.CHAR(32).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.CHAR)), this, "");
-
-    /**
      * The column <code>magmLab.TM_MELT_TYPE.INDEX</code>.
      */
     public final TableField<TmMeltTypeRecord, Integer> INDEX = createField("INDEX", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
+    /**
+     * The column <code>magmLab.TM_MELT_TYPE.MELT_NAME</code>.
+     */
+    public final TableField<TmMeltTypeRecord, String> MELT_NAME = createField("MELT_NAME", org.jooq.impl.SQLDataType.CHAR(32).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.CHAR)), this, "");
 
     /**
      * The column <code>magmLab.TM_MELT_TYPE.MEMO</code>.

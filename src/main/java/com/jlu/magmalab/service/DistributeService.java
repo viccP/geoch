@@ -91,7 +91,6 @@ public class DistributeService {
 				matrix.setRowLabel(i, String.valueOf(i+1));
 			}
 			
-			
 			dist.setDistribute(matrix);
 			rtn.add(dist);
 		});

@@ -1,8 +1,10 @@
 package com.jlu.cst;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.jlu.magmalab.bean.Distribute;
 import com.jlu.video.bean.VideoInfo;
 
 public class CST {
@@ -49,24 +51,6 @@ public class CST {
 	/**申请状态(2:驳回)**/
 	public static final Integer APPLY_STATUS_REJECTED = 2;
 	
-	@SuppressWarnings("serial")
-	public static final Map<String,String> PIC_MAPPER=new HashMap<String,String>(){{  
-	      put("getCreditPic","征信");
-	      put("getHomePic","户口本");   
-	      put("getMarriedPic","结婚证");   
-	      put("getDriveUsePic","行驶证");   
-	      put("getDrivePic","驾驶证");   
-	      put("getExamPic","考察照片");   
-	      put("getCarPic","车辆照片");   
-	      put("getCarRegPic","车辆登记证");   
-	      put("getHomePic","房产证或租房合同");   
-	      put("getBankPic","收入证明与银行流水");   
-	      put("getIdPic","申请人及配偶身份证");   
-	}};
-	
-	/**视频存储静态Map**/
-	public static Map<String,VideoInfo> VIDEO_MAP=new HashMap<>();
-
 	/**上传文件夹地址**/
 	public static String UPLOAD_DIR="";
 	
@@ -78,5 +62,11 @@ public class CST {
 
 	/**视频解码器地址**/
 	public static String FFMPEG_PATH="";
+
+	/**分配系数列表**/
+	public static List<Distribute> GLOBAL_DIST_LIST;
+	
+	/**视频存储静态Map**/
+	public static Map<String,VideoInfo> VIDEO_MAP=new HashMap<>();
 
 }

@@ -52,17 +52,17 @@ public class TmMixValueDao extends DAOImpl<TmMixValueRecord, com.jlu.magmalab.da
     }
 
     /**
-     * Fetch records that have <code>ELE_INDEX IN (values)</code>
-     */
-    public List<com.jlu.magmalab.dao.tables.pojos.TmMixValue> fetchByEleIndex(Integer... values) {
-        return fetch(TmMixValue.TM_MIX_VALUE.ELE_INDEX, values);
-    }
-
-    /**
      * Fetch records that have <code>MIX_ID IN (values)</code>
      */
     public List<com.jlu.magmalab.dao.tables.pojos.TmMixValue> fetchByMixId(String... values) {
         return fetch(TmMixValue.TM_MIX_VALUE.MIX_ID, values);
+    }
+
+    /**
+     * Fetch records that have <code>ELE_INDEX IN (values)</code>
+     */
+    public List<com.jlu.magmalab.dao.tables.pojos.TmMixValue> fetchByEleIndex(Integer... values) {
+        return fetch(TmMixValue.TM_MIX_VALUE.ELE_INDEX, values);
     }
 
     /**

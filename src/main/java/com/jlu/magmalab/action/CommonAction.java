@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jlu.cst.CST;
 import com.jlu.magmalab.bean.Select;
+import com.jlu.magmalab.dao.tables.daos.TmExprDao;
+import com.jlu.magmalab.dao.tables.daos.TmMineralDao;
 import com.jlu.magmalab.dao.tables.daos.TmMixTypeDao;
 import com.jlu.magmalab.dao.tables.daos.TmStdTypeDao;
+import com.jlu.magmalab.dao.tables.pojos.TmExpr;
+import com.jlu.magmalab.dao.tables.pojos.TmMineral;
 import com.jlu.magmalab.dao.tables.pojos.TmMixType;
 import com.jlu.magmalab.dao.tables.pojos.TmStdType;
 import com.jlu.utils.Ajax;
@@ -36,6 +40,12 @@ public class CommonAction {
 	
 	@Autowired
 	private TmStdTypeDao tmStdTypeDao;
+	
+	@Autowired
+	private TmMineralDao tmMineralDao;
+	
+	@Autowired
+	private TmExprDao tmExprDao;
 	
 	/**
 	 * 
@@ -83,6 +93,66 @@ public class CommonAction {
 				Select bean=new Select();
 				bean.setCode(rs.getStdId());
 				bean.setValue(rs.getStdName());
+				return bean;
+			}).collect(Collectors.toList());
+			
+			return Ajax.responseString(CST.RES_SUCCESS,res);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
+		}
+	}
+	
+	
+
+	/**
+	 * 
+	 * mineralType:(获取矿物种类). <br/> 
+	 * 
+	 * @author liboqiang
+	 * @return 
+	 * @since JDK 1.6
+	 */
+	@RequestMapping(value = "/mineralType", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
+	@ResponseBody
+	public String mineralType() {
+		try {
+			
+			List<TmMineral> record = tmMineralDao.findAll();
+			List<Select> res = record.stream().sorted((s1,s2)-> s1.getIndex().compareTo(s2.getIndex())).map(rs->{
+				Select bean=new Select();
+				bean.setCode(String.valueOf(rs.getIndex()));
+				bean.setValue(rs.getMineralName());
+				return bean;
+			}).collect(Collectors.toList());
+			
+			return Ajax.responseString(CST.RES_SUCCESS,res);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
+		}
+	}
+	
+
+
+	/**
+	 * 
+	 * exprType:(获取定量公式). <br/> 
+	 * 
+	 * @author liboqiang
+	 * @param exprType:公式类型 0->结晶 1->熔融
+	 * @return 
+	 * @since JDK 1.6
+	 */
+	@RequestMapping(value = "/exprType", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
+	@ResponseBody
+	public String exprType(int exprType) {
+		try {
+			List<TmExpr> record = tmExprDao.fetchByExprType(exprType);
+			List<Select> res = record.stream().map(rs->{
+				Select bean=new Select();
+				bean.setCode(rs.getExprId());
+				bean.setValue(rs.getExprName());
 				return bean;
 			}).collect(Collectors.toList());
 			

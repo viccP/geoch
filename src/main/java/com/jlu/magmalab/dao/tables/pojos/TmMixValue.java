@@ -22,36 +22,28 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TmMixValue implements Serializable {
 
-    private static final long serialVersionUID = 830697526;
+    private static final long serialVersionUID = -806032826;
 
-    private Integer eleIndex;
     private String  mixId;
+    private Integer eleIndex;
     private Double  mixValue;
 
     public TmMixValue() {}
 
     public TmMixValue(TmMixValue value) {
-        this.eleIndex = value.eleIndex;
         this.mixId = value.mixId;
+        this.eleIndex = value.eleIndex;
         this.mixValue = value.mixValue;
     }
 
     public TmMixValue(
-        Integer eleIndex,
         String  mixId,
+        Integer eleIndex,
         Double  mixValue
     ) {
-        this.eleIndex = eleIndex;
         this.mixId = mixId;
-        this.mixValue = mixValue;
-    }
-
-    public Integer getEleIndex() {
-        return this.eleIndex;
-    }
-
-    public void setEleIndex(Integer eleIndex) {
         this.eleIndex = eleIndex;
+        this.mixValue = mixValue;
     }
 
     public String getMixId() {
@@ -60,6 +52,14 @@ public class TmMixValue implements Serializable {
 
     public void setMixId(String mixId) {
         this.mixId = mixId;
+    }
+
+    public Integer getEleIndex() {
+        return this.eleIndex;
+    }
+
+    public void setEleIndex(Integer eleIndex) {
+        this.eleIndex = eleIndex;
     }
 
     public Double getMixValue() {
@@ -74,8 +74,8 @@ public class TmMixValue implements Serializable {
     public String toString() {
         StringBuilder sb = new StringBuilder("TmMixValue (");
 
-        sb.append(eleIndex);
-        sb.append(", ").append(mixId);
+        sb.append(mixId);
+        sb.append(", ").append(eleIndex);
         sb.append(", ").append(mixValue);
 
         sb.append(")");

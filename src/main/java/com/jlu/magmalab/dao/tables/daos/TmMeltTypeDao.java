@@ -51,13 +51,6 @@ public class TmMeltTypeDao extends DAOImpl<TmMeltTypeRecord, com.jlu.magmalab.da
     }
 
     /**
-     * Fetch records that have <code>MELT_NAME IN (values)</code>
-     */
-    public List<com.jlu.magmalab.dao.tables.pojos.TmMeltType> fetchByMeltName(String... values) {
-        return fetch(TmMeltType.TM_MELT_TYPE.MELT_NAME, values);
-    }
-
-    /**
      * Fetch records that have <code>INDEX IN (values)</code>
      */
     public List<com.jlu.magmalab.dao.tables.pojos.TmMeltType> fetchByIndex(Integer... values) {
@@ -69,6 +62,13 @@ public class TmMeltTypeDao extends DAOImpl<TmMeltTypeRecord, com.jlu.magmalab.da
      */
     public com.jlu.magmalab.dao.tables.pojos.TmMeltType fetchOneByIndex(Integer value) {
         return fetchOne(TmMeltType.TM_MELT_TYPE.INDEX, value);
+    }
+
+    /**
+     * Fetch records that have <code>MELT_NAME IN (values)</code>
+     */
+    public List<com.jlu.magmalab.dao.tables.pojos.TmMeltType> fetchByMeltName(String... values) {
+        return fetch(TmMeltType.TM_MELT_TYPE.MELT_NAME, values);
     }
 
     /**

@@ -9,6 +9,17 @@
 			</h3>
 		</div>
 		<div>
+			<label for="form-field-select-3">熔体类型</label>
+			<br>
+			<select class="chosen-select form-control" id="melt-style" data-placeholder="请选择熔体类型...">
+				<option value=""></option>
+				<option value="1">基性熔体</option>
+				<option value="2">中性熔体</option>
+				<option value="3">酸性熔体</option>
+			</select>
+		</div>
+		<hr>
+		<div>
 			<label for="form-field-select-3">初始熔体</label>
 			<br>
 			<select class="chosen-select form-control" id="original-melt-body" data-placeholder="请选择初始熔体...">
@@ -17,17 +28,6 @@
 				<option value="2">HQ02</option>
 				<option value="3">HQ03</option>
 				<option value="4">HQ04</option>
-			</select>
-		</div>
-		<hr>
-		<div>
-			<label for="form-field-select-3">熔体类型</label>
-			<br>
-			<select class="chosen-select form-control" id="melt-style" data-placeholder="请选择熔体类型...">
-				<option value=""></option>
-				<option value="1">基性熔体</option>
-				<option value="2">中性熔体</option>
-				<option value="3">酸性熔体</option>
 			</select>
 		</div>
 		<hr>
@@ -50,88 +50,18 @@
 		<div>
 			<label for="form-field-select-3">结晶定量模型</label>
 			<br>
-			<select class="chosen-select form-control" id="melt-style" data-placeholder="请选择结晶定量模型...">
+			<select class="chosen-select form-control" id="crystal-style" data-placeholder="请选择结晶定量模型...">
 				<option value=""></option>
-				<option value="1">EC(平衡结晶)</option>
-				<option value="2">FC</option>
-				<option value="3">AFC</option>
-				<option value="4">C0</option>
-				<option value="5">先结晶后混染</option>
-				<option value="6">先混染后结晶</option>
 			</select>
 		</div>
 	</div>
 
-	<div class="col-xs-12 col-sm-3">
+	<div class="col-xs-12 col-sm-3 mineral-lst">
 		<div>
 			<h3 class="header smaller lighter purple">
 				<i class="ace-icon fa fa-sliders"></i>
 				设置矿物比例
 			</h3>
-		</div>
-		<div class="input-group">
-			<span class="input-group-addon"> 橄榄石 </span>
-			<input type="text" class="mineral-spinner" />
-		</div>
-		<div class="input-group">
-			<span class="input-group-addon"> 斜方辉石 </span>
-			<input type="text" class="mineral-spinner" />
-		</div>
-		<div class="input-group">
-			<span class="input-group-addon"> 单斜辉石 </span>
-			<input type="text" class="mineral-spinner" />
-		</div>
-
-		<div class="input-group">
-			<span class="input-group-addon"> 石榴石 </span>
-			<input type="text" class="mineral-spinner" />
-		</div>
-
-		<div class="input-group">
-			<span class="input-group-addon"> 尖晶石 </span>
-			<input type="text" class="mineral-spinner" />
-		</div>
-
-		<div class="input-group">
-			<span class="input-group-addon"> 角闪石 </span>
-			<input type="text" class="mineral-spinner" />
-		</div>
-		<div class="input-group">
-			<span class="input-group-addon"> 黑云母 </span>
-			<input type="text" class="mineral-spinner" />
-		</div>
-		<div class="input-group">
-			<span class="input-group-addon"> 碱性长石 </span>
-			<input type="text" class="mineral-spinner" />
-		</div>
-
-		<div class="input-group">
-			<span class="input-group-addon"> 斜长石 </span>
-			<input type="text" class="mineral-spinner" />
-		</div>
-		<div class="input-group">
-			<span class="input-group-addon"> 磷灰石 </span>
-			<input type="text" class="mineral-spinner" />
-		</div>
-		<div class="input-group">
-			<span class="input-group-addon"> 磁铁矿 </span>
-			<input type="text" class="mineral-spinner" />
-		</div>
-		<div class="input-group">
-			<span class="input-group-addon"> 榍石 </span>
-			<input type="text" class="mineral-spinner" />
-		</div>
-		<div class="input-group">
-			<span class="input-group-addon"> 钛铁矿 </span>
-			<input type="text" class="mineral-spinner" />
-		</div>
-		<div class="input-group">
-			<span class="input-group-addon"> 锆石 </span>
-			<input type="text" class="mineral-spinner" />
-		</div>
-		<div class="input-group">
-			<span class="input-group-addon"> 褐帘石 </span>
-			<input type="text" class="mineral-spinner" />
 		</div>
 	</div>
 
@@ -140,15 +70,92 @@
 		<div>
 			<h3 class="header smaller lighter purple">
 				<i class="ace-icon fa fa-flask"></i>
-				结晶程度(F)
+				参数设置
 			</h3>
 		</div>
-		<div class="center" style="margin-top: 40px;">
-			<div class="knob-container inline">
-				<input type="text" class="input-small knob" value="41" data-min="0" data-max="100" data-width="400" data-height="320" data-thickness=".2" data-inputcolor="#87B87F" data-fgcolor="#87B87F" data-displayprevious="true" data-anglearc="250" data-angleoffset="-125" />
+		<div class="col-xs-12 col-sm-12">
+			<div id="crystalFDiv">
+				<label for="form-field-mask-2">
+					结晶程度(F)
+					<small class="text-warning">1~100(%)</small>
+				</label>
+				<div class="input-group">
+					<span class="input-group-addon">
+						<i class="ace-icon fa fa-server"></i>
+					</span>
+					<input class="form-control input-mask-phone prm-set" id="crystalF" name="crystalF" type="text" title="">
+					<span class="input-group-addon">
+						<input class="hidden slider-opts" type="text" id="crystalFSliderId" data-min="0" data-max="100" data-step="1" value="0" />
+					</span>
+				</div>
+			</div>
+			<div class="space-12"></div>
+			<div class="space-12"></div>
+			<hr>
+			<div id="crystalBrDiv">
+				<label for="form-field-mask-2">
+					混染程度(R)
+					<small class="text-warning">1~100(%)</small>
+				</label>
+				<div class="input-group" style="position: relative">
+					<span class="input-group-addon">
+						<i class="ace-icon fa fa-window-restore"></i>
+					</span>
+					<input class="form-control input-mask-phone prm-set" id="crystalBr" name="crystalBr" type="text" title="">
+					<span class="input-group-addon">
+						<input class="hidden slider-opts" type="text" id="crystalBrSliderId" data-min="0" data-max="100" data-step="1" value="0" />
+					</span>
+				</div>
+			</div>
+			<div class="space-12"></div>
+			<div class="space-12"></div>
+			<hr>
+			<div id="crystalSrDiv">
+				<label for="form-field-mask-2">
+					同化作用速率（Ma）与分离结晶速率（Mc）的比值(r)
+					<small class="text-warning">1~100(%)</small>
+				</label>
+				<div class="input-group">
+					<span class="input-group-addon">
+						<i class="ace-icon fa fa-cubes"></i>
+					</span>
+					<input class="form-control input-mask-phone prm-set" id="crystalSr" name="crystalSr" type="text" title="">
+					<span class="input-group-addon">
+						<input class="hidden slider-opts" type="text" id="crystalSrSliderId" data-min="0" data-max="100" data-step="1" value="0" />
+					</span>
+				</div>
+			</div>
+			<div class="space-12"></div>
+			<div class="space-12"></div>
+			<hr>
+			<div>
+				<div class="col-xs-12 col-sm-6">
+					<label class="ace-file-input">
+						<input type="file" id="id-input-file-2">
+						<span class="ace-file-container" data-title="Choose">
+							<span class="ace-file-name" data-title="导入样品数据 ...">
+								<i class=" ace-icon fa fa-upload"></i>
+							</span>
+						</span>
+						<a class="remove" href="#">
+							<i class=" ace-icon fa fa-times"></i>
+						</a>
+					</label>
+				</div>
+				<div class="col-xs-12 col-sm-3 center">
+					<a href="#" class="btn btn-app btn-success">
+						<i class="ace-icon fa fa-refresh bigger-230"></i>
+						重新绘制
+					</a>
+				</div>
+				<div class="col-xs-12 col-sm-3 center">
+					<button class="btn btn-app btn-warning">
+						<i class="ace-icon fa fa-plus bigger-230"></i>
+						增加图形
+					</button>
+				</div>
 			</div>
 		</div>
-
 	</div>
 </div>
 
@@ -174,7 +181,7 @@
 								<br>
 								<div class="row">
 									<div class="col-xs-12 col-sm-4">
-										<select class="chosen-select form-control" id="melt-style" data-placeholder="请选择元素...">
+										<select class="chosen-select form-control axes-select" id="melt-style" data-placeholder="请选择元素...">
 											<option value=""></option>
 											<option value="1">Th</option>
 											<option value="2">U</option>
@@ -182,7 +189,7 @@
 										</select>
 									</div>
 									<div class="col-xs-12 col-sm-4">
-										<select class="chosen-select form-control" id="melt-style" data-placeholder="请选择操作符...">
+										<select class="chosen-select form-control axes-select" id="melt-style" data-placeholder="请选择操作符...">
 											<option value=""></option>
 											<option value="1">+</option>
 											<option value="2">-</option>
@@ -191,7 +198,7 @@
 										</select>
 									</div>
 									<div class="col-xs-12 col-sm-4">
-										<select class="chosen-select form-control" id="melt-style" data-placeholder="请选择元素...">
+										<select class="chosen-select form-control axes-select" id="melt-style" data-placeholder="请选择元素...">
 											<option value=""></option>
 											<option value="1">Th</option>
 											<option value="2">U</option>
@@ -204,7 +211,7 @@
 							<div>
 								<div class="row">
 									<div class="col-xs-12 col-sm-4">
-										<select class="chosen-select form-control" id="melt-style" data-placeholder="请选择坐标轴类型...">
+										<select class="chosen-select form-control axes-select" id="melt-style" data-placeholder="请选择坐标轴类型...">
 											<option value=""></option>
 											<option value="1">对数坐标</option>
 											<option value="2">普通坐标</option>
@@ -219,7 +226,7 @@
 								<br>
 								<div class="row">
 									<div class="col-xs-12 col-sm-4">
-										<select class="chosen-select form-control" id="melt-style" data-placeholder="请选择元素...">
+										<select class="chosen-select form-control axes-select" id="melt-style" data-placeholder="请选择元素...">
 											<option value=""></option>
 											<option value="1">Th</option>
 											<option value="2">U</option>
@@ -227,7 +234,7 @@
 										</select>
 									</div>
 									<div class="col-xs-12 col-sm-4">
-										<select class="chosen-select form-control" id="melt-style" data-placeholder="请选择操作符...">
+										<select class="chosen-select form-control axes-select" id="melt-style" data-placeholder="请选择操作符...">
 											<option value=""></option>
 											<option value="1">+</option>
 											<option value="2">-</option>
@@ -236,7 +243,7 @@
 										</select>
 									</div>
 									<div class="col-xs-12 col-sm-4">
-										<select class="chosen-select form-control" id="melt-style" data-placeholder="请选择元素...">
+										<select class="chosen-select form-control axes-select" id="melt-style" data-placeholder="请选择元素...">
 											<option value=""></option>
 											<option value="1">Th</option>
 											<option value="2">U</option>
@@ -249,7 +256,7 @@
 							<div>
 								<div class="row">
 									<div class="col-xs-12 col-sm-4">
-										<select class="chosen-select form-control" id="melt-style" data-placeholder="请选择坐标轴类型...">
+										<select class="chosen-select form-control axes-select" id="melt-style" data-placeholder="请选择坐标轴类型...">
 											<option value=""></option>
 											<option value="1">对数坐标</option>
 											<option value="2">普通坐标</option>

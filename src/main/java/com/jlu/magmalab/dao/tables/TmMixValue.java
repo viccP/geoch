@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TmMixValue extends TableImpl<TmMixValueRecord> {
 
-    private static final long serialVersionUID = -516658644;
+    private static final long serialVersionUID = 1332821050;
 
     /**
      * The reference instance of <code>magmLab.TM_MIX_VALUE</code>
@@ -54,14 +54,14 @@ public class TmMixValue extends TableImpl<TmMixValueRecord> {
     }
 
     /**
+     * The column <code>magmLab.TM_MIX_VALUE.MIX_ID</code>. UUID
+     */
+    public final TableField<TmMixValueRecord, String> MIX_ID = createField("MIX_ID", org.jooq.impl.SQLDataType.CHAR(48).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.CHAR)), this, "UUID");
+
+    /**
      * The column <code>magmLab.TM_MIX_VALUE.ELE_INDEX</code>.
      */
     public final TableField<TmMixValueRecord, Integer> ELE_INDEX = createField("ELE_INDEX", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
-
-    /**
-     * The column <code>magmLab.TM_MIX_VALUE.MIX_ID</code>.
-     */
-    public final TableField<TmMixValueRecord, String> MIX_ID = createField("MIX_ID", org.jooq.impl.SQLDataType.CHAR(48).nullable(false), this, "");
 
     /**
      * The column <code>magmLab.TM_MIX_VALUE.MIX_VALUE</code>.

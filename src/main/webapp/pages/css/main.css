@@ -1,3 +1,4 @@
+
 .login-container {
 	margin: 108px auto 0;
 	width: 375px;
@@ -131,34 +132,38 @@
 	/* background: #d15b47; */
 }
 
-.input-group-addon {
-    padding: 0px;
-    font-size: 14px;
-    font-weight: normal;
-    line-height: 1;
-    color: #555555;
-    text-align: center;
-    background-color: #eeeeee;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
-    min-width: 100px;
+.mineral-lst .input-group-addon {
+	padding: 0px;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 1;
+	color: #555555;
+	text-align: center;
+	background-color: #eeeeee;
+	border: 1px solid #cccccc;
+	border-radius: 4px;
+	min-width: 100px;
 }
 
 hr {
-    margin-top: 5px;
-    margin-bottom: 5px;
-    border: 0;
-    border-top: 1px solid #eeeeee;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	border: 0;
+	border-top: 1px solid #eeeeee;
 }
 
-.mineral-spinner{
-	padding:0px !important;
+.mineral-spinner {
+	padding: 0px !important;
 }
 
-.form-control {
-    height: 23px;
+.mineral-lst .form-control {
+	height: 23px;
 }
 
-.btn-sm, .btn-group-sm > .btn {
-    padding: 0px 0px;
+.btn-sm, .btn-group-sm>.btn {
+	padding: 0px 0px;
+}
+
+.prm-set {
+	width: 63px !important;
 }

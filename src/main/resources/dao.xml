@@ -14,4 +14,10 @@
 	<bean id="tmDistributeValueDao" class="com.jlu.magmalab.dao.tables.daos.TmDistributeValueDao">
 		<constructor-arg ref="config" />
 	</bean>
+	<bean id="tmMineralDao" class="com.jlu.magmalab.dao.tables.daos.TmMineralDao">
+		<constructor-arg ref="config" />
+	</bean>
+	<bean id="tmExprDao" class="com.jlu.magmalab.dao.tables.daos.TmExprDao">
+		<constructor-arg ref="config" />
+	</bean>
 </beans>

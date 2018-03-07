@@ -6,6 +6,7 @@ package com.jlu.magmalab.dao;
 
 import com.jlu.magmalab.dao.tables.TmDistributeValue;
 import com.jlu.magmalab.dao.tables.TmElement;
+import com.jlu.magmalab.dao.tables.TmExpr;
 import com.jlu.magmalab.dao.tables.TmMeltType;
 import com.jlu.magmalab.dao.tables.TmMineral;
 import com.jlu.magmalab.dao.tables.TmMixType;
@@ -17,6 +18,7 @@ import com.jlu.magmalab.dao.tables.TmUser;
 import com.jlu.magmalab.dao.tables.TmUserRole;
 import com.jlu.magmalab.dao.tables.records.TmDistributeValueRecord;
 import com.jlu.magmalab.dao.tables.records.TmElementRecord;
+import com.jlu.magmalab.dao.tables.records.TmExprRecord;
 import com.jlu.magmalab.dao.tables.records.TmMeltTypeRecord;
 import com.jlu.magmalab.dao.tables.records.TmMineralRecord;
 import com.jlu.magmalab.dao.tables.records.TmMixTypeRecord;
@@ -58,6 +60,7 @@ public class Keys {
 
     public static final UniqueKey<TmDistributeValueRecord> KEY_TM_DISTRIBUTE_VALUE_PRIMARY = UniqueKeys0.KEY_TM_DISTRIBUTE_VALUE_PRIMARY;
     public static final UniqueKey<TmElementRecord> KEY_TM_ELEMENT_PRIMARY = UniqueKeys0.KEY_TM_ELEMENT_PRIMARY;
+    public static final UniqueKey<TmExprRecord> KEY_TM_EXPR_PRIMARY = UniqueKeys0.KEY_TM_EXPR_PRIMARY;
     public static final UniqueKey<TmMeltTypeRecord> KEY_TM_MELT_TYPE_PRIMARY = UniqueKeys0.KEY_TM_MELT_TYPE_PRIMARY;
     public static final UniqueKey<TmMineralRecord> KEY_TM_MINERAL_PRIMARY = UniqueKeys0.KEY_TM_MINERAL_PRIMARY;
     public static final UniqueKey<TmMixTypeRecord> KEY_TM_MIX_TYPE_PRIMARY = UniqueKeys0.KEY_TM_MIX_TYPE_PRIMARY;
@@ -80,6 +83,7 @@ public class Keys {
     private static class UniqueKeys0 {
         public static final UniqueKey<TmDistributeValueRecord> KEY_TM_DISTRIBUTE_VALUE_PRIMARY = Internal.createUniqueKey(TmDistributeValue.TM_DISTRIBUTE_VALUE, "KEY_TM_DISTRIBUTE_VALUE_PRIMARY", TmDistributeValue.TM_DISTRIBUTE_VALUE.ELE_INDEX, TmDistributeValue.TM_DISTRIBUTE_VALUE.MINERAL_INDEX, TmDistributeValue.TM_DISTRIBUTE_VALUE.MELT_INDEX);
         public static final UniqueKey<TmElementRecord> KEY_TM_ELEMENT_PRIMARY = Internal.createUniqueKey(TmElement.TM_ELEMENT, "KEY_TM_ELEMENT_PRIMARY", TmElement.TM_ELEMENT.INDEX);
+        public static final UniqueKey<TmExprRecord> KEY_TM_EXPR_PRIMARY = Internal.createUniqueKey(TmExpr.TM_EXPR, "KEY_TM_EXPR_PRIMARY", TmExpr.TM_EXPR.EXPR_ID);
         public static final UniqueKey<TmMeltTypeRecord> KEY_TM_MELT_TYPE_PRIMARY = Internal.createUniqueKey(TmMeltType.TM_MELT_TYPE, "KEY_TM_MELT_TYPE_PRIMARY", TmMeltType.TM_MELT_TYPE.INDEX);
         public static final UniqueKey<TmMineralRecord> KEY_TM_MINERAL_PRIMARY = Internal.createUniqueKey(TmMineral.TM_MINERAL, "KEY_TM_MINERAL_PRIMARY", TmMineral.TM_MINERAL.INDEX);
         public static final UniqueKey<TmMixTypeRecord> KEY_TM_MIX_TYPE_PRIMARY = Internal.createUniqueKey(TmMixType.TM_MIX_TYPE, "KEY_TM_MIX_TYPE_PRIMARY", TmMixType.TM_MIX_TYPE.MIX_ID, TmMixType.TM_MIX_TYPE.MIX_NAME);

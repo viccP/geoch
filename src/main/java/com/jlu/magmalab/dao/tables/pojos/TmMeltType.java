@@ -22,36 +22,28 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TmMeltType implements Serializable {
 
-    private static final long serialVersionUID = 1358356355;
+    private static final long serialVersionUID = -258248175;
 
-    private String  meltName;
     private Integer index;
+    private String  meltName;
     private String  memo;
 
     public TmMeltType() {}
 
     public TmMeltType(TmMeltType value) {
-        this.meltName = value.meltName;
         this.index = value.index;
+        this.meltName = value.meltName;
         this.memo = value.memo;
     }
 
     public TmMeltType(
-        String  meltName,
         Integer index,
+        String  meltName,
         String  memo
     ) {
-        this.meltName = meltName;
         this.index = index;
-        this.memo = memo;
-    }
-
-    public String getMeltName() {
-        return this.meltName;
-    }
-
-    public void setMeltName(String meltName) {
         this.meltName = meltName;
+        this.memo = memo;
     }
 
     public Integer getIndex() {
@@ -60,6 +52,14 @@ public class TmMeltType implements Serializable {
 
     public void setIndex(Integer index) {
         this.index = index;
+    }
+
+    public String getMeltName() {
+        return this.meltName;
+    }
+
+    public void setMeltName(String meltName) {
+        this.meltName = meltName;
     }
 
     public String getMemo() {
@@ -74,8 +74,8 @@ public class TmMeltType implements Serializable {
     public String toString() {
         StringBuilder sb = new StringBuilder("TmMeltType (");
 
-        sb.append(meltName);
-        sb.append(", ").append(index);
+        sb.append(index);
+        sb.append(", ").append(meltName);
         sb.append(", ").append(memo);
 
         sb.append(")");
