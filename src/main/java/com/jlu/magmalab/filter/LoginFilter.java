@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.jlu.utils.RegUtils;
+import com.jlu.utils.Utils;
 
 /**
  * @ClassName: LoginFilter
@@ -57,7 +57,7 @@ public class LoginFilter implements Filter {
 
 		// 排除例外URL
 		for (String page : excludedPageArray) {
-			if (RegUtils.isMatch(page, servletPath)) {
+			if (Utils.isMatch(page, servletPath)) {
 				isExcludedPage = true;
 				break;
 			}
@@ -67,19 +67,19 @@ public class LoginFilter implements Filter {
 			chain.doFilter(req, rep);
 		} else {
 			if (session.getAttribute("tmUser") == null) {
-				if (RegUtils.isMatch("(?i)^.*\\.jsp$", servletPath)) {
+				if (Utils.isMatch("(?i)^.*\\.jsp$", servletPath)) {
 					response.sendRedirect(context + "/pages/html/timeout.html");
-				} else if (RegUtils.isMatch("(?i)^.*\\.(js|css|png|jpg|icon|woff|html|json)$", servletPath)) {
+				} else if (Utils.isMatch("(?i)^.*\\.(js|css|png|jpg|icon|woff|html|json)$", servletPath)) {
 					chain.doFilter(req, rep);
-				} else if (RegUtils.isMatch("^/$", servletPath)) {
+				} else if (Utils.isMatch("^/$", servletPath)) {
 					response.sendRedirect(context + this.redirectPage);
 				} else {
 					response.sendRedirect(context + "/index/checkSession");
 				}
 			} else {
-				if (RegUtils.isMatch("(?i)^.*login\\.jsp$", servletPath)) {
+				if (Utils.isMatch("(?i)^.*login\\.jsp$", servletPath)) {
 					response.sendRedirect(context + "/pages/main.jsp");
-				} else if (RegUtils.isMatch("^/$", servletPath)) {
+				} else if (Utils.isMatch("^/$", servletPath)) {
 					response.sendRedirect(context + "/pages/main.jsp");
 				} else {
 					chain.doFilter(req, rep);

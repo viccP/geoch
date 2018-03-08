@@ -3,7 +3,7 @@ package com.jlu.exception;
 /**
  * 
  * ClassName: ConfigException <br/> 
- * Function: 配置类异常. <br/> 
+ * Function: 配置异常. <br/> 
  * date: 2018年2月8日 下午1:20:44 <br/> 
  * 
  * @author liboqiang 

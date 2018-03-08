@@ -11,7 +11,7 @@
 		<div>
 			<label for="form-field-select-3">熔体类型</label>
 			<br>
-			<select class="chosen-select form-control" id="melt-style" data-placeholder="请选择熔体类型...">
+			<select class="chosen-select form-control" id="melt-style" data-placeholder="请选择熔体类型..." title="">
 				<option value=""></option>
 				<option value="1">基性熔体</option>
 				<option value="2">中性熔体</option>
@@ -19,15 +19,11 @@
 			</select>
 		</div>
 		<hr>
-		<div>
+		<div id="original-melt-body-container">
 			<label for="form-field-select-3">初始熔体</label>
 			<br>
 			<select class="chosen-select form-control" id="original-melt-body" data-placeholder="请选择初始熔体...">
 				<option value=""></option>
-				<option value="1">HQ01</option>
-				<option value="2">HQ02</option>
-				<option value="3">HQ03</option>
-				<option value="4">HQ04</option>
 			</select>
 		</div>
 		<hr>
@@ -90,7 +86,6 @@
 				</div>
 			</div>
 			<div class="space-12"></div>
-			<div class="space-12"></div>
 			<hr>
 			<div id="crystalBrDiv">
 				<label for="form-field-mask-2">
@@ -107,7 +102,6 @@
 					</span>
 				</div>
 			</div>
-			<div class="space-12"></div>
 			<div class="space-12"></div>
 			<hr>
 			<div id="crystalSrDiv">
@@ -126,43 +120,57 @@
 				</div>
 			</div>
 			<div class="space-12"></div>
-			<div class="space-12"></div>
 			<hr>
-			<div>
-				<div class="col-xs-12 col-sm-6">
-					<label class="ace-file-input">
-						<input type="file" id="id-input-file-2">
-						<span class="ace-file-container" data-title="Choose">
-							<span class="ace-file-name" data-title="导入样品数据 ...">
-								<i class=" ace-icon fa fa-upload"></i>
-							</span>
-						</span>
-						<a class="remove" href="#">
-							<i class=" ace-icon fa fa-times"></i>
-						</a>
-					</label>
-				</div>
-				<div class="col-xs-12 col-sm-3 center">
-					<a href="#" class="btn btn-app btn-success">
-						<i class="ace-icon fa fa-refresh bigger-230"></i>
-						重新绘制
-					</a>
-				</div>
-				<div class="col-xs-12 col-sm-3 center">
-					<button class="btn btn-app btn-warning">
-						<i class="ace-icon fa fa-plus bigger-230"></i>
-						增加图形
-					</button>
-				</div>
+			<div class="pull-left">
+				<a href="#" class="btn btn-app btn-purple" id="importData">
+					<i class="ace-icon fa fa-cloud-upload bigger-200"></i>
+					导入数据
+				</a>
+				<a href="#" class="btn btn-app btn-success">
+					<i class="ace-icon fa fa-refresh bigger-230"></i>
+					重新绘制
+				</a>
+				<a href="#" class="btn btn-app btn-warning">
+					<i class="ace-icon fa fa-pencil bigger-230"></i>
+					绘制
+				</a>
 			</div>
 		</div>
 	</div>
+</div>
 </div>
 
 <div class="row">
 	<div class="col-xs-12 col-sm-12">
 		<div>
 			<h3 class="header smaller lighter purple">图形区</h3>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12 col-sm-6">
+		<div class="widget-box">
+			<div class="widget-header">
+				<h4 class="widget-title">稀土元素配分模式图</h4>
+			</div>
+			<div class="widget-body" style="display: block;">
+				<div class="widget-main">
+					<div id="ree-chart" style="width: 600px; height: 350px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-sm-6">
+		<div class="widget-box">
+			<div class="widget-header">
+				<h4 class="widget-title">微量元素蛛网图</h4>
+			</div>
+			<div class="widget-body" style="display: block;">
+				<div class="widget-main">
+					<div id="trace-spider-chart" style="width: 600px; height: 350px;"></div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -266,7 +274,7 @@
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-6">
-							<div id="main" style="width: 600px; height: 350px;"></div>
+							<div id="trace-covariant" style="width: 600px; height: 350px;"></div>
 						</div>
 					</div>
 				</div>
@@ -275,30 +283,4 @@
 	</div>
 </div>
 
-<div class="row">
-	<div class="col-xs-12 col-sm-6">
-		<div class="widget-box">
-			<div class="widget-header">
-				<h4 class="widget-title">稀土元素配分模式图</h4>
-			</div>
-			<div class="widget-body" style="display: block;">
-				<div class="widget-main">
-					<div id="ree-chart" style="width: 600px; height: 350px;"></div>
-				</div>
-			</div>
-		</div>
-	</div>
 
-	<div class="col-xs-12 col-sm-6">
-		<div class="widget-box">
-			<div class="widget-header">
-				<h4 class="widget-title">微量元素蛛网图</h4>
-			</div>
-			<div class="widget-body" style="display: block;">
-				<div class="widget-main">
-					<div id="trace-spider-chart" style="width: 600px; height: 350px;"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>

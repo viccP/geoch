@@ -49,7 +49,7 @@ public class Ajax {
 			}
 			catch(ClassCastException e){
 				String json=JSON.toJSONString(object);
-				Map<String,Object> map=(Map<String, Object>) JsonUtils.json2Java(json);
+				Map<String,Object> map=(Map<String, Object>) Utils.json2Java(json);
 				res.putAll(map);
 			}
 		}

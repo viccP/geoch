@@ -47,11 +47,11 @@ public class PropUtil {
 	private static String doGet(Properties properties, String proVal) {
 		String elReg = "\\$\\s*\\{\\s*[^\\}]*\\s*\\}";
 		String keyReg = "\\$\\s*\\{\\s*([^\\}]*)\\s*\\}";
-		List<String> elList = RegUtils.matchs(elReg, proVal, 0);
+		List<String> elList = Utils.matchs(elReg, proVal, 0);
 		for (String el : elList) {
-			String subKey = RegUtils.match(keyReg, el, 1);
+			String subKey = Utils.match(keyReg, el, 1);
 			String realVal = properties.getProperty(subKey);
-			if (RegUtils.isMatch(elReg, realVal)) {
+			if (Utils.isMatch(elReg, realVal)) {
 				realVal=doGet(properties, realVal);
 			}
 			proVal = proVal.replace(el, realVal);

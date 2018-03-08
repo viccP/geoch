@@ -1,5 +1,9 @@
 package com.jlu.utils;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.web.context.request.RequestContextHolder;
@@ -10,10 +14,17 @@ import com.jlu.magmalab.dao.tables.pojos.TmUser;
 
 public class Session {
 
+	private static final String TM_USER = "tmUser";
+	private static final String MELT_DATA = "meltData";
+	private static final String CRYSTAL_DATA = "crystalData";
+
 	/**
-	 * Session缓存
+	 * 
+	 * 私有构造函数：Session.
+	 *
 	 */
-	protected static HttpSession sessionCache;
+	private Session() {
+	}
 
 	/**
 	 * 
@@ -24,14 +35,35 @@ public class Session {
 	public static HttpSession getSession() {
 		try {
 			ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-			if (attr.getRequest().getSession() == null) {
-				return sessionCache;
-			}
 			return attr.getRequest().getSession();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return sessionCache;
+			return null;
 		}
+	}
+
+	/**
+	 * 
+	 * saveCrystalData:(存储结晶实验数据). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param data
+	 * @since JDK 1.6
+	 */
+	public static void saveCrystalData(Map<String, List<Map<String, Double>>> data) {
+		getSession().setAttribute(CRYSTAL_DATA, data);
+	}
+
+	/**
+	 * 
+	 * saveMeltData:(存储熔融实验数据). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param data
+	 * @since JDK 1.6
+	 */
+	public static void saveMeltData(Map<String, List<Map<String, Double>>> data) {
+		getSession().setAttribute(MELT_DATA, data);
 	}
 
 	/**
@@ -66,7 +98,10 @@ public class Session {
 	 */
 	public static TmUser getUser() {
 		try {
-			TmUser tmUser = (TmUser) getSession().getAttribute("tmUser");
+			TmUser tmUser = (TmUser) getSession().getAttribute(TM_USER);
+			if (tmUser == null) {
+				return new TmUser();
+			}
 			return tmUser;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -75,11 +110,48 @@ public class Session {
 	}
 
 	/**
-	 * 设置session缓存
 	 * 
-	 * @param session
+	 * getCrystalData:(获取结晶数据). <br/>
+	 * 
+	 * @author liboqiang
+	 * @return
+	 * @since JDK 1.6
 	 */
-	public static void setSessionCache(HttpSession session) {
-		sessionCache = session;
+	@SuppressWarnings("unchecked")
+	public static Map<String, List<Map<String, Double>>> getCrystalData() {
+		try {
+			Map<String, List<Map<String, Double>>> crystalData = (Map<String, List<Map<String, Double>>>) getSession().getAttribute(CRYSTAL_DATA);
+			if (crystalData == null) {
+				return new HashMap<String, List<Map<String, Double>>>();
+			}
+			return crystalData;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new HashMap<String, List<Map<String, Double>>>();
+		}
+	}
+
+	/**
+	 * 
+	 * getMeltData:(获取熔融数据). <br/>
+	 * 
+	 * @author liboqiang
+	 * @return
+	 * @since JDK 1.6
+	 */
+	@SuppressWarnings("unchecked")
+	public static Map<String, List<Map<String, Double>>> getMeltData() {
+		try {
+			Map<String, List<Map<String, Double>>> meltData = (Map<String, List<Map<String, Double>>>) getSession().getAttribute(MELT_DATA);
+			if (meltData == null) {
+				return new HashMap<String, List<Map<String, Double>>>();
+			}
+			return meltData;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new HashMap<String, List<Map<String, Double>>>();
+		}
 	}
 }

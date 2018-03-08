@@ -2,94 +2,14 @@
  * 
  */
 $(function() {
-	
-	/**
-	 * 实验基本信息
-	 */
-	//熔体类型下拉菜单
-	initSelect({"id":"#melt-style"});
-	
-	//初始熔体下拉菜单
-	initSelect({"id":"#original-melt-body"});
-	
-	//混染物类型下拉菜单
-	initSelect({
-		"id":"#mix-obj",
-		"url":$.cxt + '/common/mixType'
-	});
-	
-	//标准化值类型下拉菜单
-	initSelect({
-		"id":"#std-val",
-		"url":$.cxt + '/common/stdType'
-	});
-	
-	//定量模型下拉菜单
-	initSelect({
-		"id":"#crystal-style",
-		"url":$.cxt+'/common/exprType',
-		"data":{"exprType":0}
-	});
-	
-	
-	$("#crystal-style").on('change',function(){
-		var val=	$(this).val();
-		if(val=="4" || val=="5"){
-			unDisableCoponent("#crystalBrDiv");
-			unDisableCoponent("#crystalSrDiv");
-			unDisableCoponent("#crystalBrDiv");
-			disableCoponent("#crystalSrDiv");
-		}
-		else if(val=="3"){
-			unDisableCoponent("#crystalBrDiv");
-			unDisableCoponent("#crystalSrDiv");
-		}
-		else{
-			unDisableCoponent("#crystalBrDiv");
-			unDisableCoponent("#crystalSrDiv");
-			disableCoponent("#crystalBrDiv");
-			disableCoponent("#crystalSrDiv");
-		}
-	});
-	
-	/**
-	 * 矿物比例
-	 */
-	initMineralSpinner();
-	
-	
-	/**
-	 * 参数
-	 */
-	//初始化tip
-	Tipped.create(".prm-set", "您的输入有误，请输入最大值与最小值之间的整数",{
-		close: true,
-		hideOn: false,
-		showOn:false,
-		position: 'bottomleft'
-	});
-	
-	// 初始化滑动条
-	initSpinner();
-	
-	//设置禁用
-	disableCoponent("#crystalBrDiv");
-	disableCoponent("#crystalSrDiv");
-	
-	
-	
-	/**
-	 * 图形区域
-	 */
-	$(".axes-select").chosen({
-		disable_search : true
-	});
-	var myChart = echarts.init(document.getElementById('main'));
+
+	//定义echart实例
+	var traceCovariant = echarts.init(document.getElementById('trace-covariant'));
 	var reeChart = echarts.init(document.getElementById('ree-chart'));
 	var traceSpiderChart = echarts.init(document.getElementById('trace-spider-chart'));
 
 	// 指定图表的配置项和数据
-	option1 = {
+	var option1 = {
 		legend : {
 			data : [ 'HQ01', 'HQ02' ],
 			left : 'center'
@@ -140,16 +60,14 @@ $(function() {
 
 		]
 	};
-
-	// 使用刚指定的配置项和数据显示图表。
-	myChart.setOption(option1);
+	traceCovariant.setOption(option1);
 	
-	option2 = {
+	var reeOption = {
 		    tooltip : {
 		        trigger: 'axis'
 		    },
 		    legend: {
-		        data:['HQ01','HQ02','HQ03','HQ04','HQ05']
+		        data:[]
 		    },
 		    toolbox: {
 		        show : true,
@@ -164,7 +82,7 @@ $(function() {
 		        {
 		            type : 'category',
 		            boundaryGap : false,
-		            data : ['La','Ce','Pr','Nd','Sm','Eu','Gb','Tb','Dy','Ho','Er','Tm','Yb','Lu']
+		            data : ['La','Ce','Pr','Nd','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu']
 		        }
 		    ],
 		    yAxis : [
@@ -172,48 +90,16 @@ $(function() {
 		            type : 'log'
 		        }
 		    ],
-		    series : [
-		        {
-		            name:'HQ01',
-		            type:'line',
-		            stack: '总量',
-		            data:[120, 132, 101, 134, 90, 230, 210,120, 132, 101, 134, 90, 230, 210]
-		        },
-		        {
-		            name:'HQ02',
-		            type:'line',
-		            stack: '总量',
-		            data:[220, 182, 191, 234, 290, 330, 310,220, 182, 191, 234, 290, 330, 310]
-		        },
-		        {
-		            name:'HQ03',
-		            type:'line',
-		            stack: '总量',
-		            data:[150, 232, 201, 154, 190, 330, 410,150, 232, 201, 154, 190, 330, 410]
-		        },
-		        {
-		            name:'HQ04',
-		            type:'line',
-		            stack: '总量',
-		            data:[320, 332, 301, 334, 390, 330, 320,320, 332, 301, 334, 390, 330, 320]
-		        },
-		        {
-		            name:'HQ05',
-		            type:'line',
-		            stack: '总量',
-		            data:[820, 932, 901, 934, 1290, 1330, 1320,820, 932, 901, 934, 1290, 1330, 1320]
-		        }
-		    ]
+		    series : []
 		};
-		                    
-	reeChart.setOption(option2);
+	reeChart.setOption(reeOption);
 	
-	option3 = {
+	var traceOption = {
 		    tooltip : {
 		        trigger: 'axis'
 		    },
 		    legend: {
-		        data:['HQ01','HQ02','HQ03','HQ04','HQ05']
+		        data:[]
 		    },
 		    toolbox: {
 		        show : true,
@@ -236,41 +122,138 @@ $(function() {
 		            type : 'log'
 		        }
 		    ],
-		    series : [
-		        {
-		            name:'HQ01',
-		            type:'line',
-		            stack: '总量',
-		            data:[120, 132, 101, 134, 90, 230, 210,120, 132, 101, 134, 90, 230, 210,134, 90, 230, 210]
-		        },
-		        {
-		            name:'HQ02',
-		            type:'line',
-		            stack: '总量',
-		            data:[220, 182, 191, 234, 290, 330, 310,220, 182, 191, 234, 290, 330, 310,134, 90, 230, 210]
-		        },
-		        {
-		            name:'HQ03',
-		            type:'line',
-		            stack: '总量',
-		            data:[150, 232, 201, 154, 190, 330, 410,150, 232, 201, 154, 190, 330, 410,134, 90, 230, 210]
-		        },
-		        {
-		            name:'HQ04',
-		            type:'line',
-		            stack: '总量',
-		            data:[320, 332, 301, 334, 390, 330, 320,320, 332, 301, 334, 390, 330, 320,134, 90, 230, 210]
-		        },
-		        {
-		            name:'HQ05',
-		            type:'line',
-		            stack: '总量',
-		            data:[820, 932, 901, 934, 1290, 1330, 1320,820, 932, 901, 934, 1290, 1330, 1320,134, 90, 230, 210]
-		        }
-		    ]
+		    series : []
 		};
-		                    
-	traceSpiderChart.setOption(option3);
+	traceSpiderChart.setOption(traceOption);
+	
+	
+	/**
+	 * 实验基本信息
+	 */
+	//熔体类型下拉菜单
+	initSelect({"id":"#melt-style"});
+	
+	//初始熔体下拉菜单
+	initSelect({
+		"id":"#original-melt-body",
+		"url":$.cxt + '/common/meltBody',
+		"data":{"dataType":0}
+	});
+	
+	//混染物类型下拉菜单
+	initSelect({
+		"id":"#mix-obj",
+		"url":$.cxt + '/common/mixType'
+	});
+	
+	//标准化值类型下拉菜单
+	initSelect({
+		"id":"#std-val",
+		"url":$.cxt + '/common/stdType'
+	});
+	
+	//定量模型下拉菜单
+	initSelect({
+		"id":"#crystal-style",
+		"url":$.cxt+'/common/exprType',
+		"data":{"exprType":0}
+	});
+	
+	//添加事件
+	$("#crystal-style").on('change',function(){
+		var val=	$(this).val();
+		if(val=="4" || val=="5"){
+			unDisableCoponent("#crystalBrDiv");
+			unDisableCoponent("#crystalSrDiv");
+			unDisableCoponent("#crystalBrDiv");
+			disableCoponent("#crystalSrDiv");
+		}
+		else if(val=="3"){
+			unDisableCoponent("#crystalBrDiv");
+			unDisableCoponent("#crystalSrDiv");
+		}
+		else{
+			unDisableCoponent("#crystalBrDiv");
+			unDisableCoponent("#crystalSrDiv");
+			disableCoponent("#crystalBrDiv");
+			disableCoponent("#crystalSrDiv");
+		}
+	});
+	
+	$("#std-val").on('change',function(){
+		var stdId=$(this).val();
+		var stdName=$(this).children("option[value="+stdId+"]").text();
+		$.ajax({
+			url : $.cxt+'/common/stdChart',
+			type : "POST",
+			dataType:"json",
+			data:{"stdId":stdId,"stdName":stdName},
+			success : function(json) {
+				reeOption.series.push(json.data.reeSeries);
+				reeOption.legend.data.push(json.data.legend);
+				reeChart.setOption(reeOption);
+			}
+		});
+	});
+	
+	/**
+	 * 矿物比例
+	 */
+	initMineralSpinner();
+	
+	
+	/**
+	 * 参数
+	 */
+	//初始化tip
+	Tipped.create(".prm-set", "您的输入有误，请输入最大值与最小值之间的整数",{
+		close: true,
+		hideOn: false,
+		showOn:false,
+		position: 'bottomleft'
+	});
+	
+	// 初始化滑动条
+	initSpinner();
+	
+	//设置禁用
+	disableCoponent("#crystalBrDiv");
+	disableCoponent("#crystalSrDiv");
+	
+	
+	/**
+	 * 按钮
+	 */
+	$("#importData").on('click',function(e){
+		e.preventDefault();
+		var fileObj=$("<input id='fileField'></input>").attr("type","file").attr("name","file").on("change",function(){
+			var data = new FormData();
+			data.append('file', fileObj[0].files[0]);
+			data.append('dataType', 0);
+			$.ajax({
+	    			url : $.cxt + "/common/upload",
+	    			data:data,
+	    			type : "POST",
+	    			dataType: "json",
+	    			loading:true,
+	    			contentType: false, 
+	    			processData: false,
+	    			success:function(json){
+	    				updateMeltBody(json);
+	    			}
+			});
+		});
+		fileObj.trigger("click");
+	});
+	
+	
+	/**
+	 * 图形区域
+	 */
+	$(".axes-select").chosen({
+		disable_search : true
+	});
+	
 });
 
 
@@ -511,4 +494,47 @@ function doInitSelect(json,_this){
 	_this.chosen({
 		disable_search : true
 	});
+}
+
+/**
+ * 更新熔体类型下拉菜单
+ * @param json
+ * @returns
+ */
+function updateMeltBody(json){
+	if(json.code=='0'){
+		
+		//清除下拉菜单
+		$("#original-melt-body-container").empty();
+		$("#original-melt-body-container")
+		.append(
+			$("<label></label>").attr("for","form-field-select-3").append("初始熔体")
+		)
+		.append("<br></br>")
+		.append(
+			$("<select></select>")
+			.addClass("chosen-select form-control")
+			.attr({"id":"original-melt-body","data-placeholder":"请选择初始熔体..."})
+			.append(
+				$("<option></option>").attr("value","")
+			)
+		)
+		
+		//初始熔体下拉菜单
+		initSelect({
+			"id":"#original-melt-body",
+			"url":$.cxt + '/common/meltBody',
+			"data":{"dataType":0}
+		});
+		
+		//初始化tip
+		Tipped.create("#original_melt_body_chosen", "初始熔体导入成功请下拉查看",{
+			close: true,
+			hideOn: false,
+			showOn:false,
+			position: 'bottomleft'
+		});
+		
+		Tipped.show("#original_melt_body_chosen");
+	}
 }
