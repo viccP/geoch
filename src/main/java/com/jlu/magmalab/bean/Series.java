@@ -1,7 +1,5 @@
 package com.jlu.magmalab.bean;
 
-import java.util.List;
-
 /**
  * 
  * ClassName: Series <br/>
@@ -24,89 +22,85 @@ public class Series {
 	private String stack;
 
 	/** 数据 **/
-	private List<Double> data;
+	private double[] data;
 
-	/**
-	 * name.
-	 * 
-	 * @return the name
-	 * @since JDK 1.6
-	 */
+	/** 
+	* name. 
+	* 
+	* @return  the name 
+	* @since   JDK 1.6 
+	*/
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * name.
+	/** 
+	 * name. 
 	 * 
-	 * @param name
-	 *            the name to set
-	 * @since JDK 1.6
+	 * @param   name    the name to set 
+	 * @since   JDK 1.6 
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * type.
-	 * 
-	 * @return the type
-	 * @since JDK 1.6
-	 */
+	/** 
+	* type. 
+	* 
+	* @return  the type 
+	* @since   JDK 1.6 
+	*/
 	public String getType() {
 		return type;
 	}
 
-	/**
-	 * type.
+	/** 
+	 * type. 
 	 * 
-	 * @param type
-	 *            the type to set
-	 * @since JDK 1.6
+	 * @param   type    the type to set 
+	 * @since   JDK 1.6 
 	 */
 	public void setType(String type) {
 		this.type = type;
 	}
 
-	/**
-	 * stack.
-	 * 
-	 * @return the stack
-	 * @since JDK 1.6
-	 */
+	/** 
+	* stack. 
+	* 
+	* @return  the stack 
+	* @since   JDK 1.6 
+	*/
 	public String getStack() {
 		return stack;
 	}
 
-	/**
-	 * stack.
+	/** 
+	 * stack. 
 	 * 
-	 * @param stack
-	 *            the stack to set
-	 * @since JDK 1.6
+	 * @param   stack    the stack to set 
+	 * @since   JDK 1.6 
 	 */
 	public void setStack(String stack) {
 		this.stack = stack;
 	}
 
-	/**
-	 * data.
-	 * 
-	 * @return the data
-	 * @since JDK 1.6
-	 */
-	public List<Double> getData() {
+	/** 
+	* data. 
+	* 
+	* @return  the data 
+	* @since   JDK 1.6 
+	*/
+	public double[] getData() {
 		return data;
 	}
 
-	/**
-	 * data.
+	/** 
+	 * data. 
 	 * 
-	 * @param data
-	 *            the data to set
-	 * @since JDK 1.6
+	 * @param   data    the data to set 
+	 * @since   JDK 1.6 
 	 */
-	public void setData(List<Double> data) {
+	public void setData(double[] data) {
 		this.data = data;
 	}
 }

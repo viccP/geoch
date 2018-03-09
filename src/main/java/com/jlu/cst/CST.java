@@ -67,8 +67,17 @@ public class CST {
 	/**系统异常消息**/
 	public static final String MSG_SYS_ERR = "系统异常请联系系统管理员";
 	
-	/**稀土元素列表**/
-	public static final List<Integer> REE_ELM_ARRAY= Arrays.asList(new Integer[]{35,13,51,44,62,21,25,66,19,30,20,72,77,37});
+	/**稀土元素序号列表**/
+	public static final List<Integer> REE_ELE_INDEX_ARRAY= Arrays.asList(new Integer[]{35,13,51,44,62,21,25,66,19,30,20,72,77,37});
+	
+	/**稀土元素名称列表**/
+	public static final List<String> REE_ELE_NAME_ARRAY= Arrays.asList(new String[]{"La","Ce","Pr","Nd","Sm","Eu","Gd","Tb","Dy","Ho","Er","Tm","Yb","Lu"});
+	
+	/**微量元素序号列表**/
+	public static final List<Integer> TRACE_ELE_INDEX_ARRAY= Arrays.asList(new Integer[]{53,6,69,73,43,35,13,51,64,44,79,28,62,21,76,30,77});
+	
+	/**微量元素名称列表**/
+	public static final List<String> TRACE_ELE_NAME_ARRAY= Arrays.asList(new String[]{"Rb","Ba","Th","U","Nb","La","Ce","Pr","Sr","Nd","Zr","Hf","Sm","Eu","Y","Ho","Yb","Yb"});
 
 	/** 上传文件夹地址 **/
 	public static String UPLOAD_DIR = "";

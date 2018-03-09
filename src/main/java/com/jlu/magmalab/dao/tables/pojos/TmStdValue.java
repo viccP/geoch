@@ -22,36 +22,28 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TmStdValue implements Serializable {
 
-    private static final long serialVersionUID = 176553168;
+    private static final long serialVersionUID = 1820041880;
 
-    private Integer eleIndex;
     private String  stdId;
+    private Integer eleIndex;
     private Double  stdValue;
 
     public TmStdValue() {}
 
     public TmStdValue(TmStdValue value) {
-        this.eleIndex = value.eleIndex;
         this.stdId = value.stdId;
+        this.eleIndex = value.eleIndex;
         this.stdValue = value.stdValue;
     }
 
     public TmStdValue(
-        Integer eleIndex,
         String  stdId,
+        Integer eleIndex,
         Double  stdValue
     ) {
-        this.eleIndex = eleIndex;
         this.stdId = stdId;
-        this.stdValue = stdValue;
-    }
-
-    public Integer getEleIndex() {
-        return this.eleIndex;
-    }
-
-    public void setEleIndex(Integer eleIndex) {
         this.eleIndex = eleIndex;
+        this.stdValue = stdValue;
     }
 
     public String getStdId() {
@@ -60,6 +52,14 @@ public class TmStdValue implements Serializable {
 
     public void setStdId(String stdId) {
         this.stdId = stdId;
+    }
+
+    public Integer getEleIndex() {
+        return this.eleIndex;
+    }
+
+    public void setEleIndex(Integer eleIndex) {
+        this.eleIndex = eleIndex;
     }
 
     public Double getStdValue() {
@@ -74,8 +74,8 @@ public class TmStdValue implements Serializable {
     public String toString() {
         StringBuilder sb = new StringBuilder("TmStdValue (");
 
-        sb.append(eleIndex);
-        sb.append(", ").append(stdId);
+        sb.append(stdId);
+        sb.append(", ").append(eleIndex);
         sb.append(", ").append(stdValue);
 
         sb.append(")");

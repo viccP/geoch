@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TmStdValue extends TableImpl<TmStdValueRecord> {
 
-    private static final long serialVersionUID = -233406859;
+    private static final long serialVersionUID = 2143561514;
 
     /**
      * The reference instance of <code>magmLab.TM_STD_VALUE</code>
@@ -54,14 +54,14 @@ public class TmStdValue extends TableImpl<TmStdValueRecord> {
     }
 
     /**
+     * The column <code>magmLab.TM_STD_VALUE.STD_ID</code>.
+     */
+    public final TableField<TmStdValueRecord, String> STD_ID = createField("STD_ID", org.jooq.impl.SQLDataType.CHAR(48).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.CHAR)), this, "");
+
+    /**
      * The column <code>magmLab.TM_STD_VALUE.ELE_INDEX</code>.
      */
     public final TableField<TmStdValueRecord, Integer> ELE_INDEX = createField("ELE_INDEX", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
-
-    /**
-     * The column <code>magmLab.TM_STD_VALUE.STD_ID</code>.
-     */
-    public final TableField<TmStdValueRecord, String> STD_ID = createField("STD_ID", org.jooq.impl.SQLDataType.CHAR(48), this, "");
 
     /**
      * The column <code>magmLab.TM_STD_VALUE.STD_VALUE</code>.

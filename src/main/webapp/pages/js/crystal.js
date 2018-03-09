@@ -3,129 +3,8 @@
  */
 $(function() {
 
-	//定义echart实例
-	var traceCovariant = echarts.init(document.getElementById('trace-covariant'));
-	var reeChart = echarts.init(document.getElementById('ree-chart'));
-	var traceSpiderChart = echarts.init(document.getElementById('trace-spider-chart'));
-
-	// 指定图表的配置项和数据
-	var option1 = {
-		legend : {
-			data : [ 'HQ01', 'HQ02' ],
-			left : 'center'
-		},
-		xAxis : {
-			scale : true
-		},
-		yAxis : {
-			scale : true
-		},
-		series : [
-				{
-					name : 'HQ01',
-					type : 'scatter',
-					data : [ [ 170.2, 59.1 ], [ 161.3, 70.5 ], [ 167.6, 52.7 ],
-							[ 167.6, 62.7 ], [ 165.1, 86.3 ], [ 162.6, 66.4 ],
-							[ 152.4, 67.3 ], [ 168.9, 63.0 ], [ 170.2, 73.6 ],
-							[ 175.2, 62.3 ], [ 175.2, 57.7 ], [ 160.0, 55.4 ],
-							[ 165.1, 104.1 ], [ 174.0, 55.5 ], [ 170.2, 77.3 ],
-							[ 160.0, 80.5 ], [ 167.6, 64.5 ], [ 167.6, 72.3 ],
-							[ 167.6, 61.4 ], [ 154.9, 58.2 ], [ 162.6, 81.8 ],
-							[ 175.3, 63.6 ], [ 171.4, 53.4 ], [ 157.5, 54.5 ],
-							[ 165.1, 53.6 ], [ 160.0, 60.0 ], [ 174.0, 73.6 ],
-							[ 162.6, 61.4 ], [ 174.0, 55.5 ], [ 162.6, 63.6 ],
-							[ 161.3, 60.9 ], [ 156.2, 60.0 ], [ 149.9, 46.8 ],
-							[ 169.5, 57.3 ], [ 160.0, 64.1 ], [ 175.3, 63.6 ],
-							[ 169.5, 67.3 ], [ 160.0, 75.5 ], [ 172.7, 68.2 ],
-							[ 162.6, 61.4 ], [ 157.5, 76.8 ], [ 176.5, 71.8 ],
-							[ 164.4, 55.5 ], [ 160.7, 48.6 ], [ 174.0, 66.4 ],
-							[ 163.8, 67.3 ] ]
-				},
-				{
-					name : 'HQ02',
-					type : 'scatter',
-					data : [ [ 161.2, 51.6 ], [ 167.5, 59.0 ], [ 159.5, 49.2 ],
-							[ 157.0, 63.0 ], [ 155.8, 53.6 ], [ 170.0, 59.0 ],
-							[ 159.1, 47.6 ], [ 166.0, 69.8 ], [ 176.2, 66.8 ],
-							[ 160.2, 75.2 ], [ 172.5, 55.2 ], [ 170.9, 54.2 ],
-							[ 172.9, 62.5 ], [ 153.4, 42.0 ], [ 160.0, 50.0 ],
-							[ 147.2, 49.8 ], [ 168.2, 49.2 ], [ 175.0, 73.2 ],
-							[ 157.0, 47.8 ], [ 167.6, 68.8 ], [ 168.9, 62.0 ],
-							[ 175.3, 63.6 ], [ 159.4, 53.2 ], [ 160.0, 53.4 ],
-							[ 170.2, 55.0 ], [ 162.6, 70.5 ], [ 167.6, 54.5 ],
-							[ 162.6, 54.5 ], [ 160.7, 55.9 ], [ 160.0, 59.0 ],
-							[ 157.5, 63.6 ], [ 162.6, 54.5 ], [ 152.4, 47.3 ],
-							[ 170.2, 67.7 ], [ 165.1, 80.9 ], [ 172.7, 70.5 ] ]
-				}
-
-		]
-	};
-	traceCovariant.setOption(option1);
-	
-	var reeOption = {
-		    tooltip : {
-		        trigger: 'axis'
-		    },
-		    legend: {
-		        data:[]
-		    },
-		    toolbox: {
-		        show : true,
-		        feature : {
-		            dataView : {show: true, readOnly: false},
-		            restore : {show: true},
-		            saveAsImage : {show: true}
-		        }
-		    },
-		    calculable : true,
-		    xAxis : [
-		        {
-		            type : 'category',
-		            boundaryGap : false,
-		            data : ['La','Ce','Pr','Nd','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu']
-		        }
-		    ],
-		    yAxis : [
-		        {
-		            type : 'log'
-		        }
-		    ],
-		    series : []
-		};
-	reeChart.setOption(reeOption);
-	
-	var traceOption = {
-		    tooltip : {
-		        trigger: 'axis'
-		    },
-		    legend: {
-		        data:[]
-		    },
-		    toolbox: {
-		        show : true,
-		        feature : {
-		            dataView : {show: true, readOnly: false},
-		            restore : {show: true},
-		            saveAsImage : {show: true}
-		        }
-		    },
-		    calculable : true,
-		    xAxis : [
-		        {
-		            type : 'category',
-		            boundaryGap : false,
-		            data : ['Rb','Ba','Th','U','Nb','La','Ce','Pr','Sr','Nd','Zr','Hf','Sm','Eu','Y','Ho','Yb','Rb']
-		        }
-		    ],
-		    yAxis : [
-		        {
-		            type : 'log'
-		        }
-		    ],
-		    series : []
-		};
-	traceSpiderChart.setOption(traceOption);
-	
+	//初始化图表
+	var echartInstance=initEchart();
 	
 	/**
 	 * 实验基本信息
@@ -133,11 +12,18 @@ $(function() {
 	//熔体类型下拉菜单
 	initSelect({"id":"#melt-style"});
 	
-	//初始熔体下拉菜单
+	//初始岩浆下拉菜单
 	initSelect({
-		"id":"#original-melt-body",
-		"url":$.cxt + '/common/meltBody',
-		"data":{"dataType":0}
+		"id":"#inital-magma",
+		"url":$.cxt + '/common/initial',
+		"data":{"initialType":0}
+	});
+	
+	//样品数据下拉菜单
+	initSelect({
+		"id":"#sample-data",
+		"url":$.cxt + '/common/sampleData',
+		"data":{"sampleType":0}
 	});
 	
 	//混染物类型下拉菜单
@@ -180,18 +66,19 @@ $(function() {
 		}
 	});
 	
-	$("#std-val").on('change',function(){
-		var stdId=$(this).val();
-		var stdName=$(this).children("option[value="+stdId+"]").text();
+	$("#sample-data").on('change',function(){
+		var sampleCode=$(this).val();
+		var sampleName=$(this).children("option[value="+stdId+"]").text();
+		var stdId=$("#std-val").val();
 		$.ajax({
-			url : $.cxt+'/common/stdChart',
+			url : $.cxt+'/common/simpleChart',
 			type : "POST",
 			dataType:"json",
-			data:{"stdId":stdId,"stdName":stdName},
+			data:{"sampleCode":sampleCode,"sampleName":sampleName,"stdId":stdId},
 			success : function(json) {
-				reeOption.series.push(json.data.reeSeries);
-				reeOption.legend.data.push(json.data.legend);
-				reeChart.setOption(reeOption);
+				echartInstance.reeOption.series.push(json.data.reeSeries);
+				echartInstance.reeOption.legend.data.push(json.data.legend);
+				echartInstance.reeChart.setOption(echartInstance.reeOption);
 			}
 		});
 	});
@@ -239,7 +126,7 @@ $(function() {
 	    			contentType: false, 
 	    			processData: false,
 	    			success:function(json){
-	    				updateMeltBody(json);
+	    				updateSampleData(json);
 	    			}
 			});
 		});
@@ -501,20 +388,20 @@ function doInitSelect(json,_this){
  * @param json
  * @returns
  */
-function updateMeltBody(json){
+function updateSampleData(json){
 	if(json.code=='0'){
 		
 		//清除下拉菜单
-		$("#original-melt-body-container").empty();
-		$("#original-melt-body-container")
+		$("#sample-data-container").empty();
+		$("#sample-data-container")
 		.append(
-			$("<label></label>").attr("for","form-field-select-3").append("初始熔体")
+			$("<label></label>").attr("for","form-field-select-3").append("样品数据")
 		)
 		.append("<br></br>")
 		.append(
 			$("<select></select>")
 			.addClass("chosen-select form-control")
-			.attr({"id":"original-melt-body","data-placeholder":"请选择初始熔体..."})
+			.attr({"id":"original-melt-body","data-placeholder":"请选择样品..."})
 			.append(
 				$("<option></option>").attr("value","")
 			)
@@ -522,19 +409,111 @@ function updateMeltBody(json){
 		
 		//初始熔体下拉菜单
 		initSelect({
-			"id":"#original-melt-body",
-			"url":$.cxt + '/common/meltBody',
+			"id":"#sample-data",
+			"url":$.cxt + '/common/sampleData',
 			"data":{"dataType":0}
 		});
 		
 		//初始化tip
-		Tipped.create("#original_melt_body_chosen", "初始熔体导入成功请下拉查看",{
+		Tipped.create("#sample_data_chosen", "样品数据导入成功请下拉查看",{
 			close: true,
 			hideOn: false,
 			showOn:false,
 			position: 'bottomleft'
 		});
 		
-		Tipped.show("#original_melt_body_chosen");
+		Tipped.show("#sample_data_chosen");
 	}
+}
+
+/**
+ * 初始化echart图表
+ * @returns
+ */
+function initEchart(){
+	//定义echart实例
+	var rtn={};
+	rtn.traceCovariantChart = echarts.init(document.getElementById('trace-covariant'));
+	rtn.reeChart = echarts.init(document.getElementById('ree-chart'));
+	rtn.traceSpiderChart = echarts.init(document.getElementById('trace-spider-chart'));
+
+	// 微量元素协变图
+	rtn.traceCovariantOpt = {
+		xAxis : {
+			scale : true
+		},
+		yAxis : {
+			scale : true
+		},
+		series : []
+	};
+	rtn.traceCovariantChart.setOption(rtn.traceCovariantOpt);
+	
+	//稀土元素配分模式图
+	rtn.reeOption = {
+		    tooltip : {
+		        trigger: 'axis'
+		    },
+		    legend: {
+		        data:[]
+		    },
+		    toolbox: {
+		        show : true,
+		        feature : {
+		            dataView : {show: true, readOnly: false},
+		            restore : {show: true},
+		            saveAsImage : {show: true}
+		        }
+		    },
+		    calculable : true,
+		    xAxis : [
+		        {
+		            type : 'category',
+		            boundaryGap : false,
+		            data : ['La','Ce','Pr','Nd','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu']
+		        }
+		    ],
+		    yAxis : [
+		        {
+		            type : 'log'
+		        }
+		    ],
+		    series : []
+		};
+	rtn.reeChart.setOption(rtn.reeOption);
+	
+	//微量元素蛛网图
+	rtn.traceOption = {
+		    tooltip : {
+		        trigger: 'axis'
+		    },
+		    legend: {
+		        data:[]
+		    },
+		    toolbox: {
+		        show : true,
+		        feature : {
+		            dataView : {show: true, readOnly: false},
+		            restore : {show: true},
+		            saveAsImage : {show: true}
+		        }
+		    },
+		    calculable : true,
+		    xAxis : [
+		        {
+		            type : 'category',
+		            boundaryGap : false,
+		            data : ['Rb','Ba','Th','U','Nb','La','Ce','Pr','Sr','Nd','Zr','Hf','Sm','Eu','Y','Ho','Yb','Yb']
+		        }
+		    ],
+		    yAxis : [
+		        {
+		            type : 'log'
+		        }
+		    ],
+		    series : []
+		};
+	rtn.traceSpiderChart.setOption(rtn.traceOption);
+	
+	return rtn;
 }

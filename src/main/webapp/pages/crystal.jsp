@@ -11,18 +11,26 @@
 		<div>
 			<label for="form-field-select-3">熔体类型</label>
 			<br>
-			<select class="chosen-select form-control" id="melt-style" data-placeholder="请选择熔体类型..." title="">
+			<select class="chosen-select form-control" id="melt-style" data-placeholder="请选择岩浆类型..." title="">
 				<option value=""></option>
-				<option value="1">基性熔体</option>
-				<option value="2">中性熔体</option>
-				<option value="3">酸性熔体</option>
+				<option value="1">基性岩浆</option>
+				<option value="2">中性岩浆</option>
+				<option value="3">酸性岩浆</option>
 			</select>
 		</div>
 		<hr>
-		<div id="original-melt-body-container">
-			<label for="form-field-select-3">初始熔体</label>
+		<div>
+			<label for="form-field-select-3">初始岩浆</label>
 			<br>
-			<select class="chosen-select form-control" id="original-melt-body" data-placeholder="请选择初始熔体...">
+			<select class="chosen-select form-control" id="inital-magma" data-placeholder="请选择初始岩浆...">
+				<option value=""></option>
+			</select>
+		</div>
+		<hr>
+		<div>
+			<label for="form-field-select-3">样品数据</label>
+			<br>
+			<select class="chosen-select form-control" id="sample-data" multiple data-placeholder="请选择样品...">
 				<option value=""></option>
 			</select>
 		</div>

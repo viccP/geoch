@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.ujmp.core.Matrix;
 
 import com.jlu.cst.CST;
 import com.jlu.exception.BusinessException;
@@ -23,10 +24,12 @@ import com.jlu.magmalab.bean.ImportData;
 import com.jlu.magmalab.bean.Select;
 import com.jlu.magmalab.bean.Series;
 import com.jlu.magmalab.dao.tables.daos.TmExprDao;
+import com.jlu.magmalab.dao.tables.daos.TmInitialTypeDao;
 import com.jlu.magmalab.dao.tables.daos.TmMineralDao;
 import com.jlu.magmalab.dao.tables.daos.TmMixTypeDao;
 import com.jlu.magmalab.dao.tables.daos.TmStdTypeDao;
 import com.jlu.magmalab.dao.tables.pojos.TmExpr;
+import com.jlu.magmalab.dao.tables.pojos.TmInitialType;
 import com.jlu.magmalab.dao.tables.pojos.TmMineral;
 import com.jlu.magmalab.dao.tables.pojos.TmMixType;
 import com.jlu.magmalab.dao.tables.pojos.TmStdType;
@@ -55,6 +58,9 @@ public class CommonAction {
 
 	@Autowired
 	private TmStdTypeDao tmStdTypeDao;
+	
+	@Autowired
+	private TmInitialTypeDao tmInitialTypeDao;
 
 	@Autowired
 	private TmMineralDao tmMineralDao;
@@ -64,7 +70,7 @@ public class CommonAction {
 
 	@Autowired
 	private TmExprDao tmExprDao;
-
+	
 	@Autowired
 	private ExcelService excelService;
 
@@ -180,6 +186,37 @@ public class CommonAction {
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, CST.MSG_SYS_ERR);
 		}
 	}
+	
+	
+
+	/**
+	 * 
+	 * initial:(获取初始岩浆/熔体). <br/> 
+	 * 
+	 * @author liboqiang
+	 * @param initialType
+	 * @return 
+	 * @since JDK 1.6
+	 */
+	@RequestMapping(value = "/initial", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
+	@ResponseBody
+	public String initial(int initialType) {
+		try {
+			List<TmInitialType> record = tmInitialTypeDao.fetchByInitialTyp(initialType);
+			List<Select> res = record.stream().map(rs -> {
+				Select bean = new Select();
+				bean.setCode(rs.getInitialId());
+				bean.setValue(rs.getInitialName());
+				return bean;
+			}).collect(Collectors.toList());
+
+			return Ajax.responseString(CST.RES_SUCCESS, res);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, CST.MSG_SYS_ERR);
+		}
+	}
+	
 
 	/**
 	 * 
@@ -190,14 +227,14 @@ public class CommonAction {
 	 * @return
 	 * @since JDK 1.6
 	 */
-	@RequestMapping(value = "/meltBody", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
+	@RequestMapping(value = "/sampleData", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
 	@ResponseBody
-	public String meltBody(int dataType) {
+	public String sampleData(int sampleType) {
 		try {
 			// 定义数据对象
 			Map<String, List<Map<String, Double>>> data = null;
 			// 获取用户导入数据
-			if (CST.IMP_DATA_TYPE_CRYSTAL == dataType) {
+			if (CST.IMP_DATA_TYPE_CRYSTAL == sampleType) {
 				data = Session.getCrystalData();
 			} else {
 				data = Session.getMeltData();
@@ -271,30 +308,47 @@ public class CommonAction {
 	 * @return 
 	 * @since JDK 1.6
 	 */
-	@RequestMapping(value = "/stdChart", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
+	@RequestMapping(value = "/sampleChart", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
 	@ResponseBody
-	public String stdChart(String stdId,String stdName) {
+	public String simpleChart(String sampleCode,String sampleName,String stdId) {
 		try {
-			List<Double> record = dsl.select(TM_STD_VALUE.STD_VALUE,TM_STD_VALUE.ELE_INDEX)
+			//获取样品数据
+			List<Map<String, Double>> sampleData = Session.getCrystalData().get(sampleCode);
+			
+			//获取稀土元素标准化值
+			List<Double> stdData = dsl.select(TM_STD_VALUE.STD_VALUE,TM_STD_VALUE.ELE_INDEX)
 			.from(TM_STD_VALUE)
-			.where(TM_STD_VALUE.ELE_INDEX.in(CST.REE_ELM_ARRAY))
+			.where(TM_STD_VALUE.ELE_INDEX.in(CST.REE_ELE_INDEX_ARRAY))
 			.and(TM_STD_VALUE.STD_ID.eq(stdId))
 			.fetchInto(TmStdValue.class).stream().sorted((s1,s2)->{
-				int io1 = CST.REE_ELM_ARRAY.indexOf(s1.getEleIndex());
-		        int io2 = CST.REE_ELM_ARRAY.indexOf(s2.getEleIndex());
+				int io1 = CST.REE_ELE_INDEX_ARRAY.indexOf(s1.getEleIndex());
+		        int io2 = CST.REE_ELE_INDEX_ARRAY.indexOf(s2.getEleIndex());
 		        return io1 - io2;
 			}).map(s->s.getStdValue()).collect(Collectors.toList());
+			
+			
+			List<Double> sampleReeData = sampleData.parallelStream().filter(s->CST.REE_ELE_NAME_ARRAY.contains(s.keySet().stream().findFirst().get())).sorted((s1,s2)->{
+				int io1 = CST.REE_ELE_NAME_ARRAY.indexOf(s1.keySet().stream().findFirst().get());
+		        int io2 = CST.REE_ELE_NAME_ARRAY.indexOf(s2.keySet().stream().findFirst().get());
+		        return io1 - io2;
+			}).map(s->s.values().parallelStream().findFirst().get()).collect(Collectors.toList());
+			
+			//转为矩阵
+			Matrix stdDataMatix = Matrix.Factory.importFromArray(stdData.toArray());
+			Matrix sampleReeDataMatix = Matrix.Factory.importFromArray(sampleReeData.toArray());
+			
+			//样品数据除以标准化值
+			Matrix reeRes = sampleReeDataMatix.divide(stdDataMatix);
 			
 			//构建echar数据
 			EchartOpt opt=new EchartOpt();
 			Series reeSeries=new Series();
-			reeSeries.setData(record);
+			reeSeries.setData(reeRes.toDoubleArray()[0]);
 			reeSeries.setStack("总量");
 			reeSeries.setType("line");
-			reeSeries.setName(stdName);
+			reeSeries.setName(sampleName);
 			opt.setReeSeries(reeSeries);
-			opt.setLegend(stdName);
-			
+			opt.setLegend(sampleName);
 
 			return Ajax.responseString(CST.RES_SUCCESS, opt);
 		} catch (Exception e) {
