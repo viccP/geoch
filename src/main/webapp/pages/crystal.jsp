@@ -9,7 +9,7 @@
 			</h3>
 		</div>
 		<div>
-			<label for="form-field-select-3">熔体类型</label>
+			<label for="form-field-select-3">岩浆类型</label>
 			<br>
 			<select class="chosen-select form-control" id="melt-style" data-placeholder="请选择岩浆类型..." title="">
 				<option value=""></option>
@@ -27,7 +27,7 @@
 			</select>
 		</div>
 		<hr>
-		<div>
+		<div id="sample-data-container">
 			<label for="form-field-select-3">样品数据</label>
 			<br>
 			<select class="chosen-select form-control" id="sample-data" multiple data-placeholder="请选择样品...">
@@ -47,14 +47,6 @@
 			<label for="form-field-select-3">标准化值</label>
 			<br>
 			<select class="chosen-select form-control" id="std-val" data-placeholder="请选择标准化值...">
-				<option value=""></option>
-			</select>
-		</div>
-		<hr>
-		<div>
-			<label for="form-field-select-3">结晶定量模型</label>
-			<br>
-			<select class="chosen-select form-control" id="crystal-style" data-placeholder="请选择结晶定量模型...">
 				<option value=""></option>
 			</select>
 		</div>
@@ -78,6 +70,15 @@
 			</h3>
 		</div>
 		<div class="col-xs-12 col-sm-12">
+			<div>
+				<label for="form-field-select-3">结晶定量模型</label>
+				<br>
+				<select class="chosen-select form-control" id="crystal-style" data-placeholder="请选择结晶定量模型...">
+					<option value=""></option>
+				</select>
+			</div>
+			<div class="space-12"></div>
+			<hr>
 			<div id="crystalFDiv">
 				<label for="form-field-mask-2">
 					结晶程度(F)

@@ -66,22 +66,7 @@ $(function() {
 		}
 	});
 	
-	$("#sample-data").on('change',function(){
-		var sampleCode=$(this).val();
-		var sampleName=$(this).children("option[value="+stdId+"]").text();
-		var stdId=$("#std-val").val();
-		$.ajax({
-			url : $.cxt+'/common/simpleChart',
-			type : "POST",
-			dataType:"json",
-			data:{"sampleCode":sampleCode,"sampleName":sampleName,"stdId":stdId},
-			success : function(json) {
-				echartInstance.reeOption.series.push(json.data.reeSeries);
-				echartInstance.reeOption.legend.data.push(json.data.legend);
-				echartInstance.reeChart.setOption(echartInstance.reeOption);
-			}
-		});
-	});
+	bintSampleEvent(echartInstance);
 	
 	/**
 	 * 矿物比例
@@ -126,7 +111,7 @@ $(function() {
 	    			contentType: false, 
 	    			processData: false,
 	    			success:function(json){
-	    				updateSampleData(json);
+	    				updateSampleData(json,echartInstance);
 	    			}
 			});
 		});
@@ -388,7 +373,7 @@ function doInitSelect(json,_this){
  * @param json
  * @returns
  */
-function updateSampleData(json){
+function updateSampleData(json,echartInstance){
 	if(json.code=='0'){
 		
 		//清除下拉菜单
@@ -397,22 +382,24 @@ function updateSampleData(json){
 		.append(
 			$("<label></label>").attr("for","form-field-select-3").append("样品数据")
 		)
-		.append("<br></br>")
+		.append("<br>")
 		.append(
 			$("<select></select>")
 			.addClass("chosen-select form-control")
-			.attr({"id":"original-melt-body","data-placeholder":"请选择样品..."})
+			.attr({"id":"sample-data","data-placeholder":"请选择样品...","multiple":"multiple"})
 			.append(
 				$("<option></option>").attr("value","")
 			)
 		)
 		
-		//初始熔体下拉菜单
+		//样品数据下拉菜单
 		initSelect({
 			"id":"#sample-data",
 			"url":$.cxt + '/common/sampleData',
-			"data":{"dataType":0}
+			"data":{"sampleType":0}
 		});
+		
+		bintSampleEvent(echartInstance);
 		
 		//初始化tip
 		Tipped.create("#sample_data_chosen", "样品数据导入成功请下拉查看",{
@@ -461,7 +448,6 @@ function initEchart(){
 		        show : true,
 		        feature : {
 		            dataView : {show: true, readOnly: false},
-		            restore : {show: true},
 		            saveAsImage : {show: true}
 		        }
 		    },
@@ -494,7 +480,6 @@ function initEchart(){
 		        show : true,
 		        feature : {
 		            dataView : {show: true, readOnly: false},
-		            restore : {show: true},
 		            saveAsImage : {show: true}
 		        }
 		    },
@@ -516,4 +501,59 @@ function initEchart(){
 	rtn.traceSpiderChart.setOption(rtn.traceOption);
 	
 	return rtn;
+}
+
+/**
+ * 样品下拉框绑定事件
+ * @returns
+ */
+function bintSampleEvent(echartInstance){
+	$("#sample-data").on('change',function(){
+		var sampleCodes=$(this).val();
+		var stdId=$("#std-val").val();
+		$.ajax({
+			url : $.cxt+'/common/sampleChart',
+			type : "POST",
+			dataType:"json",
+			data:{"sampleCodes":sampleCodes,"stdId":stdId},
+			success : function(json) {
+				echartInstance.reeChart.clear();
+				echartInstance.reeOption = {
+					    tooltip : {
+					        trigger: 'axis'
+					    },
+					    legend: {
+					        data:[]
+					    },
+					    toolbox: {
+					        show : true,
+					        feature : {
+					            dataView : {show: true, readOnly: false},
+					            saveAsImage : {show: true}
+					        }
+					    },
+					    calculable : true,
+					    xAxis : [
+					        {
+					            type : 'category',
+					            boundaryGap : false,
+					            data : ['La','Ce','Pr','Nd','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu']
+					        }
+					    ],
+					    yAxis : [
+					        {
+					            type : 'log'
+					        }
+					    ],
+					    series : []
+					};
+				
+				$.each(json.data,function(index,opt){
+					echartInstance.reeOption.series.push(opt.reeSeries);
+					echartInstance.reeOption.legend.data.push(opt.legend);
+					echartInstance.reeChart.setOption(echartInstance.reeOption);
+				});
+			}
+		});
+	});
 }

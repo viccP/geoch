@@ -18,9 +18,6 @@ public class Series {
 	/** 类型 **/
 	private String type;
 
-	/** 堆积值 **/
-	private String stack;
-
 	/** 数据 **/
 	private double[] data;
 
@@ -62,26 +59,6 @@ public class Series {
 	 */
 	public void setType(String type) {
 		this.type = type;
-	}
-
-	/** 
-	* stack. 
-	* 
-	* @return  the stack 
-	* @since   JDK 1.6 
-	*/
-	public String getStack() {
-		return stack;
-	}
-
-	/** 
-	 * stack. 
-	 * 
-	 * @param   stack    the stack to set 
-	 * @since   JDK 1.6 
-	 */
-	public void setStack(String stack) {
-		this.stack = stack;
 	}
 
 	/** 

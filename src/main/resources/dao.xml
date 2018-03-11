@@ -20,4 +20,7 @@
 	<bean id="tmExprDao" class="com.jlu.magmalab.dao.tables.daos.TmExprDao">
 		<constructor-arg ref="config" />
 	</bean>
+	<bean id="tmInitialTypeDao" class="com.jlu.magmalab.dao.tables.daos.TmInitialTypeDao">
+		<constructor-arg ref="config" />
+	</bean>
 </beans>

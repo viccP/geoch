@@ -3,15 +3,18 @@ package com.jlu.magmalab.action;
 import static com.jlu.magmalab.dao.tables.TmStdValue.TM_STD_VALUE;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jooq.impl.DefaultDSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.ujmp.core.Matrix;
@@ -310,47 +313,55 @@ public class CommonAction {
 	 */
 	@RequestMapping(value = "/sampleChart", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
 	@ResponseBody
-	public String simpleChart(String sampleCode,String sampleName,String stdId) {
+	public String simpleChart(@RequestParam("sampleCodes[]") List<String> sampleCodes,String stdId) {
 		try {
-			//获取样品数据
-			List<Map<String, Double>> sampleData = Session.getCrystalData().get(sampleCode);
-			
-			//获取稀土元素标准化值
-			List<Double> stdData = dsl.select(TM_STD_VALUE.STD_VALUE,TM_STD_VALUE.ELE_INDEX)
-			.from(TM_STD_VALUE)
-			.where(TM_STD_VALUE.ELE_INDEX.in(CST.REE_ELE_INDEX_ARRAY))
-			.and(TM_STD_VALUE.STD_ID.eq(stdId))
-			.fetchInto(TmStdValue.class).stream().sorted((s1,s2)->{
-				int io1 = CST.REE_ELE_INDEX_ARRAY.indexOf(s1.getEleIndex());
-		        int io2 = CST.REE_ELE_INDEX_ARRAY.indexOf(s2.getEleIndex());
-		        return io1 - io2;
-			}).map(s->s.getStdValue()).collect(Collectors.toList());
-			
-			
-			List<Double> sampleReeData = sampleData.parallelStream().filter(s->CST.REE_ELE_NAME_ARRAY.contains(s.keySet().stream().findFirst().get())).sorted((s1,s2)->{
-				int io1 = CST.REE_ELE_NAME_ARRAY.indexOf(s1.keySet().stream().findFirst().get());
-		        int io2 = CST.REE_ELE_NAME_ARRAY.indexOf(s2.keySet().stream().findFirst().get());
-		        return io1 - io2;
-			}).map(s->s.values().parallelStream().findFirst().get()).collect(Collectors.toList());
-			
-			//转为矩阵
-			Matrix stdDataMatix = Matrix.Factory.importFromArray(stdData.toArray());
-			Matrix sampleReeDataMatix = Matrix.Factory.importFromArray(sampleReeData.toArray());
-			
-			//样品数据除以标准化值
-			Matrix reeRes = sampleReeDataMatix.divide(stdDataMatix);
-			
-			//构建echar数据
-			EchartOpt opt=new EchartOpt();
-			Series reeSeries=new Series();
-			reeSeries.setData(reeRes.toDoubleArray()[0]);
-			reeSeries.setStack("总量");
-			reeSeries.setType("line");
-			reeSeries.setName(sampleName);
-			opt.setReeSeries(reeSeries);
-			opt.setLegend(sampleName);
+			List<EchartOpt> opts=new ArrayList<>();
+			for(String sampleCode:sampleCodes) {
+				//获取样品数据
+				List<Map<String, Double>> sampleData = Session.getCrystalData().get(sampleCode);
+				String sampleName=Utils.base64Decode(sampleCode);
+				if(StringUtils.isEmpty(stdId)) {
+					return Ajax.responseString(CST.RES_AUTO_DIALOG, "您没有选择标准化值");
+				}
+				
+				
+				//获取稀土元素标准化值
+				List<Double> stdData = dsl.select(TM_STD_VALUE.STD_VALUE,TM_STD_VALUE.ELE_INDEX)
+				.from(TM_STD_VALUE)
+				.where(TM_STD_VALUE.ELE_INDEX.in(CST.REE_ELE_INDEX_ARRAY))
+				.and(TM_STD_VALUE.STD_ID.eq(stdId))
+				.fetchInto(TmStdValue.class).stream().sorted((s1,s2)->{
+					int io1 = CST.REE_ELE_INDEX_ARRAY.indexOf(s1.getEleIndex());
+			        int io2 = CST.REE_ELE_INDEX_ARRAY.indexOf(s2.getEleIndex());
+			        return io1 - io2;
+				}).map(s->s.getStdValue()).collect(Collectors.toList());
+				
+				
+				List<Double> sampleReeData = sampleData.parallelStream().filter(s->CST.REE_ELE_NAME_ARRAY.contains(s.keySet().stream().findFirst().get())).sorted((s1,s2)->{
+					int io1 = CST.REE_ELE_NAME_ARRAY.indexOf(s1.keySet().stream().findFirst().get());
+			        int io2 = CST.REE_ELE_NAME_ARRAY.indexOf(s2.keySet().stream().findFirst().get());
+			        return io1 - io2;
+				}).map(s->s.values().parallelStream().findFirst().get()).collect(Collectors.toList());
+				
+				//转为矩阵
+				Matrix stdDataMatix = Matrix.Factory.importFromArray(stdData.toArray());
+				Matrix sampleReeDataMatix = Matrix.Factory.importFromArray(sampleReeData.toArray());
+				
+				//样品数据除以标准化值
+				Matrix reeRes = sampleReeDataMatix.divide(stdDataMatix);
+				
+				//构建echar数据
+				EchartOpt opt=new EchartOpt();
+				Series reeSeries=new Series();
+				reeSeries.setData(reeRes.toDoubleArray()[0]);
+				reeSeries.setType("line");
+				reeSeries.setName(sampleName);
+				opt.setReeSeries(reeSeries);
+				opt.setLegend(sampleName);
+				opts.add(opt);
+			}
 
-			return Ajax.responseString(CST.RES_SUCCESS, opt);
+			return Ajax.responseString(CST.RES_SUCCESS, opts);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, CST.MSG_SYS_ERR);
