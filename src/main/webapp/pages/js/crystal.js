@@ -40,6 +40,33 @@ $(function() {
 		"url":$.cxt + '/common/stdType'
 	});
 	
+	//绑定事件
+	$("#std-val").on('change',function(){
+		var stdId=$(this).val();
+		if(stdId=='-1'){
+			return
+		}
+		$.ajax({
+			url : $.cxt+'/common/stdChart',
+			type : "POST",
+			dataType:"json",
+			data:{"stdId":stdId},
+			success : function(json) {
+				var echartInstance=$("body").data("echarts");
+					
+				//稀土元素配分模式图
+				var reeOption=echartInstance.reeChart.getOption();
+				reeOption.series=json.data.ree;
+				echartInstance.reeChart.setOption(reeOption,true);
+					
+				//微量元素蛛网图
+				var traceOption=echartInstance.traceSpiderChart.getOption();
+				traceOption.series=json.data.trace;
+				echartInstance.traceSpiderChart.setOption(traceOption,true);
+			}
+		});
+	});
+	
 	//定量模型下拉菜单
 	initSelect({
 		"id":"#crystal-style",
@@ -118,15 +145,6 @@ $(function() {
 		});
 		fileObj.trigger("click");
 	});
-	
-	
-	/**
-	 * 图形区域
-	 */
-	$(".axes-select").chosen({
-		disable_search : true
-	});
-	
 });
 
 
@@ -397,21 +415,9 @@ function updateSampleData(json){
 function initEchart(){
 	//定义echart实例
 	var rtn={};
-	rtn.traceCovariantChart = echarts.init(document.getElementById('trace-covariant'));
 	rtn.reeChart = echarts.init(document.getElementById('ree-chart'));
 	rtn.traceSpiderChart = echarts.init(document.getElementById('trace-spider-chart'));
 
-	// 微量元素协变图
-	rtn.traceCovariantChart.setOption({
-		xAxis : {
-			scale : true
-		},
-		yAxis : {
-			scale : true
-		},
-		series : []
-	});
-	
 	//稀土元素配分模式图
 	rtn.reeChart.setOption({
 	    tooltip : {
@@ -520,8 +526,6 @@ function renderSampleChart(sampleOpt){
 	//获取echart实例
 	var echartInstance=$("body").data("echarts");
 	
-	//绘图并重置缓存数据
-	$("body").data("sampleOpt",sampleOpt);
 	//稀土元素配分模式图
 	var reeOption=echartInstance.reeChart.getOption();
 	reeOption.legend[0].data=sampleOpt.ree.legend;

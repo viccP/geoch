@@ -26,6 +26,7 @@ import com.jlu.magmalab.bean.EchartOpt;
 import com.jlu.magmalab.bean.ImportData;
 import com.jlu.magmalab.bean.Select;
 import com.jlu.magmalab.bean.Series;
+import com.jlu.magmalab.bean.SeriesData;
 import com.jlu.magmalab.dao.tables.daos.TmExprDao;
 import com.jlu.magmalab.dao.tables.daos.TmInitialTypeDao;
 import com.jlu.magmalab.dao.tables.daos.TmMineralDao;
@@ -301,7 +302,62 @@ public class CommonAction {
 
 	/**
 	 * 
-	 * stdChart:(标准化值图形). <br/>
+	 * stdChart:(根据标准化值改变图形). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param data
+	 * @return
+	 * @since JDK 1.6
+	 */
+	@RequestMapping(value = "/stdChart", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
+	@ResponseBody
+	public String stdChart(String stdId) {
+		try {
+			// 获取标准化值
+			List<Double> stdReeData = this.getStdData(CST.REE_ELE_INDEX_ARRAY, stdId);
+			List<Double> stdTraceData = this.getStdData(CST.TRACE_ELE_INDEX_ARRAY,stdId);
+
+			// 获取页面数据
+			List<Series> ree=divideByStd(Session.getSampleCacheRee(), stdReeData);
+			List<Series> trace=divideByStd(Session.getSampleCacheTrace(), stdTraceData);
+			
+			SeriesData data=new SeriesData();
+			data.setRee(ree);
+			data.setTrace(trace);
+			return Ajax.responseString(CST.RES_SUCCESS, data);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, CST.MSG_SYS_ERR);
+		}
+	}
+
+	/**
+	 * 
+	 * divideByStd:(除以标准化数据). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param list
+	 * @param stdData
+	 * @return 
+	 * @since JDK 1.6
+	 */
+	private List<Series> divideByStd(List<Series> list, List<Double> stdData) {
+		List<Series> rtnLst=new ArrayList<>();
+		for (Series series : list) {
+			Matrix reeMatix = Matrix.Factory.importFromArray(series.getData());
+			Matrix reeStdMatrix = Matrix.Factory.importFromArray(stdData.toArray());
+			Series tmp=new Series();
+			tmp.setName(series.getName());
+			tmp.setType(series.getType());
+			tmp.setData(reeMatix.divide(reeStdMatrix).toDoubleArray()[0]);
+			rtnLst.add(tmp);
+		}
+		return rtnLst;
+	}
+
+	/**
+	 * 
+	 * sampleChart:(样品图形). <br/>
 	 * 
 	 * @author liboqiang
 	 * @param stdType
@@ -310,26 +366,26 @@ public class CommonAction {
 	 */
 	@RequestMapping(value = "/sampleChart", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
 	@ResponseBody
-	public String simpleChart(@RequestParam("sampleCodes[]") List<String> sampleCodes, String stdId,int sampleType) {
+	public String simpleChart(@RequestParam("sampleCodes[]") List<String> sampleCodes, String stdId, int sampleType) {
 		try {
 			List<EchartOpt> opts = new ArrayList<>();
-			List<Map<String, Double>> sampleData=new ArrayList<>();
+			List<Series> reeCache=new ArrayList<>();
+			List<Series> traceCache=new ArrayList<>(); 
+ 			List<Map<String, Double>> sampleData = new ArrayList<>();
 			for (String sampleCode : sampleCodes) {
 				// 获取样品数据
-				if(CST.IMP_DATA_TYPE_CRYSTAL==sampleType) {
+				if (CST.IMP_DATA_TYPE_CRYSTAL == sampleType) {
 					sampleData = Session.getCrystalData().get(sampleCode);
-				}
-				else {
+				} else {
 					sampleData = Session.getMeltData().get(sampleCode);
 				}
-				
+
 				String sampleName = Utils.base64Decode(sampleCode);
-				
-				//稀土元素数据
-				Series reeSeries = getSampleData(CST.REE_ELE_INDEX_ARRAY, CST.REE_ELE_NAME_ARRAY, stdId, sampleData, sampleName);
-				
-				//微量元素数据
-				Series traceSeries = getSampleData(CST.TRACE_ELE_INDEX_ARRAY, CST.TRACE_ELE_NAME_ARRAY, stdId, sampleData, sampleName);
+
+				// 稀土元素数据
+				Series reeSeries = getSampleData(CST.REE_ELE_INDEX_ARRAY, CST.REE_ELE_NAME_ARRAY, stdId, sampleData, sampleName,reeCache);
+				// 微量元素数据
+				Series traceSeries = getSampleData(CST.TRACE_ELE_INDEX_ARRAY, CST.TRACE_ELE_NAME_ARRAY, stdId, sampleData, sampleName,traceCache);
 
 				EchartOpt opt = new EchartOpt();
 				opt.setReeSeries(reeSeries);
@@ -338,6 +394,10 @@ public class CommonAction {
 				opts.add(opt);
 			}
 
+			//存入缓存
+			Session.saveSampleCacheRee(reeCache);
+			Session.saveSampleCacheTrace(traceCache);
+			
 			return Ajax.responseString(CST.RES_SUCCESS, opts);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -354,29 +414,30 @@ public class CommonAction {
 	 * @param eleNameArray
 	 * @param sampleData
 	 * @param sampleName
+	 * @param traceCache 
 	 * @return
 	 * @since JDK 1.6
 	 */
-	private Series getSampleData(List<Integer> eleIndexArray, List<String> eleNameArray, String stdId, List<Map<String, Double>> sampleData, String sampleName) {
+	private Series getSampleData(List<Integer> eleIndexArray, List<String> eleNameArray, String stdId, List<Map<String, Double>> sampleData, String sampleName, List<Series> traceCache) {
 		List<Double> stdData = new ArrayList<>();
-		if (!StringUtils.isEmpty(stdId)) {
-			// 获取标准化值
-			stdData = dsl.select(TM_STD_VALUE.STD_VALUE, TM_STD_VALUE.ELE_INDEX).from(TM_STD_VALUE).where(TM_STD_VALUE.ELE_INDEX.in(eleIndexArray)).and(TM_STD_VALUE.STD_ID.eq(stdId)).fetchInto(TmStdValue.class).stream().sorted((s1, s2) -> {
-				int io1 = eleIndexArray.indexOf(s1.getEleIndex());
-				int io2 = eleIndexArray.indexOf(s2.getEleIndex());
-				return io1 - io2;
-			}).map(s -> s.getStdValue()).collect(Collectors.toList());
+		if (!StringUtils.isEmpty(stdId)||CST.NOT_EXIST.equals(stdId)) {
+			stdData = getStdData(eleIndexArray, stdId);
 		}
 
 		// 元素数据
-		List<Double> sampleReeData = sampleData.parallelStream().filter(s -> eleNameArray.contains(s.keySet().stream().findFirst().get())).sorted((s1, s2) -> {
+		List<Double> sampleArrayData = sampleData.parallelStream().filter(s -> eleNameArray.contains(s.keySet().stream().findFirst().get())).sorted((s1, s2) -> {
 			int io1 = eleNameArray.indexOf(s1.keySet().stream().findFirst().get());
 			int io2 = eleNameArray.indexOf(s2.keySet().stream().findFirst().get());
 			return io1 - io2;
 		}).map(s -> s.values().parallelStream().findFirst().get()).collect(Collectors.toList());
-
+		
 		// 转为矩阵
-		Matrix sampleDataMatix = Matrix.Factory.importFromArray(sampleReeData.toArray());
+		Matrix sampleDataMatix = Matrix.Factory.importFromArray(sampleArrayData.toArray());
+		Series cacheSeries = new Series();
+		cacheSeries.setData(sampleDataMatix.toDoubleArray()[0]);
+		cacheSeries.setType("line");
+		cacheSeries.setName(sampleName);
+		traceCache.add(cacheSeries);
 
 		// 数据
 		double[] res;
@@ -395,5 +456,26 @@ public class CommonAction {
 		series.setType("line");
 		series.setName(sampleName);
 		return series;
+	}
+
+	/**
+	 * 
+	 * getStdData:(获取标准化值). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param eleIndexArray
+	 * @param stdId
+	 * @return
+	 * @since JDK 1.6
+	 */
+	private List<Double> getStdData(List<Integer> eleIndexArray, String stdId) {
+		List<Double> stdData;
+		// 获取标准化值
+		stdData = dsl.select(TM_STD_VALUE.STD_VALUE, TM_STD_VALUE.ELE_INDEX).from(TM_STD_VALUE).where(TM_STD_VALUE.ELE_INDEX.in(eleIndexArray)).and(TM_STD_VALUE.STD_ID.eq(stdId)).fetchInto(TmStdValue.class).stream().sorted((s1, s2) -> {
+			int io1 = eleIndexArray.indexOf(s1.getEleIndex());
+			int io2 = eleIndexArray.indexOf(s2.getEleIndex());
+			return io1 - io2;
+		}).map(s -> s.getStdValue()).collect(Collectors.toList());
+		return stdData;
 	}
 }
