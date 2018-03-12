@@ -4,7 +4,7 @@
 $(function() {
 
 	//初始化图表
-	var echartInstance=initEchart();
+	initEchart();
 	
 	/**
 	 * 实验基本信息
@@ -23,8 +23,10 @@ $(function() {
 	initSelect({
 		"id":"#sample-data",
 		"url":$.cxt + '/common/sampleData',
-		"data":{"sampleType":0}
+		"data":{"sampleType":0},
+		"multiple":true
 	});
+	bindSampleSelectEvent();
 	
 	//混染物类型下拉菜单
 	initSelect({
@@ -66,7 +68,6 @@ $(function() {
 		}
 	});
 	
-	bintSampleEvent(echartInstance);
 	
 	/**
 	 * 矿物比例
@@ -111,7 +112,7 @@ $(function() {
 	    			contentType: false, 
 	    			processData: false,
 	    			success:function(json){
-	    				updateSampleData(json,echartInstance);
+	    				updateSampleData(json);
 	    			}
 			});
 		});
@@ -136,30 +137,34 @@ $(function() {
  */
 function initSelect(opt){
 	var _this=$(opt.id);
+	//增加提示值
+	if(!opt.multiple){
+		_this.append(
+			$("<option></option>").attr("value","-1").append(_this.attr("data-placeholder"))	
+		)
+	}
+	
 	if(opt.url){
-		if(opt.data){
-			$.ajax({
-				url : opt.url,
-				type : "POST",
-				dataType:"json",
-				data:opt.data,
-				async:false,
-				success : function(json) {
-					doInitSelect(json,_this);
-				}
-			});
-		}
-		else{
-			$.ajax({
-				url : opt.url,
-				type : "POST",
-				dataType:"json",
-				async:false,
-				success : function(json) {
-					doInitSelect(json,_this);
-				}
-			});
-		}
+		$.ajax($.extend({data:opt.data},{
+			url:opt.url,
+			type : "POST",
+			dataType:"json",
+			async:false,
+			success : function(json) {
+				//生成列表
+				$.each(json.data,function(index,val){
+					_this
+					.append(
+						$("<option></option>").attr("value",val.code).append(val.value)
+					)
+				});
+				
+				//初始化下拉菜单
+				_this.chosen({
+					disable_search : true
+				});
+			}
+		}));
 	}
 	else{
 		//初始化下拉菜单
@@ -342,38 +347,11 @@ function initMineralSpinner(){
 }
 
 /**
- * 生成下拉菜单
- * @param json
- * @param _this
- * @returns
- */
-function doInitSelect(json,_this){
-	//增加提示值
-	_this
-	.append(
-		$("<option></option>").attr("value","-1").append(_this.attr("data-placeholder"))	
-	)
-	
-	//生成列表
-	$.each(json.data,function(index,val){
-		_this
-		.append(
-			$("<option></option>").attr("value",val.code).append(val.value)
-		)
-	});
-	
-	//初始化下拉菜单
-	_this.chosen({
-		disable_search : true
-	});
-}
-
-/**
  * 更新熔体类型下拉菜单
  * @param json
  * @returns
  */
-function updateSampleData(json,echartInstance){
+function updateSampleData(json){
 	if(json.code=='0'){
 		
 		//清除下拉菜单
@@ -399,7 +377,7 @@ function updateSampleData(json,echartInstance){
 			"data":{"sampleType":0}
 		});
 		
-		bintSampleEvent(echartInstance);
+		bindSampleSelectEvent();
 		
 		//初始化tip
 		Tipped.create("#sample_data_chosen", "样品数据导入成功请下拉查看",{
@@ -415,7 +393,6 @@ function updateSampleData(json,echartInstance){
 
 /**
  * 初始化echart图表
- * @returns
  */
 function initEchart(){
 	//定义echart实例
@@ -425,7 +402,7 @@ function initEchart(){
 	rtn.traceSpiderChart = echarts.init(document.getElementById('trace-spider-chart'));
 
 	// 微量元素协变图
-	rtn.traceCovariantOpt = {
+	rtn.traceCovariantChart.setOption({
 		xAxis : {
 			scale : true
 		},
@@ -433,127 +410,127 @@ function initEchart(){
 			scale : true
 		},
 		series : []
-	};
-	rtn.traceCovariantChart.setOption(rtn.traceCovariantOpt);
+	});
 	
 	//稀土元素配分模式图
-	rtn.reeOption = {
-		    tooltip : {
-		        trigger: 'axis'
-		    },
-		    legend: {
-		        data:[]
-		    },
-		    toolbox: {
-		        show : true,
-		        feature : {
-		            dataView : {show: true, readOnly: false},
-		            saveAsImage : {show: true}
-		        }
-		    },
-		    calculable : true,
-		    xAxis : [
-		        {
-		            type : 'category',
-		            boundaryGap : false,
-		            data : ['La','Ce','Pr','Nd','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu']
-		        }
-		    ],
-		    yAxis : [
-		        {
-		            type : 'log'
-		        }
-		    ],
-		    series : []
-		};
-	rtn.reeChart.setOption(rtn.reeOption);
+	rtn.reeChart.setOption({
+	    tooltip : {
+	        trigger: 'axis'
+	    },
+	    legend: {
+	        data:[]
+	    },
+	    toolbox: {
+	        show : true,
+	        feature : {
+	            dataView : {show: true, readOnly: false},
+	            saveAsImage : {show: true}
+	        }
+	    },
+	    calculable : true,
+	    xAxis : [
+	        {
+	            type : 'category',
+	            boundaryGap : false,
+	            data : ['La','Ce','Pr','Nd','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu']
+	        }
+	    ],
+	    yAxis : [
+	        {
+	            type : 'log'
+	        }
+	    ],
+	    series : []
+	});
 	
 	//微量元素蛛网图
-	rtn.traceOption = {
-		    tooltip : {
-		        trigger: 'axis'
-		    },
-		    legend: {
-		        data:[]
-		    },
-		    toolbox: {
-		        show : true,
-		        feature : {
-		            dataView : {show: true, readOnly: false},
-		            saveAsImage : {show: true}
-		        }
-		    },
-		    calculable : true,
-		    xAxis : [
-		        {
-		            type : 'category',
-		            boundaryGap : false,
-		            data : ['Rb','Ba','Th','U','Nb','La','Ce','Pr','Sr','Nd','Zr','Hf','Sm','Eu','Y','Ho','Yb','Yb']
-		        }
-		    ],
-		    yAxis : [
-		        {
-		            type : 'log'
-		        }
-		    ],
-		    series : []
-		};
-	rtn.traceSpiderChart.setOption(rtn.traceOption);
+	rtn.traceSpiderChart.setOption({
+	    tooltip : {
+	        trigger: 'axis'
+	    },
+	    legend: {
+	        data:[]
+	    },
+	    toolbox: {
+	        show : true,
+	        feature : {
+	            dataView : {show: true, readOnly: false},
+	            saveAsImage : {show: true}
+	        }
+	    },
+	    calculable : true,
+	    xAxis : [
+	        {
+	            type : 'category',
+	            boundaryGap : false,
+	            data : ['Rb','Ba','Th','U','Nb','La','Ce','Pr','Sr','Nd','Zr','Hf','Sm','Eu','Y','Ho','Yb','Yb']
+	        }
+	    ],
+	    yAxis : [
+	        {
+	            type : 'log'
+	        }
+	    ],
+	    series : []
+	});
 	
-	return rtn;
+	$("body").data("echarts",rtn);
 }
 
 /**
  * 样品下拉框绑定事件
  * @returns
  */
-function bintSampleEvent(echartInstance){
+function bindSampleSelectEvent(echartInstance){
 	$("#sample-data").on('change',function(){
 		var sampleCodes=$(this).val();
 		var stdId=$("#std-val").val();
-		$.ajax({
-			url : $.cxt+'/common/sampleChart',
-			type : "POST",
-			dataType:"json",
-			data:{"sampleCodes":sampleCodes,"stdId":stdId},
-			success : function(json) {
-				echartInstance.reeChart.clear();
-				echartInstance.reeOption = {
-					    tooltip : {
-					        trigger: 'axis'
-					    },
-					    legend: {
-					        data:[]
-					    },
-					    toolbox: {
-					        show : true,
-					        feature : {
-					            dataView : {show: true, readOnly: false},
-					            saveAsImage : {show: true}
-					        }
-					    },
-					    calculable : true,
-					    xAxis : [
-					        {
-					            type : 'category',
-					            boundaryGap : false,
-					            data : ['La','Ce','Pr','Nd','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu']
-					        }
-					    ],
-					    yAxis : [
-					        {
-					            type : 'log'
-					        }
-					    ],
-					    series : []
-					};
-				
-				$.each(json.data,function(index,opt){
-					echartInstance.reeOption.series.push(opt.reeSeries);
-					echartInstance.reeOption.legend.data.push(opt.legend);
-					echartInstance.reeChart.setOption(echartInstance.reeOption);
-				});
-			}
-		});
+		if(!sampleCodes){
+			var sampleOpt={"ree":{"legend":[],"series":[]},"trace":{"legend":[],"series":[]}};
+			renderSampleChart(sampleOpt);
+		}
+		else{
+			$.ajax({
+				url : $.cxt+'/common/sampleChart',
+				type : "POST",
+				dataType:"json",
+				data:{"sampleCodes":sampleCodes,"stdId":stdId,"sampleType":0},
+				success : function(json) {
+					var sampleOpt={"ree":{"legend":[],"series":[]},"trace":{"legend":[],"series":[]}};
+					$.each(json.data,function(index,opt){
+						sampleOpt.ree.series.push(opt.reeSeries);
+						sampleOpt.ree.legend.push(opt.legend);
+						sampleOpt.trace.series.push(opt.traceSeries);
+						sampleOpt.trace.legend.push(opt.legend);
+					});
+					//绘图并重置缓存数据
+					renderSampleChart(sampleOpt);
+				}
+			});
+		}
 	});
+}
+
+/**
+ * 绘制样品图形
+ * @param sampleOpt
+ * @returns
+ */
+function renderSampleChart(sampleOpt){
+	//获取echart实例
+	var echartInstance=$("body").data("echarts");
+	
+	//绘图并重置缓存数据
+	$("body").data("sampleOpt",sampleOpt);
+	//稀土元素配分模式图
+	var reeOption=echartInstance.reeChart.getOption();
+	reeOption.legend[0].data=sampleOpt.ree.legend;
+	reeOption.series=sampleOpt.ree.series;
+	echartInstance.reeChart.setOption(reeOption,true);
+	
+	//微量元素蛛网图
+	var traceOption=echartInstance.traceSpiderChart.getOption();
+	traceOption.legend[0].data=sampleOpt.trace.legend;
+	traceOption.series=sampleOpt.trace.series;
+	echartInstance.traceSpiderChart.setOption(traceOption,true);
 }

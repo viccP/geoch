@@ -61,19 +61,19 @@ public class CommonAction {
 
 	@Autowired
 	private TmStdTypeDao tmStdTypeDao;
-	
+
 	@Autowired
 	private TmInitialTypeDao tmInitialTypeDao;
 
 	@Autowired
 	private TmMineralDao tmMineralDao;
-	
+
 	@Autowired
 	private DefaultDSLContext dsl;
 
 	@Autowired
 	private TmExprDao tmExprDao;
-	
+
 	@Autowired
 	private ExcelService excelService;
 
@@ -189,16 +189,14 @@ public class CommonAction {
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, CST.MSG_SYS_ERR);
 		}
 	}
-	
-	
 
 	/**
 	 * 
-	 * initial:(获取初始岩浆/熔体). <br/> 
+	 * initial:(获取初始岩浆/熔体). <br/>
 	 * 
 	 * @author liboqiang
 	 * @param initialType
-	 * @return 
+	 * @return
 	 * @since JDK 1.6
 	 */
 	@RequestMapping(value = "/initial", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
@@ -219,7 +217,6 @@ public class CommonAction {
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, CST.MSG_SYS_ERR);
 		}
 	}
-	
 
 	/**
 	 * 
@@ -301,62 +298,42 @@ public class CommonAction {
 			}
 		}
 	}
-	
+
 	/**
 	 * 
-	 * stdChart:(标准化值图形). <br/> 
+	 * stdChart:(标准化值图形). <br/>
 	 * 
 	 * @author liboqiang
 	 * @param stdType
-	 * @return 
+	 * @return
 	 * @since JDK 1.6
 	 */
 	@RequestMapping(value = "/sampleChart", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
 	@ResponseBody
-	public String simpleChart(@RequestParam("sampleCodes[]") List<String> sampleCodes,String stdId) {
+	public String simpleChart(@RequestParam("sampleCodes[]") List<String> sampleCodes, String stdId,int sampleType) {
 		try {
-			List<EchartOpt> opts=new ArrayList<>();
-			for(String sampleCode:sampleCodes) {
-				//获取样品数据
-				List<Map<String, Double>> sampleData = Session.getCrystalData().get(sampleCode);
-				String sampleName=Utils.base64Decode(sampleCode);
-				if(StringUtils.isEmpty(stdId)) {
-					return Ajax.responseString(CST.RES_AUTO_DIALOG, "您没有选择标准化值");
+			List<EchartOpt> opts = new ArrayList<>();
+			List<Map<String, Double>> sampleData=new ArrayList<>();
+			for (String sampleCode : sampleCodes) {
+				// 获取样品数据
+				if(CST.IMP_DATA_TYPE_CRYSTAL==sampleType) {
+					sampleData = Session.getCrystalData().get(sampleCode);
+				}
+				else {
+					sampleData = Session.getMeltData().get(sampleCode);
 				}
 				
+				String sampleName = Utils.base64Decode(sampleCode);
 				
-				//获取稀土元素标准化值
-				List<Double> stdData = dsl.select(TM_STD_VALUE.STD_VALUE,TM_STD_VALUE.ELE_INDEX)
-				.from(TM_STD_VALUE)
-				.where(TM_STD_VALUE.ELE_INDEX.in(CST.REE_ELE_INDEX_ARRAY))
-				.and(TM_STD_VALUE.STD_ID.eq(stdId))
-				.fetchInto(TmStdValue.class).stream().sorted((s1,s2)->{
-					int io1 = CST.REE_ELE_INDEX_ARRAY.indexOf(s1.getEleIndex());
-			        int io2 = CST.REE_ELE_INDEX_ARRAY.indexOf(s2.getEleIndex());
-			        return io1 - io2;
-				}).map(s->s.getStdValue()).collect(Collectors.toList());
+				//稀土元素数据
+				Series reeSeries = getSampleData(CST.REE_ELE_INDEX_ARRAY, CST.REE_ELE_NAME_ARRAY, stdId, sampleData, sampleName);
 				
-				
-				List<Double> sampleReeData = sampleData.parallelStream().filter(s->CST.REE_ELE_NAME_ARRAY.contains(s.keySet().stream().findFirst().get())).sorted((s1,s2)->{
-					int io1 = CST.REE_ELE_NAME_ARRAY.indexOf(s1.keySet().stream().findFirst().get());
-			        int io2 = CST.REE_ELE_NAME_ARRAY.indexOf(s2.keySet().stream().findFirst().get());
-			        return io1 - io2;
-				}).map(s->s.values().parallelStream().findFirst().get()).collect(Collectors.toList());
-				
-				//转为矩阵
-				Matrix stdDataMatix = Matrix.Factory.importFromArray(stdData.toArray());
-				Matrix sampleReeDataMatix = Matrix.Factory.importFromArray(sampleReeData.toArray());
-				
-				//样品数据除以标准化值
-				Matrix reeRes = sampleReeDataMatix.divide(stdDataMatix);
-				
-				//构建echar数据
-				EchartOpt opt=new EchartOpt();
-				Series reeSeries=new Series();
-				reeSeries.setData(reeRes.toDoubleArray()[0]);
-				reeSeries.setType("line");
-				reeSeries.setName(sampleName);
+				//微量元素数据
+				Series traceSeries = getSampleData(CST.TRACE_ELE_INDEX_ARRAY, CST.TRACE_ELE_NAME_ARRAY, stdId, sampleData, sampleName);
+
+				EchartOpt opt = new EchartOpt();
 				opt.setReeSeries(reeSeries);
+				opt.setTraceSeries(traceSeries);
 				opt.setLegend(sampleName);
 				opts.add(opt);
 			}
@@ -366,5 +343,57 @@ public class CommonAction {
 			e.printStackTrace();
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, CST.MSG_SYS_ERR);
 		}
+	}
+
+	/**
+	 * 
+	 * getSampleData:(这里用一句话描述这个方法的作用). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param eleIndexArray
+	 * @param eleNameArray
+	 * @param sampleData
+	 * @param sampleName
+	 * @return
+	 * @since JDK 1.6
+	 */
+	private Series getSampleData(List<Integer> eleIndexArray, List<String> eleNameArray, String stdId, List<Map<String, Double>> sampleData, String sampleName) {
+		List<Double> stdData = new ArrayList<>();
+		if (!StringUtils.isEmpty(stdId)) {
+			// 获取标准化值
+			stdData = dsl.select(TM_STD_VALUE.STD_VALUE, TM_STD_VALUE.ELE_INDEX).from(TM_STD_VALUE).where(TM_STD_VALUE.ELE_INDEX.in(eleIndexArray)).and(TM_STD_VALUE.STD_ID.eq(stdId)).fetchInto(TmStdValue.class).stream().sorted((s1, s2) -> {
+				int io1 = eleIndexArray.indexOf(s1.getEleIndex());
+				int io2 = eleIndexArray.indexOf(s2.getEleIndex());
+				return io1 - io2;
+			}).map(s -> s.getStdValue()).collect(Collectors.toList());
+		}
+
+		// 元素数据
+		List<Double> sampleReeData = sampleData.parallelStream().filter(s -> eleNameArray.contains(s.keySet().stream().findFirst().get())).sorted((s1, s2) -> {
+			int io1 = eleNameArray.indexOf(s1.keySet().stream().findFirst().get());
+			int io2 = eleNameArray.indexOf(s2.keySet().stream().findFirst().get());
+			return io1 - io2;
+		}).map(s -> s.values().parallelStream().findFirst().get()).collect(Collectors.toList());
+
+		// 转为矩阵
+		Matrix sampleDataMatix = Matrix.Factory.importFromArray(sampleReeData.toArray());
+
+		// 数据
+		double[] res;
+		if (!stdData.isEmpty()) {
+			// 样品数据除以标准化值
+			Matrix stdDataMatix = Matrix.Factory.importFromArray(stdData.toArray());
+			res = sampleDataMatix.divide(stdDataMatix).toDoubleArray()[0];
+		} else {
+			// 样品原值
+			res = sampleDataMatix.toDoubleArray()[0];
+		}
+
+		// 构建echar数据
+		Series series = new Series();
+		series.setData(res);
+		series.setType("line");
+		series.setName(sampleName);
+		return series;
 	}
 }
