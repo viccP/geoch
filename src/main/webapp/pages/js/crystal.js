@@ -18,6 +18,11 @@ $(function() {
 		"url":$.cxt + '/common/initial',
 		"data":{"initialType":0}
 	});
+	//绑定事件
+	$("#inital-magma").on('change',function(){
+		
+		
+	});
 	
 	//样品数据下拉菜单
 	initSelect({
@@ -33,6 +38,8 @@ $(function() {
 		"id":"#mix-obj",
 		"url":$.cxt + '/common/mixType'
 	});
+	//默认不可用状态
+	$("#mix-obj").prop('disabled', true).trigger("chosen:updated");
 	
 	//标准化值类型下拉菜单
 	initSelect({
@@ -82,16 +89,22 @@ $(function() {
 			unDisableCoponent("#crystalSrDiv");
 			unDisableCoponent("#crystalBrDiv");
 			disableCoponent("#crystalSrDiv");
+			//混染物下拉不可用状态
+			$("#mix-obj").prop('disabled', false).trigger("chosen:updated");
 		}
 		else if(val=="3"){
 			unDisableCoponent("#crystalBrDiv");
 			unDisableCoponent("#crystalSrDiv");
+			//解除混染物下拉不可用状态
+			$("#mix-obj").prop('disabled', false).trigger("chosen:updated");
 		}
 		else{
 			unDisableCoponent("#crystalBrDiv");
 			unDisableCoponent("#crystalSrDiv");
 			disableCoponent("#crystalBrDiv");
 			disableCoponent("#crystalSrDiv");
+			//解除混染物下拉不可用状态
+			$("#mix-obj").prop('disabled', true).trigger("chosen:updated");
 		}
 	});
 	
@@ -489,52 +502,39 @@ function initEchart(){
  */
 function bindSampleSelectEvent(echartInstance){
 	$("#sample-data").on('change',function(){
-		var sampleCodes=$(this).val();
+		var sampleCodes=$(this).val()||['-1'];
 		var stdId=$("#std-val").val();
-		if(!sampleCodes){
-			var sampleOpt={"ree":{"legend":[],"series":[]},"trace":{"legend":[],"series":[]}};
-			renderSampleChart(sampleOpt);
-		}
-		else{
-			$.ajax({
-				url : $.cxt+'/common/sampleChart',
-				type : "POST",
-				dataType:"json",
-				data:{"sampleCodes":sampleCodes,"stdId":stdId,"sampleType":0},
-				success : function(json) {
-					var sampleOpt={"ree":{"legend":[],"series":[]},"trace":{"legend":[],"series":[]}};
-					$.each(json.data,function(index,opt){
-						sampleOpt.ree.series.push(opt.reeSeries);
-						sampleOpt.ree.legend.push(opt.legend);
-						sampleOpt.trace.series.push(opt.traceSeries);
-						sampleOpt.trace.legend.push(opt.legend);
-					});
-					//绘图并重置缓存数据
-					renderSampleChart(sampleOpt);
-				}
-			});
-		}
+		$.ajax({
+			url : $.cxt+'/common/sampleChart',
+			type : "POST",
+			dataType:"json",
+			data:{"sampleCodes":sampleCodes,"stdId":stdId,"sampleType":0},
+			success : function(json) {
+				//绘图并重置缓存数据
+				renderChart(json.data);
+			}
+		});
 	});
 }
 
 /**
- * 绘制样品图形
+ * 绘制图形
  * @param sampleOpt
  * @returns
  */
-function renderSampleChart(sampleOpt){
+function renderChart(chartOpt){
 	//获取echart实例
 	var echartInstance=$("body").data("echarts");
 	
 	//稀土元素配分模式图
 	var reeOption=echartInstance.reeChart.getOption();
-	reeOption.legend[0].data=sampleOpt.ree.legend;
-	reeOption.series=sampleOpt.ree.series;
+	reeOption.legend[0].data=chartOpt.legend;
+	reeOption.series=chartOpt.ree;
 	echartInstance.reeChart.setOption(reeOption,true);
 	
 	//微量元素蛛网图
 	var traceOption=echartInstance.traceSpiderChart.getOption();
-	traceOption.legend[0].data=sampleOpt.trace.legend;
-	traceOption.series=sampleOpt.trace.series;
+	traceOption.legend[0].data=chartOpt.legend;
+	traceOption.series=chartOpt.trace;
 	echartInstance.traceSpiderChart.setOption(traceOption,true);
 }

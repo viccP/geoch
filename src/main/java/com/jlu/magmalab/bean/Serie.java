@@ -1,5 +1,7 @@
 package com.jlu.magmalab.bean;
 
+import java.io.Serializable;
+
 /**
  * 
  * ClassName: Series <br/>
@@ -10,7 +12,10 @@ package com.jlu.magmalab.bean;
  * @version
  * @since JDK 1.6
  */
-public class Series {
+public class Serie implements Serializable {
+
+	/** 序列号. **/
+	private static final long serialVersionUID = -5253899538189815755L;
 
 	/** 系列值 **/
 	private String name;
@@ -21,61 +26,64 @@ public class Series {
 	/** 数据 **/
 	private double[] data;
 
-	/** 
-	* name. 
-	* 
-	* @return  the name 
-	* @since   JDK 1.6 
-	*/
+	/**
+	 * name.
+	 * 
+	 * @return the name
+	 * @since JDK 1.6
+	 */
 	public String getName() {
 		return name;
 	}
 
-	/** 
-	 * name. 
+	/**
+	 * name.
 	 * 
-	 * @param   name    the name to set 
-	 * @since   JDK 1.6 
+	 * @param name
+	 *            the name to set
+	 * @since JDK 1.6
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/** 
-	* type. 
-	* 
-	* @return  the type 
-	* @since   JDK 1.6 
-	*/
+	/**
+	 * type.
+	 * 
+	 * @return the type
+	 * @since JDK 1.6
+	 */
 	public String getType() {
 		return type;
 	}
 
-	/** 
-	 * type. 
+	/**
+	 * type.
 	 * 
-	 * @param   type    the type to set 
-	 * @since   JDK 1.6 
+	 * @param type
+	 *            the type to set
+	 * @since JDK 1.6
 	 */
 	public void setType(String type) {
 		this.type = type;
 	}
 
-	/** 
-	* data. 
-	* 
-	* @return  the data 
-	* @since   JDK 1.6 
-	*/
+	/**
+	 * data.
+	 * 
+	 * @return the data
+	 * @since JDK 1.6
+	 */
 	public double[] getData() {
 		return data;
 	}
 
-	/** 
-	 * data. 
+	/**
+	 * data.
 	 * 
-	 * @param   data    the data to set 
-	 * @since   JDK 1.6 
+	 * @param data
+	 *            the data to set
+	 * @since JDK 1.6
 	 */
 	public void setData(double[] data) {
 		this.data = data;

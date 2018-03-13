@@ -10,13 +10,12 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.jlu.cst.CST;
-import com.jlu.magmalab.bean.Series;
+import com.jlu.magmalab.bean.EchartOpt;
 import com.jlu.magmalab.dao.tables.pojos.TmUser;
 
 public class Session {
 
-	private static final String SAMPLE_CHACH_TRACE = "sampleChachTrace";
-	private static final String SAMPLE_CHACH_REE = "sampleChachRee";
+	private static final String SAMPLE_CHACH = "sampleChachRee";
 	private static final String TM_USER = "tmUser";
 	private static final String MELT_DATA = "meltData";
 	private static final String CRYSTAL_DATA = "crystalData";
@@ -152,7 +151,6 @@ public class Session {
 			}
 			return meltData;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return new HashMap<String, List<Map<String, Double>>>();
 		}
@@ -160,52 +158,25 @@ public class Session {
 
 	/**
 	 * 
-	 * getSampleCacheRee:(获取缓存的样品稀土元素数据). <br/>
+	 * getSampleCache:(获取缓存的样品稀土元素数据). <br/>
 	 * 
 	 * @author liboqiang
 	 * @return
 	 * @since JDK 1.6
 	 */
-	@SuppressWarnings("unchecked")
-	public static List<Series> getSampleCacheRee() {
-		return (List<Series>) getSession().getAttribute(SAMPLE_CHACH_REE);
+	public static EchartOpt getSampleCache() {
+		return (EchartOpt) getSession().getAttribute(SAMPLE_CHACH);
 	}
 
 	/**
 	 * 
-	 * saveSampleCacheRee:(存入样品稀土数据). <br/>
+	 * saveSampleCache:(存入样品数据). <br/>
 	 * 
 	 * @author liboqiang
 	 * @param reeCache
 	 * @since JDK 1.6
 	 */
-	public static void saveSampleCacheRee(List<Series> reeCache) {
-		getSession().setAttribute(Session.SAMPLE_CHACH_REE, reeCache);
-	}
-
-	/**
-	 * 
-	 * saveSampleCacheTrace:(存入样品微量元素数据). <br/>
-	 * 
-	 * @author liboqiang
-	 * @param reeSeries
-	 * @since JDK 1.6
-	 */
-	public static void saveSampleCacheTrace(List<Series> traceCache) {
-		getSession().setAttribute(SAMPLE_CHACH_TRACE, traceCache);
-	}
-
-	/**
-	 * 
-	 * getSampleCacheTrace:(获取样品微量元素数据). <br/>
-	 * 
-	 * @author liboqiang
-	 * @return
-	 * @since JDK 1.6
-	 */
-	@SuppressWarnings("unchecked")
-	public static List<Series> getSampleCacheTrace() {
-		// TODO Auto-generated method stub
-		return (List<Series>) getSession().getAttribute(Session.SAMPLE_CHACH_TRACE);
+	public static void saveSampleCache(EchartOpt opt) {
+		getSession().setAttribute(Session.SAMPLE_CHACH, opt);
 	}
 }
