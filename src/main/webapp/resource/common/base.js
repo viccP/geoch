@@ -4,8 +4,6 @@
 $(function(){
 	$.cxt=getContextPath();
 	
-	$.imgCxt="/img";
-	
 	/**
 	 * 获取GET参数
 	 * @returns

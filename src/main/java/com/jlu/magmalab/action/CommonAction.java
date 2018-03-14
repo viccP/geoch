@@ -53,6 +53,8 @@ import com.jlu.utils.Utils;
 @RequestMapping(value = "/common")
 public class CommonAction {
 
+	private static final String LINE = "line";
+
 	@Autowired
 	private TmMixTypeDao tmMixTypeDao;
 
@@ -96,6 +98,29 @@ public class CommonAction {
 			}).collect(Collectors.toList());
 
 			return Ajax.responseString(CST.RES_SUCCESS, res);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, CST.MSG_SYS_ERR);
+		}
+	}
+
+	/**
+	 * 
+	 * clearCache:(清空缓存). <br/>
+	 * 
+	 * @author liboqiang
+	 * @return
+	 * @since JDK 1.6
+	 */
+	@RequestMapping(value = "/clearCache", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
+	@ResponseBody
+	public String clearCache() {
+		try {
+
+			Session.saveInitialCache(new EchartOpt());
+			Session.saveSampleCache(new EchartOpt());
+
+			return Ajax.responseString(CST.RES_SUCCESS);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, CST.MSG_SYS_ERR);
@@ -316,10 +341,17 @@ public class CommonAction {
 			// 获取页面数据
 			List<Serie> ree = divideByStd(Session.getSampleCache().getRee(), stdReeData);
 			List<Serie> trace = divideByStd(Session.getSampleCache().getTrace(), stdTraceData);
+			List<String> legend = Session.getSampleCache().getLegend();
+
+			// 获取初始岩浆或者熔体数据
+			ree.addAll(divideByStd(Session.getInitialCache().getRee(), stdReeData));
+			trace.addAll(divideByStd(Session.getInitialCache().getTrace(), stdTraceData));
+			legend.addAll(Session.getInitialCache().getLegend());
 
 			EchartOpt data = new EchartOpt();
 			data.setRee(ree);
 			data.setTrace(trace);
+			data.setLegend(legend);
 			return Ajax.responseString(CST.RES_SUCCESS, data);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -329,31 +361,53 @@ public class CommonAction {
 
 	/**
 	 * 
-	 * divideByStd:(除以标准化数据). <br/>
+	 * initialChart:(初始岩浆或者熔体图形). <br/>
 	 * 
 	 * @author liboqiang
-	 * @param list
-	 * @param stdData
+	 * @param initialId
+	 * @param stdId
+	 * @param labType
 	 * @return
 	 * @since JDK 1.6
 	 */
-	private List<Serie> divideByStd(List<Serie> list, List<Double> stdData) {
-		List<Serie> rtnLst = new ArrayList<>();
-		for (Serie series : list) {
-			Matrix reeMatix = Matrix.Factory.importFromArray(series.getData());
-			Matrix reeStdMatrix = Matrix.Factory.importFromArray(stdData.toArray());
-			// 设置返回值
-			Serie tmp = new Serie();
-			tmp.setName(series.getName());
-			tmp.setType(series.getType());
-			if (!stdData.isEmpty()) {
-				tmp.setData(reeMatix.divide(reeStdMatrix).toDoubleArray()[0]);
-			} else {
-				tmp.setData(reeMatix.toDoubleArray()[0]);
+	@RequestMapping(value = "/initialChart", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
+	@ResponseBody
+	public String initialChart(String initialId, String stdId, String legend) {
+		try {
+			EchartOpt opt = new EchartOpt();
+			List<Double> stdRee = new ArrayList<>();
+			List<Double> stdTrace = new ArrayList<>();
+			List<String> legendLst = new ArrayList<>();
+			legendLst.add(legend);
+
+			// 如果存在标准化值ID,获取标准化值
+			if (!StringUtils.isEmpty(stdId) || CST.NOT_EXIST.equals(stdId)) {
+				stdRee = commonService.getStdData(CST.REE_ELE_INDEX_ARRAY, stdId);
+				stdTrace = commonService.getStdData(CST.TRACE_ELE_INDEX_ARRAY, stdId);
 			}
-			rtnLst.add(tmp);
+
+			// 获取初始岩浆或者熔体数据
+			opt.setRee(getInitialSeries(commonService.getInitialData(CST.REE_ELE_INDEX_ARRAY, initialId), legend));
+			opt.setTrace(getInitialSeries(commonService.getInitialData(CST.TRACE_ELE_INDEX_ARRAY, initialId), legend));
+			opt.setLegend(legendLst);
+
+			// 存入缓存
+			Session.saveInitialCache(Utils.clone(opt));
+
+			// 除以标准化值
+			opt.setRee(divideByStd(opt.getRee(), stdRee));
+			opt.setTrace(divideByStd(opt.getTrace(), stdTrace));
+
+			// 获取缓存数据
+			opt.getRee().addAll(divideByStd(Session.getSampleCache().getRee(), stdRee));
+			opt.getTrace().addAll(divideByStd(Session.getSampleCache().getTrace(), stdTrace));
+			opt.getLegend().addAll(Session.getSampleCache().getLegend());
+
+			return Ajax.responseString(CST.RES_SUCCESS, opt);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, CST.MSG_SYS_ERR);
 		}
-		return rtnLst;
 	}
 
 	/**
@@ -393,11 +447,16 @@ public class CommonAction {
 				}
 				// 存入缓存
 				Session.saveSampleCache(Utils.clone(opt));
+
 				// 除以标准化值
 				opt.setRee(divideByStd(opt.getRee(), stdRee));
 				opt.setTrace(divideByStd(opt.getTrace(), stdTrace));
 			}
-			//TODO:添加缓存数据
+			// 获取缓存数据
+			opt.getRee().addAll(divideByStd(Session.getInitialCache().getRee(), stdRee));
+			opt.getTrace().addAll(divideByStd(Session.getInitialCache().getTrace(), stdTrace));
+			opt.getLegend().addAll(Session.getInitialCache().getLegend());
+
 			return Ajax.responseString(CST.RES_SUCCESS, opt);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -431,8 +490,57 @@ public class CommonAction {
 		// 构建echar数据
 		Serie series = new Serie();
 		series.setData(sampleDataMatix.toDoubleArray()[0]);
-		series.setType("line");
+		series.setType(LINE);
 		series.setName(sampleName);
 		return series;
+	}
+
+	/**
+	 * 
+	 * getInitialSeries:(获取初始化岩浆或者熔体系列). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param initialData
+	 * @param legend
+	 * @return
+	 * @since JDK 1.6
+	 */
+	private List<Serie> getInitialSeries(List<Double> initialData, String legend) {
+		List<Serie> rtn = new ArrayList<>();
+		Serie serie = new Serie();
+		serie.setData(Matrix.Factory.importFromArray(initialData.toArray()).toDoubleArray()[0]);
+		serie.setName(legend);
+		serie.setType(LINE);
+		rtn.add(serie);
+		return rtn;
+	}
+
+	/**
+	 * 
+	 * divideByStd:(除以标准化数据). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param list
+	 * @param stdData
+	 * @return
+	 * @since JDK 1.6
+	 */
+	private List<Serie> divideByStd(List<Serie> list, List<Double> stdData) {
+		List<Serie> rtnLst = new ArrayList<>();
+		for (Serie series : list) {
+			Matrix reeMatix = Matrix.Factory.importFromArray(series.getData());
+			Matrix reeStdMatrix = Matrix.Factory.importFromArray(stdData.toArray());
+			// 设置返回值
+			Serie tmp = new Serie();
+			tmp.setName(series.getName());
+			tmp.setType(series.getType());
+			if (!stdData.isEmpty()) {
+				tmp.setData(reeMatix.divide(reeStdMatrix).toDoubleArray()[0]);
+			} else {
+				tmp.setData(reeMatix.toDoubleArray()[0]);
+			}
+			rtnLst.add(tmp);
+		}
+		return rtnLst;
 	}
 }

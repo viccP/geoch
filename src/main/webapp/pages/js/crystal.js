@@ -20,8 +20,15 @@ $(function() {
 	});
 	//绑定事件
 	$("#inital-magma").on('change',function(){
-		
-		
+		$.ajax({
+			url : $.cxt+'/common/initialChart',
+			type : "POST",
+			dataType:"json",
+			data:{"initialId":$(this).val(),"stdId":$("#std-val").val(),"legend":"初始岩浆"},
+			success : function(json) {
+				renderChart(json.data);
+			}
+		});
 	});
 	
 	//样品数据下拉菜单
@@ -50,28 +57,17 @@ $(function() {
 	//绑定事件
 	$("#std-val").on('change',function(){
 		var stdId=$(this).val();
-		if(stdId=='-1'){
-			return
+		if(stdId!='-1'){
+			$.ajax({
+				url : $.cxt+'/common/stdChart',
+				type : "POST",
+				dataType:"json",
+				data:{"stdId":stdId},
+				success : function(json) {
+					renderChart(json.data);
+				}
+			});
 		}
-		$.ajax({
-			url : $.cxt+'/common/stdChart',
-			type : "POST",
-			dataType:"json",
-			data:{"stdId":stdId},
-			success : function(json) {
-				var echartInstance=$("body").data("echarts");
-					
-				//稀土元素配分模式图
-				var reeOption=echartInstance.reeChart.getOption();
-				reeOption.series=json.data.ree;
-				echartInstance.reeChart.setOption(reeOption,true);
-					
-				//微量元素蛛网图
-				var traceOption=echartInstance.traceSpiderChart.getOption();
-				traceOption.series=json.data.trace;
-				echartInstance.traceSpiderChart.setOption(traceOption,true);
-			}
-		});
 	});
 	
 	//定量模型下拉菜单
@@ -315,7 +311,7 @@ function disableCoponent(id){
 		   position:'absolute', 
 		   top:0, 
 		   left:0, 
-		   zIndex:300,
+		   zIndex:11,
 		 });
 	 var targetDiv=$(id).children(".input-group");
 	 shadeDiv.width(targetDiv.width())
@@ -427,73 +423,80 @@ function updateSampleData(json){
  */
 function initEchart(){
 	//定义echart实例
-	var rtn={};
-	rtn.reeChart = echarts.init(document.getElementById('ree-chart'));
-	rtn.traceSpiderChart = echarts.init(document.getElementById('trace-spider-chart'));
+	$.ajax({
+		url : $.cxt+'/common/clearCache',
+		type : "POST",
+		dataType:"json",
+		success : function(json) {
+			var rtn={};
+			rtn.reeChart = echarts.init(document.getElementById('ree-chart'));
+			rtn.traceSpiderChart = echarts.init(document.getElementById('trace-spider-chart'));
 
-	//稀土元素配分模式图
-	rtn.reeChart.setOption({
-	    tooltip : {
-	        trigger: 'axis'
-	    },
-	    legend: {
-	        data:[]
-	    },
-	    toolbox: {
-	        show : true,
-	        feature : {
-	            dataView : {show: true, readOnly: false},
-	            saveAsImage : {show: true}
-	        }
-	    },
-	    calculable : true,
-	    xAxis : [
-	        {
-	            type : 'category',
-	            boundaryGap : false,
-	            data : ['La','Ce','Pr','Nd','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu']
-	        }
-	    ],
-	    yAxis : [
-	        {
-	            type : 'log'
-	        }
-	    ],
-	    series : []
+			//稀土元素配分模式图
+			rtn.reeChart.setOption({
+			    tooltip : {
+			        trigger: 'axis'
+			    },
+			    legend: {
+			        data:[]
+			    },
+			    toolbox: {
+			        show : true,
+			        feature : {
+			            dataView : {show: true, readOnly: false},
+			            saveAsImage : {show: true}
+			        }
+			    },
+			    calculable : true,
+			    xAxis : [
+			        {
+			            type : 'category',
+			            boundaryGap : false,
+			            data : ['La','Ce','Pr','Nd','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu']
+			        }
+			    ],
+			    yAxis : [
+			        {
+			            type : 'log'
+			        }
+			    ],
+			    series : []
+			});
+			
+			//微量元素蛛网图
+			rtn.traceSpiderChart.setOption({
+			    tooltip : {
+			        trigger: 'axis'
+			    },
+			    legend: {
+			        data:[]
+			    },
+			    toolbox: {
+			        show : true,
+			        feature : {
+			            dataView : {show: true, readOnly: false},
+			            saveAsImage : {show: true}
+			        }
+			    },
+			    calculable : true,
+			    xAxis : [
+			        {
+			            type : 'category',
+			            boundaryGap : false,
+			            data : ['Rb','Ba','Th','U','Nb','La','Ce','Pr','Sr','Nd','Zr','Hf','Sm','Eu','Y','Ho','Yb','Yb']
+			        }
+			    ],
+			    yAxis : [
+			        {
+			            type : 'log'
+			        }
+			    ],
+			    series : []
+			});
+			
+			$("body").data("echarts",rtn);
+		}
 	});
-	
-	//微量元素蛛网图
-	rtn.traceSpiderChart.setOption({
-	    tooltip : {
-	        trigger: 'axis'
-	    },
-	    legend: {
-	        data:[]
-	    },
-	    toolbox: {
-	        show : true,
-	        feature : {
-	            dataView : {show: true, readOnly: false},
-	            saveAsImage : {show: true}
-	        }
-	    },
-	    calculable : true,
-	    xAxis : [
-	        {
-	            type : 'category',
-	            boundaryGap : false,
-	            data : ['Rb','Ba','Th','U','Nb','La','Ce','Pr','Sr','Nd','Zr','Hf','Sm','Eu','Y','Ho','Yb','Yb']
-	        }
-	    ],
-	    yAxis : [
-	        {
-	            type : 'log'
-	        }
-	    ],
-	    series : []
-	});
-	
-	$("body").data("echarts",rtn);
 }
 
 /**

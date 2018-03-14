@@ -1,5 +1,43 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script src="<%=request.getContextPath()%>/pages/js/crystal.js"></script>
+<script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.settings.js"></script>
+<script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.settings-rtl.js"></script>
+<script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.settings-skin.js"></script>
+<div class="ace-settings-container" id="ace-settings-container">
+	<div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
+		<i class="ace-icon fa fa-cog bigger-130"></i>
+	</div>
+	<div class="ace-settings-box clearfix" id="ace-settings-box">
+		<div class="ace-settings-item">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6">
+					<div class="widget-box">
+						<div class="widget-header">
+							<h4 class="widget-title">稀土元素配分模式图</h4>
+						</div>
+						<div class="widget-body" style="display: block;">
+							<div class="widget-main">
+								<div id="ree-chart" style="width: 600px; height: 350px;"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-6">
+					<div class="widget-box">
+						<div class="widget-header">
+							<h4 class="widget-title">微量元素蛛网图</h4>
+						</div>
+						<div class="widget-body" style="display: block;">
+							<div class="widget-main">
+								<div id="trace-spider-chart" style="width: 600px; height: 350px;"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 <div class="row">
 	<div class="col-xs-12 col-sm-4">
 		<div>
@@ -147,40 +185,3 @@
 		</div>
 	</div>
 </div>
-</div>
-
-<div class="row">
-	<div class="col-xs-12 col-sm-12">
-		<div>
-			<h3 class="header smaller lighter purple">图形区</h3>
-		</div>
-	</div>
-</div>
-<div class="row">
-	<div class="col-xs-12 col-sm-6">
-		<div class="widget-box">
-			<div class="widget-header">
-				<h4 class="widget-title">稀土元素配分模式图</h4>
-			</div>
-			<div class="widget-body" style="display: block;">
-				<div class="widget-main">
-					<div id="ree-chart" style="width: 600px; height: 350px;"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="col-xs-12 col-sm-6">
-		<div class="widget-box">
-			<div class="widget-header">
-				<h4 class="widget-title">微量元素蛛网图</h4>
-			</div>
-			<div class="widget-body" style="display: block;">
-				<div class="widget-main">
-					<div id="trace-spider-chart" style="width: 600px; height: 350px;"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-

@@ -1,7 +1,7 @@
 package com.jlu.magmalab.service;
 
 import static com.jlu.magmalab.dao.tables.TmStdValue.TM_STD_VALUE;
-
+import static com.jlu.magmalab.dao.tables.TmInitialValue.TM_INITIAL_VALUE;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,6 +9,7 @@ import org.jooq.impl.DefaultDSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.jlu.magmalab.dao.tables.pojos.TmInitialValue;
 import com.jlu.magmalab.dao.tables.pojos.TmStdValue;
 
 /**
@@ -38,11 +39,28 @@ public class CommonService {
 	 * @since JDK 1.6
 	 */
 	public List<Double> getStdData(List<Integer> eleIndexArray, String stdId) {
-		// 获取标准化值
 		return dsl.select(TM_STD_VALUE.STD_VALUE, TM_STD_VALUE.ELE_INDEX).from(TM_STD_VALUE).where(TM_STD_VALUE.ELE_INDEX.in(eleIndexArray)).and(TM_STD_VALUE.STD_ID.eq(stdId)).fetchInto(TmStdValue.class).stream().sorted((s1, s2) -> {
 			int io1 = eleIndexArray.indexOf(s1.getEleIndex());
 			int io2 = eleIndexArray.indexOf(s2.getEleIndex());
 			return io1 - io2;
 		}).map(s -> s.getStdValue()).collect(Collectors.toList());
+	}
+
+	/**
+	 * 
+	 * getInitialData:(获取初始岩浆或者熔体). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param eleIndexArray
+	 * @param stdId
+	 * @return
+	 * @since JDK 1.6
+	 */
+	public List<Double> getInitialData(List<Integer> eleIndexArray, String initialId) {
+		return dsl.select(TM_INITIAL_VALUE.INITIAL_VALUE, TM_INITIAL_VALUE.ELE_INDEX).from(TM_INITIAL_VALUE).where(TM_INITIAL_VALUE.ELE_INDEX.in(eleIndexArray)).and(TM_INITIAL_VALUE.INITIAL_ID.eq(initialId)).fetchInto(TmInitialValue.class).stream().sorted((s1, s2) -> {
+			int io1 = eleIndexArray.indexOf(s1.getEleIndex());
+			int io2 = eleIndexArray.indexOf(s2.getEleIndex());
+			return io1 - io2;
+		}).map(s -> s.getInitialValue()).collect(Collectors.toList());
 	}
 }

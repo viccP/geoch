@@ -291,7 +291,7 @@
 
 	<!--[if !IE]> -->
 	<script type="text/javascript">
-		window.jQuery || document.write("<script src='<%=request.getContextPath()%>/resource/ace/js/jquery.js'>" + "<"+"/script>");
+		window.jQuery || document.write("<script src='<%=request.getContextPath()%>/resource/ace/js/jquery.js'>"+ "<"+"/script>");
 	</script>
 	<!-- <![endif]-->
 
@@ -301,6 +301,7 @@
 		</script>
 	<![endif]-->
 	<script src="<%=request.getContextPath()%>/resource/ace/js/bootstrap.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/jquery-ui.custom.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/ace/js/jquery.knob.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/ace/js/fuelux/fuelux.spinner.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/elements.scroller.js"></script>
@@ -319,9 +320,6 @@
 	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.sidebar-scroll-1.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.submenu-hover.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.widget-box.js"></script>
-	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.settings.js"></script>
-	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.settings-rtl.js"></script>
-	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.settings-skin.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.widget-on-reload.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.searchbox-autocomplete.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/ace/js/spin.js"></script>

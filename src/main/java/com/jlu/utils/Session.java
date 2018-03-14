@@ -15,10 +15,11 @@ import com.jlu.magmalab.dao.tables.pojos.TmUser;
 
 public class Session {
 
-	private static final String SAMPLE_CHACH = "sampleChachRee";
+	private static final String SAMPLE_CHACH = "sampleCache";
 	private static final String TM_USER = "tmUser";
 	private static final String MELT_DATA = "meltData";
 	private static final String CRYSTAL_DATA = "crystalData";
+	private static final String INITIAL_CHACH = "initialCache";
 
 	/**
 	 * 
@@ -158,18 +159,6 @@ public class Session {
 
 	/**
 	 * 
-	 * getSampleCache:(获取缓存的样品稀土元素数据). <br/>
-	 * 
-	 * @author liboqiang
-	 * @return
-	 * @since JDK 1.6
-	 */
-	public static EchartOpt getSampleCache() {
-		return (EchartOpt) getSession().getAttribute(SAMPLE_CHACH);
-	}
-
-	/**
-	 * 
 	 * saveSampleCache:(存入样品数据). <br/>
 	 * 
 	 * @author liboqiang
@@ -178,5 +167,49 @@ public class Session {
 	 */
 	public static void saveSampleCache(EchartOpt opt) {
 		getSession().setAttribute(Session.SAMPLE_CHACH, opt);
+	}
+
+	/**
+	 * 
+	 * getSampleCache:(获取缓存的样品稀土元素数据). <br/>
+	 * 
+	 * @author liboqiang
+	 * @return
+	 * @since JDK 1.6
+	 */
+	public static EchartOpt getSampleCache() {
+		EchartOpt opt = (EchartOpt) getSession().getAttribute(SAMPLE_CHACH);
+		if (opt == null) {
+			opt = new EchartOpt();
+		}
+		return opt;
+	}
+
+	/**
+	 * 
+	 * saveInitialCache:(存入初始化岩浆或者熔体数据). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param clone
+	 * @since JDK 1.6
+	 */
+	public static void saveInitialCache(EchartOpt opt) {
+		getSession().setAttribute(Session.INITIAL_CHACH, opt);
+	}
+
+	/**
+	 * 
+	 * getSampleCache:(获取缓存的初始化岩浆或者熔体数据). <br/>
+	 * 
+	 * @author liboqiang
+	 * @return
+	 * @since JDK 1.6
+	 */
+	public static EchartOpt getInitialCache() {
+		EchartOpt opt = (EchartOpt) getSession().getAttribute(INITIAL_CHACH);
+		if (opt == null) {
+			opt = new EchartOpt();
+		}
+		return opt;
 	}
 }
