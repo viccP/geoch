@@ -1,12 +1,12 @@
 package com.jlu.magmalab.bean;
 
-public class Select {
+public class Select<T> {
 
 	/**编号**/
 	private String code;
 	
 	/**值**/
-	private String value;
+	private T value;
 
 	/** 
 	* code. 
@@ -34,7 +34,7 @@ public class Select {
 	* @return  the value 
 	* @since   JDK 1.6 
 	*/
-	public String getValue() {
+	public T getValue() {
 		return value;
 	}
 
@@ -44,7 +44,7 @@ public class Select {
 	 * @param   value    the value to set 
 	 * @since   JDK 1.6 
 	 */
-	public void setValue(String value) {
+	public void setValue(T value) {
 		this.value = value;
 	}
 }

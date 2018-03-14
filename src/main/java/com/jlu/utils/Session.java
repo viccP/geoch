@@ -3,6 +3,7 @@ package com.jlu.utils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
@@ -20,6 +21,7 @@ public class Session {
 	private static final String MELT_DATA = "meltData";
 	private static final String CRYSTAL_DATA = "crystalData";
 	private static final String INITIAL_CHACH = "initialCache";
+	private static final String DRAW_CHACH = "drawCache";
 
 	/**
 	 * 
@@ -101,11 +103,7 @@ public class Session {
 	 */
 	public static TmUser getUser() {
 		try {
-			TmUser tmUser = (TmUser) getSession().getAttribute(TM_USER);
-			if (tmUser == null) {
-				return new TmUser();
-			}
-			return tmUser;
+			return Optional.of((TmUser) getSession().getAttribute(TM_USER)).orElseGet(TmUser::new);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new TmUser();
@@ -123,13 +121,8 @@ public class Session {
 	@SuppressWarnings("unchecked")
 	public static Map<String, List<Map<String, Double>>> getCrystalData() {
 		try {
-			Map<String, List<Map<String, Double>>> crystalData = (Map<String, List<Map<String, Double>>>) getSession().getAttribute(CRYSTAL_DATA);
-			if (crystalData == null) {
-				return new HashMap<String, List<Map<String, Double>>>();
-			}
-			return crystalData;
+			return Optional.of((Map<String, List<Map<String, Double>>>) getSession().getAttribute(CRYSTAL_DATA)).orElseGet(HashMap::new);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return new HashMap<String, List<Map<String, Double>>>();
 		}
@@ -146,11 +139,7 @@ public class Session {
 	@SuppressWarnings("unchecked")
 	public static Map<String, List<Map<String, Double>>> getMeltData() {
 		try {
-			Map<String, List<Map<String, Double>>> meltData = (Map<String, List<Map<String, Double>>>) getSession().getAttribute(MELT_DATA);
-			if (meltData == null) {
-				return new HashMap<String, List<Map<String, Double>>>();
-			}
-			return meltData;
+			return Optional.of((Map<String, List<Map<String, Double>>>) getSession().getAttribute(MELT_DATA)).orElseGet(HashMap::new);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new HashMap<String, List<Map<String, Double>>>();
@@ -178,11 +167,7 @@ public class Session {
 	 * @since JDK 1.6
 	 */
 	public static EchartOpt getSampleCache() {
-		EchartOpt opt = (EchartOpt) getSession().getAttribute(SAMPLE_CHACH);
-		if (opt == null) {
-			opt = new EchartOpt();
-		}
-		return opt;
+		return Optional.of((EchartOpt) getSession().getAttribute(SAMPLE_CHACH)).orElseGet(EchartOpt::new);
 	}
 
 	/**
@@ -206,10 +191,30 @@ public class Session {
 	 * @since JDK 1.6
 	 */
 	public static EchartOpt getInitialCache() {
-		EchartOpt opt = (EchartOpt) getSession().getAttribute(INITIAL_CHACH);
-		if (opt == null) {
-			opt = new EchartOpt();
-		}
-		return opt;
+		return Optional.of((EchartOpt) getSession().getAttribute(INITIAL_CHACH)).orElseGet(EchartOpt::new);
+	}
+
+	/**
+	 * 
+	 * saveDrawCache:(保存绘图缓存). <br/> 
+	 * 
+	 * @author liboqiang
+	 * @param opt 
+	 * @since JDK 1.6
+	 */
+	public static void saveDrawCache(EchartOpt opt) {
+		getSession().setAttribute(Session.DRAW_CHACH, opt);
+	}
+	
+	/**
+	 * 
+	 * getDrawCache:(获取绘图数据). <br/> 
+	 * 
+	 * @author liboqiang
+	 * @return 
+	 * @since JDK 1.6
+	 */
+	public static EchartOpt getDrawCache() {
+		return Optional.of((EchartOpt) getSession().getAttribute(DRAW_CHACH)).orElseGet(EchartOpt::new);
 	}
 }

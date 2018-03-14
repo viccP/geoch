@@ -82,6 +82,9 @@ public class CST {
 	/** 下拉框未选择状态(-1) **/
 	public static final String NOT_EXIST = "-1";
 
+	/** 图像类型:line **/
+	public static final String CHART_TYPE_LINE = "line";
+
 	/** 上传文件夹地址 **/
 	public static String UPLOAD_DIR = "";
 

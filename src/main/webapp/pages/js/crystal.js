@@ -133,6 +133,7 @@ $(function() {
 	/**
 	 * 按钮
 	 */
+	//导入按钮
 	$("#importData").on('click',function(e){
 		e.preventDefault();
 		var fileObj=$("<input id='fileField'></input>").attr("type","file").attr("name","file").on("change",function(){
@@ -153,6 +154,18 @@ $(function() {
 			});
 		});
 		fileObj.trigger("click");
+	});
+	
+	//绘图按钮
+	$("#drawChart").on('click',function(e){
+		e.preventDefault();
+		doDraw($.cxt + "/crystal/draw");
+	});
+	
+	//重绘按钮
+	$("#reDrawChart").on('click',function(e){
+		e.preventDefault();
+		doDraw($.cxt + "/crystal/reDraw");
 	});
 });
 
@@ -513,7 +526,7 @@ function bindSampleSelectEvent(echartInstance){
 			dataType:"json",
 			data:{"sampleCodes":sampleCodes,"stdId":stdId,"sampleType":0},
 			success : function(json) {
-				//绘图并重置缓存数据
+				//绘图
 				renderChart(json.data);
 			}
 		});
@@ -521,7 +534,7 @@ function bindSampleSelectEvent(echartInstance){
 }
 
 /**
- * 绘制图形
+ * 渲染图形
  * @param sampleOpt
  * @returns
  */
@@ -540,4 +553,54 @@ function renderChart(chartOpt){
 	traceOption.legend[0].data=chartOpt.legend;
 	traceOption.series=chartOpt.trace;
 	echartInstance.traceSpiderChart.setOption(traceOption,true);
+
+	//显示图形
+	$("#ace-settings-btn").trigger("click");
+}
+
+/**
+ * 绘制图形
+ * @param url
+ * @returns
+ */
+function doDraw(url){
+	var data={};
+	data.exprId=$("#crystal-style").val();
+	data.magmaType=$("#melt-style").val();
+	data.stdId=$("#std-val").val();
+	data.minerals=[];
+	data.fVal=$("#crystalFSliderId").val()/100;
+	data.cR=$("#crystalSrSliderId").val()/100;
+	data.mR=$("#crystalBrSliderId").val()/100;
+	
+	//获取矿物比例
+	$.each($(".mineral-lst>div.input-group"),function(index,val){
+		var displayVal=$(val).find("input[type=text]").val().replace("%","");;
+		
+		data.minerals.push({
+			"code":$(val).find("input[type=hidden]").val(),
+			"value":displayVal/100
+		});
+	});
+	
+	//输入图例提示
+	bootbox.prompt({ 
+		size: "small",
+		title: "请输入图例名称", 
+		callback: function(name){
+			if(name!=null){
+				data.legend=name;
+				$.ajax({
+					url : url,
+					data:JSON.stringify(data),
+					type : "POST",
+					dataType: "json",
+					contentType: "application/json",
+					success:function(json){
+						renderChart(json.data);
+					}
+				});
+			}
+		}
+	});
 }

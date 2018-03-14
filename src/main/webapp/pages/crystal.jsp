@@ -4,8 +4,8 @@
 <script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.settings-rtl.js"></script>
 <script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.settings-skin.js"></script>
 <div class="ace-settings-container" id="ace-settings-container">
-	<div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
-		<i class="ace-icon fa fa-cog bigger-130"></i>
+	<div class="btn btn-app btn-xs btn-success ace-settings-btn" id="ace-settings-btn">
+		<i class="ace-icon fa fa-line-chart bigger-130"></i>
 	</div>
 	<div class="ace-settings-box clearfix" id="ace-settings-box">
 		<div class="ace-settings-item">
@@ -173,11 +173,11 @@
 					<i class="ace-icon fa fa-cloud-upload bigger-200"></i>
 					导入数据
 				</a>
-				<a href="#" class="btn btn-app btn-success">
+				<a href="#" class="btn btn-app btn-success" id="reDrawChart">
 					<i class="ace-icon fa fa-refresh bigger-230"></i>
 					重新绘制
 				</a>
-				<a href="#" class="btn btn-app btn-warning">
+				<a href="#" class="btn btn-app btn-warning" id="drawChart">
 					<i class="ace-icon fa fa-pencil bigger-230"></i>
 					绘制
 				</a>

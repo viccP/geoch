@@ -53,8 +53,6 @@ import com.jlu.utils.Utils;
 @RequestMapping(value = "/common")
 public class CommonAction {
 
-	private static final String LINE = "line";
-
 	@Autowired
 	private TmMixTypeDao tmMixTypeDao;
 
@@ -90,8 +88,8 @@ public class CommonAction {
 		try {
 
 			List<TmMixType> record = tmMixTypeDao.findAll();
-			List<Select> res = record.stream().map(rs -> {
-				Select bean = new Select();
+			List<Select<String>> res = record.stream().map(rs -> {
+				Select<String> bean = new Select<>();
 				bean.setCode(rs.getMixId());
 				bean.setValue(rs.getMixName());
 				return bean;
@@ -119,6 +117,7 @@ public class CommonAction {
 
 			Session.saveInitialCache(new EchartOpt());
 			Session.saveSampleCache(new EchartOpt());
+			Session.saveDrawCache(new EchartOpt());
 
 			return Ajax.responseString(CST.RES_SUCCESS);
 		} catch (Exception e) {
@@ -141,8 +140,8 @@ public class CommonAction {
 		try {
 
 			List<TmStdType> record = tmStdTypeDao.findAll();
-			List<Select> res = record.stream().map(rs -> {
-				Select bean = new Select();
+			List<Select<String>> res = record.stream().map(rs -> {
+				Select<String> bean = new Select<String>();
 				bean.setCode(rs.getStdId());
 				bean.setValue(rs.getStdName());
 				return bean;
@@ -169,8 +168,8 @@ public class CommonAction {
 		try {
 
 			List<TmMineral> record = tmMineralDao.findAll();
-			List<Select> res = record.stream().sorted((s1, s2) -> s1.getIndex().compareTo(s2.getIndex())).map(rs -> {
-				Select bean = new Select();
+			List<Select<String>> res = record.stream().sorted((s1, s2) -> s1.getIndex().compareTo(s2.getIndex())).map(rs -> {
+				Select<String> bean = new Select<>();
 				bean.setCode(String.valueOf(rs.getIndex()));
 				bean.setValue(rs.getMineralName());
 				return bean;
@@ -198,8 +197,8 @@ public class CommonAction {
 	public String exprType(int exprType) {
 		try {
 			List<TmExpr> record = tmExprDao.fetchByExprType(exprType);
-			List<Select> res = record.stream().map(rs -> {
-				Select bean = new Select();
+			List<Select<String>> res = record.stream().map(rs -> {
+				Select<String> bean = new Select<>();
 				bean.setCode(rs.getExprId());
 				bean.setValue(rs.getExprName());
 				return bean;
@@ -226,8 +225,8 @@ public class CommonAction {
 	public String initial(int initialType) {
 		try {
 			List<TmInitialType> record = tmInitialTypeDao.fetchByInitialTyp(initialType);
-			List<Select> res = record.stream().map(rs -> {
-				Select bean = new Select();
+			List<Select<String>> res = record.stream().map(rs -> {
+				Select<String> bean = new Select<>();
 				bean.setCode(rs.getInitialId());
 				bean.setValue(rs.getInitialName());
 				return bean;
@@ -262,8 +261,8 @@ public class CommonAction {
 				data = Session.getMeltData();
 			}
 
-			List<Select> res = data.keySet().stream().map(rs -> {
-				Select bean = new Select();
+			List<Select<String>> res = data.keySet().stream().map(rs -> {
+				Select<String> bean = new Select<>();
 				bean.setCode(rs);
 				bean.setValue(Utils.base64Decode(rs));
 				return bean;
@@ -339,14 +338,19 @@ public class CommonAction {
 			List<Double> stdTraceData = commonService.getStdData(CST.TRACE_ELE_INDEX_ARRAY, stdId);
 
 			// 获取页面数据
-			List<Serie> ree = divideByStd(Session.getSampleCache().getRee(), stdReeData);
-			List<Serie> trace = divideByStd(Session.getSampleCache().getTrace(), stdTraceData);
+			List<Serie> ree = commonService.divideByStd(Session.getSampleCache().getRee(), stdReeData);
+			List<Serie> trace = commonService.divideByStd(Session.getSampleCache().getTrace(), stdTraceData);
 			List<String> legend = Session.getSampleCache().getLegend();
 
 			// 获取初始岩浆或者熔体数据
-			ree.addAll(divideByStd(Session.getInitialCache().getRee(), stdReeData));
-			trace.addAll(divideByStd(Session.getInitialCache().getTrace(), stdTraceData));
+			ree.addAll(commonService.divideByStd(Session.getInitialCache().getRee(), stdReeData));
+			trace.addAll(commonService.divideByStd(Session.getInitialCache().getTrace(), stdTraceData));
 			legend.addAll(Session.getInitialCache().getLegend());
+
+			// 获取绘图数据
+			ree.addAll(commonService.divideByStd(Session.getDrawCache().getRee(), stdReeData));
+			trace.addAll(commonService.divideByStd(Session.getDrawCache().getTrace(), stdTraceData));
+			legend.addAll(Session.getDrawCache().getLegend());
 
 			EchartOpt data = new EchartOpt();
 			data.setRee(ree);
@@ -395,13 +399,18 @@ public class CommonAction {
 			Session.saveInitialCache(Utils.clone(opt));
 
 			// 除以标准化值
-			opt.setRee(divideByStd(opt.getRee(), stdRee));
-			opt.setTrace(divideByStd(opt.getTrace(), stdTrace));
+			opt.setRee(commonService.divideByStd(opt.getRee(), stdRee));
+			opt.setTrace(commonService.divideByStd(opt.getTrace(), stdTrace));
 
-			// 获取缓存数据
-			opt.getRee().addAll(divideByStd(Session.getSampleCache().getRee(), stdRee));
-			opt.getTrace().addAll(divideByStd(Session.getSampleCache().getTrace(), stdTrace));
+			// 获取样品数据
+			opt.getRee().addAll(commonService.divideByStd(Session.getSampleCache().getRee(), stdRee));
+			opt.getTrace().addAll(commonService.divideByStd(Session.getSampleCache().getTrace(), stdTrace));
 			opt.getLegend().addAll(Session.getSampleCache().getLegend());
+
+			// 获取绘图数据
+			opt.getRee().addAll(commonService.divideByStd(Session.getDrawCache().getRee(), stdRee));
+			opt.getTrace().addAll(commonService.divideByStd(Session.getDrawCache().getTrace(), stdTrace));
+			opt.getLegend().addAll(Session.getDrawCache().getLegend());
 
 			return Ajax.responseString(CST.RES_SUCCESS, opt);
 		} catch (Exception e) {
@@ -449,13 +458,18 @@ public class CommonAction {
 				Session.saveSampleCache(Utils.clone(opt));
 
 				// 除以标准化值
-				opt.setRee(divideByStd(opt.getRee(), stdRee));
-				opt.setTrace(divideByStd(opt.getTrace(), stdTrace));
+				opt.setRee(commonService.divideByStd(opt.getRee(), stdRee));
+				opt.setTrace(commonService.divideByStd(opt.getTrace(), stdTrace));
 			}
 			// 获取缓存数据
-			opt.getRee().addAll(divideByStd(Session.getInitialCache().getRee(), stdRee));
-			opt.getTrace().addAll(divideByStd(Session.getInitialCache().getTrace(), stdTrace));
+			opt.getRee().addAll(commonService.divideByStd(Session.getInitialCache().getRee(), stdRee));
+			opt.getTrace().addAll(commonService.divideByStd(Session.getInitialCache().getTrace(), stdTrace));
 			opt.getLegend().addAll(Session.getInitialCache().getLegend());
+
+			// 获取绘图数据
+			opt.getRee().addAll(commonService.divideByStd(Session.getDrawCache().getRee(), stdRee));
+			opt.getTrace().addAll(commonService.divideByStd(Session.getDrawCache().getTrace(), stdTrace));
+			opt.getLegend().addAll(Session.getDrawCache().getLegend());
 
 			return Ajax.responseString(CST.RES_SUCCESS, opt);
 		} catch (Exception e) {
@@ -490,7 +504,7 @@ public class CommonAction {
 		// 构建echar数据
 		Serie series = new Serie();
 		series.setData(sampleDataMatix.toDoubleArray()[0]);
-		series.setType(LINE);
+		series.setType(CST.CHART_TYPE_LINE);
 		series.setName(sampleName);
 		return series;
 	}
@@ -510,37 +524,8 @@ public class CommonAction {
 		Serie serie = new Serie();
 		serie.setData(Matrix.Factory.importFromArray(initialData.toArray()).toDoubleArray()[0]);
 		serie.setName(legend);
-		serie.setType(LINE);
+		serie.setType(CST.CHART_TYPE_LINE);
 		rtn.add(serie);
 		return rtn;
-	}
-
-	/**
-	 * 
-	 * divideByStd:(除以标准化数据). <br/>
-	 * 
-	 * @author liboqiang
-	 * @param list
-	 * @param stdData
-	 * @return
-	 * @since JDK 1.6
-	 */
-	private List<Serie> divideByStd(List<Serie> list, List<Double> stdData) {
-		List<Serie> rtnLst = new ArrayList<>();
-		for (Serie series : list) {
-			Matrix reeMatix = Matrix.Factory.importFromArray(series.getData());
-			Matrix reeStdMatrix = Matrix.Factory.importFromArray(stdData.toArray());
-			// 设置返回值
-			Serie tmp = new Serie();
-			tmp.setName(series.getName());
-			tmp.setType(series.getType());
-			if (!stdData.isEmpty()) {
-				tmp.setData(reeMatix.divide(reeStdMatrix).toDoubleArray()[0]);
-			} else {
-				tmp.setData(reeMatix.toDoubleArray()[0]);
-			}
-			rtnLst.add(tmp);
-		}
-		return rtnLst;
 	}
 }

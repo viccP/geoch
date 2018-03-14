@@ -18716,7 +18716,7 @@ input.typeahead.scrollable ~ .tt-dropdown-menu {
 .ace-settings-container {
   position: absolute;
   right: 0;
-  top: auto;
+  top: 18%;
   z-index: 12;
 }
 .btn.btn-app.ace-settings-btn {
@@ -18748,7 +18748,8 @@ input.typeahead.scrollable ~ .tt-dropdown-menu {
   -ms-transform: translate(0,0);
   transform: translate(0,0);
   background-color: #FFF;
-  border: 0 solid #ffb34b;
+  /* border: 0 solid #ffb34b; */
+  border: 0 solid #87b87f;
   -webkit-transition: max-width 0.25s linear 0s, max-height 0s linear 0.25s, padding 0s linear 0.25s, border-width 0s linear 0.25s;
   -o-transition: max-width 0.25s linear 0s, max-height 0s linear 0.25s, padding 0s linear 0.25s, border-width 0s linear 0.25s;
   transition: max-width 0.25s linear 0s, max-height 0s linear 0.25s, padding 0s linear 0.25s, border-width 0s linear 0.25s;
