@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -333,30 +332,10 @@ public class CommonAction {
 	@ResponseBody
 	public String stdChart(String stdId) {
 		try {
-			// 获取标准化值
-			List<Double> stdReeData = commonService.getStdData(CST.REE_ELE_INDEX_ARRAY, stdId);
-			List<Double> stdTraceData = commonService.getStdData(CST.TRACE_ELE_INDEX_ARRAY, stdId);
-
-			// 获取页面数据
-			List<Serie> ree = commonService.divideByStd(Session.getCrystalSampleCache().getRee(), stdReeData);
-			List<Serie> trace = commonService.divideByStd(Session.getCrystalSampleCache().getTrace(), stdTraceData);
-			List<String> legend = Session.getCrystalSampleCache().getLegend();
-
-			// 获取初始岩浆或者熔体数据
-			ree.addAll(commonService.divideByStd(Session.getInitialCache().getRee(), stdReeData));
-			trace.addAll(commonService.divideByStd(Session.getInitialCache().getTrace(), stdTraceData));
-			legend.addAll(Session.getInitialCache().getLegend());
-
-			// 获取绘图数据
-			ree.addAll(commonService.divideByStd(Session.getCrystalDrawCache().getRee(), stdReeData));
-			trace.addAll(commonService.divideByStd(Session.getCrystalDrawCache().getTrace(), stdTraceData));
-			legend.addAll(Session.getCrystalDrawCache().getLegend());
-
-			EchartOpt data = new EchartOpt();
-			data.setRee(ree);
-			data.setTrace(trace);
-			data.setLegend(legend);
-			return Ajax.responseString(CST.RES_SUCCESS, data);
+			EchartOpt opt = new EchartOpt();
+			// 渲染图形
+			commonService.render(stdId, opt, Session.getCrystalSampleCache(), Session.getInitialCache(), Session.getCrystalDrawCache());
+			return Ajax.responseString(CST.RES_SUCCESS, opt);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, CST.MSG_SYS_ERR);
@@ -379,39 +358,14 @@ public class CommonAction {
 	public String initialChart(String initialId, String stdId, String legend) {
 		try {
 			EchartOpt opt = new EchartOpt();
-			List<Double> stdRee = new ArrayList<>();
-			List<Double> stdTrace = new ArrayList<>();
-			List<String> legendLst = new ArrayList<>();
-			legendLst.add(legend);
-
-			// 如果存在标准化值ID,获取标准化值
-			if (!StringUtils.isEmpty(stdId) || CST.NOT_EXIST.equals(stdId)) {
-				stdRee = commonService.getStdData(CST.REE_ELE_INDEX_ARRAY, stdId);
-				stdTrace = commonService.getStdData(CST.TRACE_ELE_INDEX_ARRAY, stdId);
-			}
-
 			// 获取初始岩浆或者熔体数据
-			opt.setRee(getInitialSeries(commonService.getInitialData(CST.REE_ELE_INDEX_ARRAY, initialId), legend));
-			opt.setTrace(getInitialSeries(commonService.getInitialData(CST.TRACE_ELE_INDEX_ARRAY, initialId), legend));
-			opt.setLegend(legendLst);
-
+			opt.getRee().addAll((getInitialSeries(commonService.getInitialData(CST.REE_ELE_INDEX_ARRAY, initialId), legend)));
+			opt.getTrace().addAll((getInitialSeries(commonService.getInitialData(CST.TRACE_ELE_INDEX_ARRAY, initialId), legend)));
+			opt.getLegend().add(legend);
 			// 存入缓存
 			Session.saveInitialCache(Utils.clone(opt));
-
-			// 除以标准化值
-			opt.setRee(commonService.divideByStd(opt.getRee(), stdRee));
-			opt.setTrace(commonService.divideByStd(opt.getTrace(), stdTrace));
-
-			// 获取样品数据
-			opt.getRee().addAll(commonService.divideByStd(Session.getCrystalSampleCache().getRee(), stdRee));
-			opt.getTrace().addAll(commonService.divideByStd(Session.getCrystalSampleCache().getTrace(), stdTrace));
-			opt.getLegend().addAll(Session.getCrystalSampleCache().getLegend());
-
-			// 获取绘图数据
-			opt.getRee().addAll(commonService.divideByStd(Session.getCrystalDrawCache().getRee(), stdRee));
-			opt.getTrace().addAll(commonService.divideByStd(Session.getCrystalDrawCache().getTrace(), stdTrace));
-			opt.getLegend().addAll(Session.getCrystalDrawCache().getLegend());
-
+			// 渲染图形
+			commonService.render(stdId, opt, Session.getCrystalSampleCache(), Session.getCrystalDrawCache());
 			return Ajax.responseString(CST.RES_SUCCESS, opt);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -433,13 +387,6 @@ public class CommonAction {
 	public String simpleChart(@RequestParam("sampleCodes[]") List<String> sampleCodes, String stdId, int sampleType) {
 		try {
 			EchartOpt opt = new EchartOpt();
-			List<Double> stdRee = new ArrayList<>();
-			List<Double> stdTrace = new ArrayList<>();
-			// 如果存在标准化值ID,获取标准化值
-			if (!StringUtils.isEmpty(stdId) || CST.NOT_EXIST.equals(stdId)) {
-				stdRee = commonService.getStdData(CST.REE_ELE_INDEX_ARRAY, stdId);
-				stdTrace = commonService.getStdData(CST.TRACE_ELE_INDEX_ARRAY, stdId);
-			}
 			// 获取样品数据
 			if (!sampleCodes.isEmpty() && !sampleCodes.contains(CST.NOT_EXIST)) {
 				for (String sampleCode : sampleCodes) {
@@ -456,21 +403,9 @@ public class CommonAction {
 				}
 				// 存入缓存
 				Session.saveCrystalSampleCache(Utils.clone(opt));
-
-				// 除以标准化值
-				opt.setRee(commonService.divideByStd(opt.getRee(), stdRee));
-				opt.setTrace(commonService.divideByStd(opt.getTrace(), stdTrace));
 			}
-			// 获取缓存数据
-			opt.getRee().addAll(commonService.divideByStd(Session.getInitialCache().getRee(), stdRee));
-			opt.getTrace().addAll(commonService.divideByStd(Session.getInitialCache().getTrace(), stdTrace));
-			opt.getLegend().addAll(Session.getInitialCache().getLegend());
-
-			// 获取绘图数据
-			opt.getRee().addAll(commonService.divideByStd(Session.getCrystalDrawCache().getRee(), stdRee));
-			opt.getTrace().addAll(commonService.divideByStd(Session.getCrystalDrawCache().getTrace(), stdTrace));
-			opt.getLegend().addAll(Session.getCrystalDrawCache().getLegend());
-
+			// 渲染图形
+			commonService.render(stdId, opt, Session.getInitialCache(), Session.getCrystalDrawCache());
 			return Ajax.responseString(CST.RES_SUCCESS, opt);
 		} catch (Exception e) {
 			e.printStackTrace();

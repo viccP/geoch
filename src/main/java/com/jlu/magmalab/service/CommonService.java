@@ -1,8 +1,8 @@
 package com.jlu.magmalab.service;
 
-import static com.jlu.magmalab.dao.tables.TmStdValue.TM_STD_VALUE;
 import static com.jlu.magmalab.dao.tables.TmInitialValue.TM_INITIAL_VALUE;
 import static com.jlu.magmalab.dao.tables.TmMixValue.TM_MIX_VALUE;
+import static com.jlu.magmalab.dao.tables.TmStdValue.TM_STD_VALUE;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.ujmp.core.Matrix;
 
+import com.jlu.cst.CST;
+import com.jlu.magmalab.bean.EchartOpt;
 import com.jlu.magmalab.bean.Serie;
 import com.jlu.magmalab.dao.tables.pojos.TmInitialValue;
 import com.jlu.magmalab.dao.tables.pojos.TmStdValue;
@@ -114,5 +116,34 @@ public class CommonService {
 			rtnLst.add(tmp);
 		}
 		return rtnLst;
+	}
+
+	/**
+	 * 
+	 * render:(渲染图形). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param stdId
+	 * @param opt
+	 * @param opts
+	 * @since JDK 1.6
+	 */
+	public void render(String stdId, EchartOpt opt, EchartOpt... opts) {
+		// 获取标准化值
+		List<Double> stdReeData = getStdData(CST.REE_ELE_INDEX_ARRAY, stdId);
+		List<Double> stdTraceData = getStdData(CST.TRACE_ELE_INDEX_ARRAY, stdId);
+
+		// 当前数据
+		if (!opt.getRee().isEmpty()) {
+			opt.setRee(divideByStd(opt.getRee(), stdReeData));
+			opt.setTrace(divideByStd(opt.getTrace(), stdTraceData));
+		}
+
+		// 添加缓存数据
+		for (EchartOpt tmp : opts) {
+			opt.getRee().addAll(divideByStd(tmp.getRee(), stdReeData));
+			opt.getTrace().addAll(divideByStd(tmp.getTrace(), stdTraceData));
+			opt.getLegend().addAll(tmp.getLegend());
+		}
 	}
 }
