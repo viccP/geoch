@@ -572,6 +572,7 @@ function doDraw(url){
 	data.fVal=$("#crystalFSliderId").val()/100;
 	data.cR=$("#crystalSrSliderId").val()/100;
 	data.mR=$("#crystalBrSliderId").val()/100;
+	data.mixId=$("#mix-obj").val();
 	
 	//获取矿物比例
 	$.each($(".mineral-lst>div.input-group"),function(index,val){

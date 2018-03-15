@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jooq.impl.DefaultDSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import com.jlu.cst.CST;
 import com.jlu.magmalab.bean.EchartOpt;
 import com.jlu.magmalab.bean.Serie;
 import com.jlu.magmalab.dao.tables.pojos.TmInitialValue;
+import com.jlu.magmalab.dao.tables.pojos.TmMixValue;
 import com.jlu.magmalab.dao.tables.pojos.TmStdValue;
 
 /**
@@ -82,11 +84,19 @@ public class CommonService {
 	 * @since JDK 1.6
 	 */
 	public List<Double> getMixData(List<Integer> eleIndexArray, String mixId) {
-		return dsl.select(TM_MIX_VALUE.MIX_VALUE, TM_MIX_VALUE.ELE_INDEX).from(TM_MIX_VALUE).where(TM_MIX_VALUE.ELE_INDEX.in(eleIndexArray)).and(TM_MIX_VALUE.MIX_ID.eq(mixId)).fetchInto(TmInitialValue.class).stream().sorted((s1, s2) -> {
-			int io1 = eleIndexArray.indexOf(s1.getEleIndex());
-			int io2 = eleIndexArray.indexOf(s2.getEleIndex());
-			return io1 - io2;
-		}).map(s -> s.getInitialValue()).collect(Collectors.toList());
+		if (StringUtils.isEmpty(mixId) || CST.NOT_EXIST.equals(mixId)) {
+			List<Double> rtn = new ArrayList<>();
+			for (int i = 0; i < eleIndexArray.size(); i++) {
+				rtn.add(0.0);
+			}
+			return rtn;
+		} else {
+			return dsl.select(TM_MIX_VALUE.MIX_VALUE, TM_MIX_VALUE.ELE_INDEX).from(TM_MIX_VALUE).where(TM_MIX_VALUE.ELE_INDEX.in(eleIndexArray)).and(TM_MIX_VALUE.MIX_ID.eq(mixId)).fetchInto(TmMixValue.class).stream().sorted((s1, s2) -> {
+				int io1 = eleIndexArray.indexOf(s1.getEleIndex());
+				int io2 = eleIndexArray.indexOf(s2.getEleIndex());
+				return io1 - io2;
+			}).map(s -> s.getMixValue()).collect(Collectors.toList());
+		}
 	}
 
 	/**

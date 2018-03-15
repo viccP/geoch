@@ -202,6 +202,7 @@ public class CrystalAction {
 		if (crystalForm.getMagmaType() == null || crystalForm.getMagmaType() == 0 || crystalForm.getMagmaType() == -1) {
 			return BUSINESS_ERR_MSG_2;
 		}
+
 		return CST.RES_SUCCESS;
 	}
 

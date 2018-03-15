@@ -154,7 +154,7 @@
 			<div id="crystalSrDiv">
 				<label for="form-field-mask-2">
 					同化作用速率（Ma）与分离结晶速率（Mc）的比值(r)
-					<small class="text-warning">1~100(%)</small>
+					<small class="text-warning">0~90(%)</small>
 				</label>
 				<div class="input-group">
 					<span class="input-group-addon">
@@ -162,7 +162,7 @@
 					</span>
 					<input class="form-control input-mask-phone prm-set" id="crystalSr" name="crystalSr" type="text" title="">
 					<span class="input-group-addon">
-						<input class="hidden slider-opts" type="text" id="crystalSrSliderId" data-min="0" data-max="100" data-step="1" value="0" />
+						<input class="hidden slider-opts" type="text" id="crystalSrSliderId" data-min="0" data-max="90" data-step="10" value="0" />
 					</span>
 				</div>
 			</div>
