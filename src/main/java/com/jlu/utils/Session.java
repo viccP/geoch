@@ -21,7 +21,7 @@ public class Session {
 	private static final String MELT_DATA = "meltData";
 	private static final String CRYSTAL_DATA = "crystalData";
 	private static final String INITIAL_CHACH = "initialCache";
-	private static final String DRAW_CHACH = "drawCache";
+	private static final String CRYSTAL_DRAW_CHACH = "drawCache";
 
 	/**
 	 * 
@@ -154,7 +154,7 @@ public class Session {
 	 * @param reeCache
 	 * @since JDK 1.6
 	 */
-	public static void saveSampleCache(EchartOpt opt) {
+	public static void saveCrystalSampleCache(EchartOpt opt) {
 		getSession().setAttribute(Session.SAMPLE_CHACH, opt);
 	}
 
@@ -166,7 +166,7 @@ public class Session {
 	 * @return
 	 * @since JDK 1.6
 	 */
-	public static EchartOpt getSampleCache() {
+	public static EchartOpt getCrystalSampleCache() {
 		return Optional.of((EchartOpt) getSession().getAttribute(SAMPLE_CHACH)).orElseGet(EchartOpt::new);
 	}
 
@@ -202,8 +202,8 @@ public class Session {
 	 * @param opt 
 	 * @since JDK 1.6
 	 */
-	public static void saveDrawCache(EchartOpt opt) {
-		getSession().setAttribute(Session.DRAW_CHACH, opt);
+	public static void saveCrystalDrawCache(EchartOpt opt) {
+		getSession().setAttribute(Session.CRYSTAL_DRAW_CHACH, opt);
 	}
 	
 	/**
@@ -214,7 +214,7 @@ public class Session {
 	 * @return 
 	 * @since JDK 1.6
 	 */
-	public static EchartOpt getDrawCache() {
-		return Optional.of((EchartOpt) getSession().getAttribute(DRAW_CHACH)).orElseGet(EchartOpt::new);
+	public static EchartOpt getCrystalDrawCache() {
+		return Optional.of((EchartOpt) getSession().getAttribute(CRYSTAL_DRAW_CHACH)).orElseGet(EchartOpt::new);
 	}
 }

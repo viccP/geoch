@@ -116,8 +116,8 @@ public class CommonAction {
 		try {
 
 			Session.saveInitialCache(new EchartOpt());
-			Session.saveSampleCache(new EchartOpt());
-			Session.saveDrawCache(new EchartOpt());
+			Session.saveCrystalSampleCache(new EchartOpt());
+			Session.saveCrystalDrawCache(new EchartOpt());
 
 			return Ajax.responseString(CST.RES_SUCCESS);
 		} catch (Exception e) {
@@ -338,9 +338,9 @@ public class CommonAction {
 			List<Double> stdTraceData = commonService.getStdData(CST.TRACE_ELE_INDEX_ARRAY, stdId);
 
 			// 获取页面数据
-			List<Serie> ree = commonService.divideByStd(Session.getSampleCache().getRee(), stdReeData);
-			List<Serie> trace = commonService.divideByStd(Session.getSampleCache().getTrace(), stdTraceData);
-			List<String> legend = Session.getSampleCache().getLegend();
+			List<Serie> ree = commonService.divideByStd(Session.getCrystalSampleCache().getRee(), stdReeData);
+			List<Serie> trace = commonService.divideByStd(Session.getCrystalSampleCache().getTrace(), stdTraceData);
+			List<String> legend = Session.getCrystalSampleCache().getLegend();
 
 			// 获取初始岩浆或者熔体数据
 			ree.addAll(commonService.divideByStd(Session.getInitialCache().getRee(), stdReeData));
@@ -348,9 +348,9 @@ public class CommonAction {
 			legend.addAll(Session.getInitialCache().getLegend());
 
 			// 获取绘图数据
-			ree.addAll(commonService.divideByStd(Session.getDrawCache().getRee(), stdReeData));
-			trace.addAll(commonService.divideByStd(Session.getDrawCache().getTrace(), stdTraceData));
-			legend.addAll(Session.getDrawCache().getLegend());
+			ree.addAll(commonService.divideByStd(Session.getCrystalDrawCache().getRee(), stdReeData));
+			trace.addAll(commonService.divideByStd(Session.getCrystalDrawCache().getTrace(), stdTraceData));
+			legend.addAll(Session.getCrystalDrawCache().getLegend());
 
 			EchartOpt data = new EchartOpt();
 			data.setRee(ree);
@@ -403,14 +403,14 @@ public class CommonAction {
 			opt.setTrace(commonService.divideByStd(opt.getTrace(), stdTrace));
 
 			// 获取样品数据
-			opt.getRee().addAll(commonService.divideByStd(Session.getSampleCache().getRee(), stdRee));
-			opt.getTrace().addAll(commonService.divideByStd(Session.getSampleCache().getTrace(), stdTrace));
-			opt.getLegend().addAll(Session.getSampleCache().getLegend());
+			opt.getRee().addAll(commonService.divideByStd(Session.getCrystalSampleCache().getRee(), stdRee));
+			opt.getTrace().addAll(commonService.divideByStd(Session.getCrystalSampleCache().getTrace(), stdTrace));
+			opt.getLegend().addAll(Session.getCrystalSampleCache().getLegend());
 
 			// 获取绘图数据
-			opt.getRee().addAll(commonService.divideByStd(Session.getDrawCache().getRee(), stdRee));
-			opt.getTrace().addAll(commonService.divideByStd(Session.getDrawCache().getTrace(), stdTrace));
-			opt.getLegend().addAll(Session.getDrawCache().getLegend());
+			opt.getRee().addAll(commonService.divideByStd(Session.getCrystalDrawCache().getRee(), stdRee));
+			opt.getTrace().addAll(commonService.divideByStd(Session.getCrystalDrawCache().getTrace(), stdTrace));
+			opt.getLegend().addAll(Session.getCrystalDrawCache().getLegend());
 
 			return Ajax.responseString(CST.RES_SUCCESS, opt);
 		} catch (Exception e) {
@@ -455,7 +455,7 @@ public class CommonAction {
 					opt.getLegend().add(sampleName);
 				}
 				// 存入缓存
-				Session.saveSampleCache(Utils.clone(opt));
+				Session.saveCrystalSampleCache(Utils.clone(opt));
 
 				// 除以标准化值
 				opt.setRee(commonService.divideByStd(opt.getRee(), stdRee));
@@ -467,9 +467,9 @@ public class CommonAction {
 			opt.getLegend().addAll(Session.getInitialCache().getLegend());
 
 			// 获取绘图数据
-			opt.getRee().addAll(commonService.divideByStd(Session.getDrawCache().getRee(), stdRee));
-			opt.getTrace().addAll(commonService.divideByStd(Session.getDrawCache().getTrace(), stdTrace));
-			opt.getLegend().addAll(Session.getDrawCache().getLegend());
+			opt.getRee().addAll(commonService.divideByStd(Session.getCrystalDrawCache().getRee(), stdRee));
+			opt.getTrace().addAll(commonService.divideByStd(Session.getCrystalDrawCache().getTrace(), stdTrace));
+			opt.getLegend().addAll(Session.getCrystalDrawCache().getLegend());
 
 			return Ajax.responseString(CST.RES_SUCCESS, opt);
 		} catch (Exception e) {

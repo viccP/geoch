@@ -68,7 +68,7 @@ public class CrystalAction {
 	@ResponseBody
 	public String draw(@RequestBody CrystalForm crystalForm) {
 		try {
-			EchartOpt opt = Session.getDrawCache();
+			EchartOpt opt = Session.getCrystalDrawCache();
 			String msg = genChartData(opt, crystalForm);
 			if (!CST.RES_SUCCESS.equals(msg)) {
 				return Ajax.responseString(CST.RES_SUCCESS, msg);
@@ -154,7 +154,7 @@ public class CrystalAction {
 		opt.getLegend().add(crystalForm.getLegend());
 
 		// 缓存数据
-		Session.saveDrawCache(Utils.clone(opt));
+		Session.saveCrystalDrawCache(Utils.clone(opt));
 
 		// 除以标准化值
 		opt.setRee(commonService.divideByStd(opt.getRee(), stdRee));
@@ -166,9 +166,9 @@ public class CrystalAction {
 		opt.getLegend().addAll(Session.getInitialCache().getLegend());
 
 		// 获取样品数据
-		opt.getRee().addAll(commonService.divideByStd(Session.getSampleCache().getRee(), stdRee));
-		opt.getTrace().addAll(commonService.divideByStd(Session.getSampleCache().getTrace(), stdTrace));
-		opt.getLegend().addAll(Session.getSampleCache().getLegend());
+		opt.getRee().addAll(commonService.divideByStd(Session.getCrystalSampleCache().getRee(), stdRee));
+		opt.getTrace().addAll(commonService.divideByStd(Session.getCrystalSampleCache().getTrace(), stdTrace));
+		opt.getLegend().addAll(Session.getCrystalSampleCache().getLegend());
 		return CST.RES_SUCCESS;
 
 	}
