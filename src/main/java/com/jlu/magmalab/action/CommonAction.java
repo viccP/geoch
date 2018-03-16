@@ -319,28 +319,6 @@ public class CommonAction {
 		}
 	}
 
-	/**
-	 * 
-	 * stdChart:(根据标准化值改变图形). <br/>
-	 * 
-	 * @author liboqiang
-	 * @param data
-	 * @return
-	 * @since JDK 1.6
-	 */
-	@RequestMapping(value = "/stdChart", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
-	@ResponseBody
-	public String stdChart(String stdId) {
-		try {
-			EchartOpt opt = new EchartOpt();
-			// 渲染图形
-			commonService.render(stdId, opt, Session.getCrystalSampleCache(), Session.getInitialCache(), Session.getCrystalDrawCache());
-			return Ajax.responseString(CST.RES_SUCCESS, opt);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Ajax.responseString(CST.RES_AUTO_DIALOG, CST.MSG_SYS_ERR);
-		}
-	}
 
 	/**
 	 * 

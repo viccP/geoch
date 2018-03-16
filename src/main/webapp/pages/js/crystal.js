@@ -11,6 +11,10 @@ $(function() {
 	 */
 	//熔体类型下拉菜单
 	initSelect({"id":"#melt-style"});
+	//绑定事件
+	$("#melt-style").on('change',function(){
+		doDraw($.cxt + "/crystal/draw",true);
+	});
 	
 	//初始岩浆下拉菜单
 	initSelect({
@@ -45,6 +49,11 @@ $(function() {
 		"id":"#mix-obj",
 		"url":$.cxt + '/common/mixType'
 	});
+	//绑定事件
+	$("#mix-obj").on('change',function(){
+		doDraw($.cxt + "/crystal/draw",true);
+	});
+	
 	//默认不可用状态
 	$("#mix-obj").prop('disabled', true).trigger("chosen:updated");
 	
@@ -53,21 +62,9 @@ $(function() {
 		"id":"#std-val",
 		"url":$.cxt + '/common/stdType'
 	});
-	
 	//绑定事件
 	$("#std-val").on('change',function(){
-		var stdId=$(this).val();
-		if(stdId!='-1'){
-			$.ajax({
-				url : $.cxt+'/common/stdChart',
-				type : "POST",
-				dataType:"json",
-				data:{"stdId":stdId},
-				success : function(json) {
-					renderChart(json.data);
-				}
-			});
-		}
+		doDraw($.cxt + "/crystal/draw",true);
 	});
 	
 	//定量模型下拉菜单
@@ -83,14 +80,14 @@ $(function() {
 		if(val=="4" || val=="5"){
 			unDisableCoponent("#crystalBrDiv");
 			unDisableCoponent("#crystalSrDiv");
-			unDisableCoponent("#crystalBrDiv");
 			disableCoponent("#crystalSrDiv");
-			//混染物下拉不可用状态
+			//解除混染物下拉不可用状态
 			$("#mix-obj").prop('disabled', false).trigger("chosen:updated");
 		}
 		else if(val=="3"){
-			unDisableCoponent("#crystalBrDiv");
 			unDisableCoponent("#crystalSrDiv");
+			unDisableCoponent("#crystalrBDiv");
+			disableCoponent("#crystalBrDiv");
 			//解除混染物下拉不可用状态
 			$("#mix-obj").prop('disabled', false).trigger("chosen:updated");
 		}
@@ -102,6 +99,12 @@ $(function() {
 			//解除混染物下拉不可用状态
 			$("#mix-obj").prop('disabled', true).trigger("chosen:updated");
 		}
+		
+		//绘图
+		if(val!='-1'){
+			doDraw($.cxt + "/crystal/draw",true);
+		}
+		
 	});
 	
 	
@@ -159,13 +162,13 @@ $(function() {
 	//绘图按钮
 	$("#drawChart").on('click',function(e){
 		e.preventDefault();
-		doDraw($.cxt + "/crystal/draw");
+		doDraw($.cxt + "/crystal/draw",false);
 	});
 	
 	//重绘按钮
 	$("#reDrawChart").on('click',function(e){
 		e.preventDefault();
-		doDraw($.cxt + "/crystal/reDraw");
+		doDraw($.cxt + "/crystal/reDraw",false);
 	});
 });
 
@@ -282,6 +285,9 @@ function spinnerUpdate() {
 	});
 	opts['left'] = 'auto';
 	$('#spinner-preview').spin(opts);
+	
+	//绘图
+	doDraw($.cxt + "/crystal/draw",true);
 }
 
 /**
@@ -312,6 +318,9 @@ function spinnerUpdateValue() {
 			}
 		});
 	});
+	
+	//绘图
+	doDraw($.cxt + "/crystal/draw",true);
 }
 
 /**
@@ -381,7 +390,14 @@ function initMineralSpinner(){
 				touch_spinner : true,
 				icon_up : 'ace-icon fa fa-caret-up bigger-110',
 				icon_down : 'ace-icon fa fa-caret-down bigger-110'
-			});
+			})
+			.closest('.ace-spinner')
+			.on('changed.fu.spinbox', function(){
+				//获取矿物比例
+				setMineralStatus();
+				//绘图
+				doDraw($.cxt + "/crystal/draw",true);
+			});;
 		}
 	});
 }
@@ -393,7 +409,6 @@ function initMineralSpinner(){
  */
 function updateSampleData(json){
 	if(json.code=='0'){
-		
 		//清除下拉菜单
 		$("#sample-data-container").empty();
 		$("#sample-data-container")
@@ -416,7 +431,6 @@ function updateSampleData(json){
 			"url":$.cxt + '/common/sampleData',
 			"data":{"sampleType":0}
 		});
-		
 		bindSampleSelectEvent();
 		
 		//初始化tip
@@ -426,7 +440,6 @@ function updateSampleData(json){
 			showOn:false,
 			position: 'bottomleft'
 		});
-		
 		Tipped.show("#sample_data_chosen");
 	}
 }
@@ -555,7 +568,7 @@ function renderChart(chartOpt){
 	echartInstance.traceSpiderChart.setOption(traceOption,true);
 
 	//显示图形
-	$("#ace-settings-btn").trigger("click");
+//	$("#ace-settings-btn").trigger("click");
 }
 
 /**
@@ -563,16 +576,17 @@ function renderChart(chartOpt){
  * @param url
  * @returns
  */
-function doDraw(url){
+function doDraw(url,preview){
 	var data={};
 	data.exprId=$("#crystal-style").val();
 	data.magmaType=$("#melt-style").val();
 	data.stdId=$("#std-val").val();
 	data.minerals=[];
-	data.fVal=$("#crystalFSliderId").val()/100;
-	data.cR=$("#crystalSrSliderId").val()/100;
-	data.mR=$("#crystalBrSliderId").val()/100;
+	data.fVal=$("#crystalF").val()/100;
+	data.cR=$("#crystalSr").val()/100;
+	data.mR=$("#crystalBr").val()/100;
 	data.mixId=$("#mix-obj").val();
+	data.preview=preview;
 	
 	//获取矿物比例
 	$.each($(".mineral-lst>div.input-group"),function(index,val){
@@ -584,24 +598,73 @@ function doDraw(url){
 		});
 	});
 	
-	//输入图例提示
-	bootbox.prompt({ 
-		size: "small",
-		title: "请输入图例名称", 
-		callback: function(name){
-			if(name!=null){
-				data.legend=name;
-				$.ajax({
-					url : url,
-					data:JSON.stringify(data),
-					type : "POST",
-					dataType: "json",
-					contentType: "application/json",
-					success:function(json){
-						renderChart(json.data);
-					}
-				});
+	//判断是否为预览
+	if(preview){
+		data.legend="图形预览";
+		$.ajax({
+			url : url,
+			data:JSON.stringify(data),
+			type : "POST",
+			dataType: "json",
+			contentType: "application/json",
+			success:function(json){
+				renderChart(json.data);
 			}
-		}
+		});
+	}
+	else{
+		//输入图例提示
+		bootbox.prompt({ 
+			size: "small",
+			title: "请输入图例名称", 
+			callback: function(name){
+				if(name!=null){
+					data.legend=name;
+					$.ajax({
+						url : url,
+						data:JSON.stringify(data),
+						type : "POST",
+						dataType: "json",
+						contentType: "application/json",
+						success:function(json){
+							renderChart(json.data);
+						}
+					});
+				}
+			}
+		});
+	}
+}
+
+/**
+ * 设置矿物状态
+ * @returns
+ */
+function setMineralStatus(){
+	debugger
+	var sum=0;
+	$.each($(".mineral-lst>div.input-group").find("input[type=text]"),function(index,val){
+		var displayVal=parseFloat($(this).val().replace("%",""))/100;
+		sum=sum+displayVal;
 	});
+	if(sum==1){
+		$.each($(".mineral-lst>div.input-group").find("input[type=text]"),function(){
+			if($(this).val()!='0%'){
+				$(this).css("background-color","yellow");
+			}
+			else{
+				$(this).css("background-color","");
+			}
+		});
+	}
+	else{
+		$.each($(".mineral-lst>div.input-group").find("input[type=text]"),function(){
+			if($(this).val()!='0%'){
+				$(this).css("background-color","red");
+			}
+			else{
+				$(this).css("background-color","");
+			}
+		});
+	}
 }

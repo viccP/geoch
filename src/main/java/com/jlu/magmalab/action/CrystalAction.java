@@ -43,7 +43,6 @@ public class CrystalAction {
 	private static final String BUSINESS_ERR_MSG = "您没有选择初始岩浆，请选择后再次绘图";
 	private static final String BUSINESS_ERR_MSG_1 = "请选择定量模型再进行绘图";
 	private static final String BUSINESS_ERR_MSG_2 = "请选择岩浆类型再进行绘图";
-	private static final String BUSINESS_ERR_MSG_3 = "矿物总量不为100%,请重新填写后再绘图";
 
 	@Autowired
 	private DistributeService distributeService;
@@ -67,9 +66,13 @@ public class CrystalAction {
 	@ResponseBody
 	public String draw(@RequestBody CrystalForm crystalForm) {
 		try {
-			EchartOpt opt = Session.getCrystalDrawCache();
+			EchartOpt opt = Utils.clone(Session.getCrystalDrawCache());
 			String msg = genChartData(opt, crystalForm);
 			if (!CST.RES_SUCCESS.equals(msg)) {
+				if (crystalForm.isPreview()) {
+					commonService.render(crystalForm.getStdId(), opt, Session.getCrystalSampleCache(), Session.getInitialCache(), Session.getCrystalDrawCache());
+					return Ajax.responseString(CST.RES_SUCCESS, opt);
+				}
 				return Ajax.responseString(CST.RES_AUTO_DIALOG, msg);
 			}
 			return Ajax.responseString(CST.RES_SUCCESS, opt);
@@ -96,6 +99,10 @@ public class CrystalAction {
 			EchartOpt opt = new EchartOpt();
 			String msg = genChartData(opt, crystalForm);
 			if (!CST.RES_SUCCESS.equals(msg)) {
+				if (crystalForm.isPreview()) {
+					commonService.render(crystalForm.getStdId(), opt, Session.getCrystalSampleCache(), Session.getInitialCache(), Session.getCrystalDrawCache());
+					return Ajax.responseString(CST.RES_SUCCESS, opt);
+				}
 				return Ajax.responseString(CST.RES_AUTO_DIALOG, msg);
 			}
 			return Ajax.responseString(CST.RES_SUCCESS, opt);
@@ -132,15 +139,14 @@ public class CrystalAction {
 			Integer si2 = Integer.parseInt(s2.getCode());
 			return si1.compareTo(si2);
 		}).map(s -> s.getValue()).collect(Collectors.toList());
-		// 验证矿物比例
-		if (minerals.parallelStream().reduce((s1, s2) -> s1 + s2).get() != 1) {
-			return BUSINESS_ERR_MSG_3;
-		}
+
 		opt.getRee().add(doDraw(Session.getInitialCache().getRee(), crystalForm, minerals, CST.REE_ELE_INDEX_ARRAY));
 		opt.getTrace().add(doDraw(Session.getInitialCache().getTrace(), crystalForm, minerals, CST.TRACE_ELE_INDEX_ARRAY));
 		opt.getLegend().add(crystalForm.getLegend());
-		// 缓存数据
-		Session.saveCrystalDrawCache(Utils.clone(opt));
+		// 如果不为预览缓存数据
+		if (!crystalForm.isPreview()) {
+			Session.saveCrystalDrawCache(Utils.clone(opt));
+		}
 		commonService.render(crystalForm.getStdId(), opt, Session.getInitialCache(), Session.getCrystalSampleCache());
 		return CST.RES_SUCCESS;
 	}

@@ -19,7 +19,8 @@ public class AFC implements IExpr {
 
 	/**
 	 * 
-	 * z=(r+D-1)./(r-1); y=c0.*(F.^(-z)+(r./(r-1)).*(ca./(z.*c0)).*(1-F.^(-z)));
+	 * z=(r+D-1)./(r-1)
+	 * y=c0.*(F.^(-z)+(r./(r-1)).*(ca./(z.*c0)).*(1-F.^(-z)))
 	 * 
 	 * @see com.jlu.magmalab.expr.IExpr#expr(com.jlu.magmalab.expr.Parameter)
 	 */
@@ -35,16 +36,8 @@ public class AFC implements IExpr {
 		for (int i = 0; i < z.length; i++) {
 			fPowMinusZ[i] = Math.pow(F, -z[i]);
 		}
-		// F^-z
-		Matrix partA = Matrix.Factory.importFromArray(fPowMinusZ);
-		// r/1-r
-		double partB = r / (1 - r);
-		// CA/z*C0
-		Matrix partC = CA.divide(C0.times(zMatrix));
-		// 1-F^-z
-		Matrix partD = partA.times(-1).plus(1);
-
-		// C0.*(F^-z+((CA./z.*C0).*-F^-z+1)).*(r/1-r)
-		return C0.times(partA.plus(partC.times(partB).times(partD)));
+		Matrix fPowMinusZMatirx = Matrix.Factory.importFromArray(fPowMinusZ);
+		Matrix partA=((CA.divide(C0.times(zMatrix))).times(r/(r-1))).times(fPowMinusZMatirx.times(-1).plus(1));
+		return C0.times(fPowMinusZMatirx.plus(partA));
 	}
 }

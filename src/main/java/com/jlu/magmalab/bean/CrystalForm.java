@@ -47,183 +47,215 @@ public class CrystalForm {
 	/** 图例名称 **/
 	private String legend;
 
-	/** 
-	* minerals. 
-	* 
-	* @return  the minerals 
-	* @since   JDK 1.6 
-	*/
+	/** 是否为预览 **/
+	private boolean preview;
+
+	/**
+	 * minerals.
+	 * 
+	 * @return the minerals
+	 * @since JDK 1.6
+	 */
 	public List<Select<Double>> getMinerals() {
 		return minerals;
 	}
 
-	/** 
-	 * minerals. 
+	/**
+	 * minerals.
 	 * 
-	 * @param   minerals    the minerals to set 
-	 * @since   JDK 1.6 
+	 * @param minerals
+	 *            the minerals to set
+	 * @since JDK 1.6
 	 */
 	public void setMinerals(List<Select<Double>> minerals) {
 		this.minerals = minerals;
 	}
 
-	/** 
-	* exprId. 
-	* 
-	* @return  the exprId 
-	* @since   JDK 1.6 
-	*/
+	/**
+	 * exprId.
+	 * 
+	 * @return the exprId
+	 * @since JDK 1.6
+	 */
 	public String getExprId() {
 		return exprId;
 	}
 
-	/** 
-	 * exprId. 
+	/**
+	 * exprId.
 	 * 
-	 * @param   exprId    the exprId to set 
-	 * @since   JDK 1.6 
+	 * @param exprId
+	 *            the exprId to set
+	 * @since JDK 1.6
 	 */
 	public void setExprId(String exprId) {
 		this.exprId = exprId;
 	}
 
-	/** 
-	* mixId. 
-	* 
-	* @return  the mixId 
-	* @since   JDK 1.6 
-	*/
+	/**
+	 * mixId.
+	 * 
+	 * @return the mixId
+	 * @since JDK 1.6
+	 */
 	public String getMixId() {
 		return mixId;
 	}
 
-	/** 
-	 * mixId. 
+	/**
+	 * mixId.
 	 * 
-	 * @param   mixId    the mixId to set 
-	 * @since   JDK 1.6 
+	 * @param mixId
+	 *            the mixId to set
+	 * @since JDK 1.6
 	 */
 	public void setMixId(String mixId) {
 		this.mixId = mixId;
 	}
 
-	/** 
-	* stdId. 
-	* 
-	* @return  the stdId 
-	* @since   JDK 1.6 
-	*/
+	/**
+	 * stdId.
+	 * 
+	 * @return the stdId
+	 * @since JDK 1.6
+	 */
 	public String getStdId() {
 		return stdId;
 	}
 
-	/** 
-	 * stdId. 
+	/**
+	 * stdId.
 	 * 
-	 * @param   stdId    the stdId to set 
-	 * @since   JDK 1.6 
+	 * @param stdId
+	 *            the stdId to set
+	 * @since JDK 1.6
 	 */
 	public void setStdId(String stdId) {
 		this.stdId = stdId;
 	}
 
-	/** 
-	* magmaType. 
-	* 
-	* @return  the magmaType 
-	* @since   JDK 1.6 
-	*/
+	/**
+	 * magmaType.
+	 * 
+	 * @return the magmaType
+	 * @since JDK 1.6
+	 */
 	public Integer getMagmaType() {
 		return magmaType;
 	}
 
-	/** 
-	 * magmaType. 
+	/**
+	 * magmaType.
 	 * 
-	 * @param   magmaType    the magmaType to set 
-	 * @since   JDK 1.6 
+	 * @param magmaType
+	 *            the magmaType to set
+	 * @since JDK 1.6
 	 */
 	public void setMagmaType(Integer magmaType) {
 		this.magmaType = magmaType;
 	}
 
-	/** 
-	* cR. 
-	* 
-	* @return  the cR 
-	* @since   JDK 1.6 
-	*/
+	/**
+	 * cR.
+	 * 
+	 * @return the cR
+	 * @since JDK 1.6
+	 */
 	public double getcR() {
 		return cR;
 	}
 
-	/** 
-	 * cR. 
+	/**
+	 * cR.
 	 * 
-	 * @param   cR    the cR to set 
-	 * @since   JDK 1.6 
+	 * @param cR
+	 *            the cR to set
+	 * @since JDK 1.6
 	 */
 	public void setcR(double cR) {
 		this.cR = cR;
 	}
 
-	/** 
-	* fVal. 
-	* 
-	* @return  the fVal 
-	* @since   JDK 1.6 
-	*/
+	/**
+	 * fVal.
+	 * 
+	 * @return the fVal
+	 * @since JDK 1.6
+	 */
 	public double getfVal() {
 		return fVal;
 	}
 
-	/** 
-	 * fVal. 
+	/**
+	 * fVal.
 	 * 
-	 * @param   fVal    the fVal to set 
-	 * @since   JDK 1.6 
+	 * @param fVal
+	 *            the fVal to set
+	 * @since JDK 1.6
 	 */
 	public void setfVal(double fVal) {
 		this.fVal = fVal;
 	}
 
-	/** 
-	* mR. 
-	* 
-	* @return  the mR 
-	* @since   JDK 1.6 
-	*/
+	/**
+	 * mR.
+	 * 
+	 * @return the mR
+	 * @since JDK 1.6
+	 */
 	public double getmR() {
 		return mR;
 	}
 
-	/** 
-	 * mR. 
+	/**
+	 * mR.
 	 * 
-	 * @param   mR    the mR to set 
-	 * @since   JDK 1.6 
+	 * @param mR
+	 *            the mR to set
+	 * @since JDK 1.6
 	 */
 	public void setmR(double mR) {
 		this.mR = mR;
 	}
 
-	/** 
-	* legend. 
-	* 
-	* @return  the legend 
-	* @since   JDK 1.6 
-	*/
+	/**
+	 * legend.
+	 * 
+	 * @return the legend
+	 * @since JDK 1.6
+	 */
 	public String getLegend() {
 		return legend;
 	}
 
-	/** 
-	 * legend. 
+	/**
+	 * legend.
 	 * 
-	 * @param   legend    the legend to set 
-	 * @since   JDK 1.6 
+	 * @param legend
+	 *            the legend to set
+	 * @since JDK 1.6
 	 */
 	public void setLegend(String legend) {
 		this.legend = legend;
+	}
+
+	/** 
+	* preview. 
+	* 
+	* @return  the preview 
+	* @since   JDK 1.6 
+	*/
+	public boolean isPreview() {
+		return preview;
+	}
+
+	/** 
+	 * preview. 
+	 * 
+	 * @param   preview    the preview to set 
+	 * @since   JDK 1.6 
+	 */
+	public void setPreview(boolean preview) {
+		this.preview = preview;
 	}
 }

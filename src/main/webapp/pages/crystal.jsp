@@ -3,48 +3,13 @@
 <script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.settings.js"></script>
 <script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.settings-rtl.js"></script>
 <script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.settings-skin.js"></script>
-<div class="ace-settings-container" id="ace-settings-container">
-	<div class="btn btn-app btn-xs btn-success ace-settings-btn" id="ace-settings-btn">
-		<i class="ace-icon fa fa-line-chart bigger-130"></i>
-	</div>
-	<div class="ace-settings-box clearfix" id="ace-settings-box">
-		<div class="ace-settings-item">
-			<div class="row">
-				<div class="col-xs-12 col-sm-6">
-					<div class="widget-box">
-						<div class="widget-header">
-							<h4 class="widget-title">稀土元素配分模式图</h4>
-						</div>
-						<div class="widget-body" style="display: block;">
-							<div class="widget-main">
-								<div id="ree-chart" style="width: 600px; height: 350px;"></div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-xs-12 col-sm-6">
-					<div class="widget-box">
-						<div class="widget-header">
-							<h4 class="widget-title">微量元素蛛网图</h4>
-						</div>
-						<div class="widget-body" style="display: block;">
-							<div class="widget-main">
-								<div id="trace-spider-chart" style="width: 600px; height: 350px;"></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
 <div class="row">
 	<div class="col-xs-12 col-sm-4">
 		<div>
-			<h3 class="header smaller lighter purple">
+			<h4 class="header smaller lighter purple">
 				<i class="ace-icon fa fa-cogs"></i>
 				设置实验基本信息
-			</h3>
+			</h4>
 		</div>
 		<div>
 			<label for="form-field-select-3">岩浆类型</label>
@@ -92,20 +57,19 @@
 
 	<div class="col-xs-12 col-sm-3 mineral-lst">
 		<div>
-			<h3 class="header smaller lighter purple">
+			<h4 class="header smaller lighter purple">
 				<i class="ace-icon fa fa-sliders"></i>
 				设置矿物比例
-			</h3>
+			</h4>
 		</div>
 	</div>
 
-
 	<div class="col-xs-12 col-sm-5">
 		<div>
-			<h3 class="header smaller lighter purple">
+			<h4 class="header smaller lighter purple">
 				<i class="ace-icon fa fa-flask"></i>
 				参数设置
-			</h3>
+			</h4>
 		</div>
 		<div class="col-xs-12 col-sm-12">
 			<div>
@@ -115,7 +79,6 @@
 					<option value=""></option>
 				</select>
 			</div>
-			<div class="space-12"></div>
 			<hr>
 			<div id="crystalFDiv">
 				<label for="form-field-mask-2">
@@ -132,7 +95,6 @@
 					</span>
 				</div>
 			</div>
-			<div class="space-12"></div>
 			<hr>
 			<div id="crystalBrDiv">
 				<label for="form-field-mask-2">
@@ -149,7 +111,6 @@
 					</span>
 				</div>
 			</div>
-			<div class="space-12"></div>
 			<hr>
 			<div id="crystalSrDiv">
 				<label for="form-field-mask-2">
@@ -166,21 +127,56 @@
 					</span>
 				</div>
 			</div>
-			<div class="space-12"></div>
 			<hr>
 			<div class="pull-left">
-				<a href="#" class="btn btn-app btn-purple" id="importData">
-					<i class="ace-icon fa fa-cloud-upload bigger-200"></i>
-					导入数据
+				<a href="#" class="btn btn-app btn-purple btn-xs" id="importData">
+					<i class="ace-icon fa fa-cloud-upload bigger-160"></i>
+					导入
 				</a>
-				<a href="#" class="btn btn-app btn-success" id="reDrawChart">
-					<i class="ace-icon fa fa-refresh bigger-230"></i>
-					重新绘制
+				<a href="#" class="btn btn-app btn-success btn-xs" id="reDrawChart">
+					<i class="ace-icon fa fa-refresh bigger-160"></i>
+					重绘
 				</a>
-				<a href="#" class="btn btn-app btn-warning" id="drawChart">
-					<i class="ace-icon fa fa-pencil bigger-230"></i>
-					绘制
+				<a href="#" class="btn btn-app btn-warning btn-xs" id="drawChart">
+					<i class="ace-icon fa fa-pencil bigger-160"></i>
+					保存
 				</a>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12 col-sm-12">
+		<div>
+			<h4 class="header smaller lighter purple">
+				<i class="ace-icon fa fa-line-chart"></i>
+				图形区
+			</h4>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12 col-sm-6">
+		<div class="widget-box">
+			<div class="widget-header">
+				<h6 class="widget-title">稀土元素配分模式图</h6>
+			</div>
+			<div class="widget-body" style="display: block;">
+				<div class="widget-main">
+					<div id="ree-chart" style="width: 600px; height: 300px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-12 col-sm-6">
+		<div class="widget-box">
+			<div class="widget-header">
+				<h6 class="widget-title">微量元素蛛网图</h6>
+			</div>
+			<div class="widget-body" style="display: block;">
+				<div class="widget-main">
+					<div id="trace-spider-chart" style="width: 600px; height: 300px;"></div>
+				</div>
 			</div>
 		</div>
 	</div>
