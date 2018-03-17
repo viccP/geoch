@@ -70,7 +70,7 @@ public class IndexAction {
 					.and(TM_USER.PASSWORD.eq(password.toUpperCase())).fetchOneInto(TmUser.class);
 
 			if (result != null) {
-				Session.getSession().setAttribute("tmUser", result);
+				Session.getSession().setAttribute("TM_USER", result);
 				return Ajax.responseString(CST.RES_SUCCESS);
 			} else {
 				return Ajax.responseString(CST.RES_LOGIC_ERROR_1, "用户名或密码错误");
