@@ -102,6 +102,21 @@
 									</div>
 								</div>
 								<div class="form-group">
+									<div class="input-group">
+										<span class="input-group-btn">
+											<button class="btn btn-sm btn-info btn-user-tag" type="button">
+												<i class="ace-icon fa fa-male bigger-110"></i>
+												角色
+											</button>
+										</span>
+										<select class="chosen-select form-control" name="roleId" id="role" data-placeholder="请选择角色...">
+											<option value=""></option>
+											<option value="1">老师</option>
+											<option value="2">学生</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
 									<textarea placeholder="请填写备注..." class="form-control" name="memo"></textarea>
 								</div>
 								<div class="space-12"></div>

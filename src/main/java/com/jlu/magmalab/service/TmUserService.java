@@ -1,6 +1,8 @@
 package com.jlu.magmalab.service;
 
+import static com.jlu.magmalab.dao.tables.TmRole.TM_ROLE;
 import static com.jlu.magmalab.dao.tables.TmUser.TM_USER;
+import static com.jlu.magmalab.dao.tables.TmUserRole.TM_USER_ROLE;
 
 import java.sql.Timestamp;
 
@@ -13,10 +15,12 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jlu.cst.CST;
+import com.jlu.magmalab.bean.TmUserEx;
 import com.jlu.magmalab.bean.UserForm;
 import com.jlu.magmalab.dao.tables.daos.TmUserDao;
+import com.jlu.magmalab.dao.tables.daos.TmUserRoleDao;
 import com.jlu.magmalab.dao.tables.pojos.TmUser;
-import com.jlu.magmalab.dao.tables.records.TmUserRecord;
+import com.jlu.magmalab.dao.tables.pojos.TmUserRole;
 import com.jlu.magmalab.page.Page;
 import com.jlu.magmalab.page.PageHelper;
 import com.jlu.utils.IdGenerator;
@@ -30,10 +34,13 @@ public class TmUserService {
 	private TmUserDao tmUserDao;
 
 	@Autowired
+	private TmUserRoleDao tmUserRoleDao;
+
+	@Autowired
 	private DefaultDSLContext dsl;
 
 	@Autowired
-	private PageHelper<TmUser> pageHelper;
+	private PageHelper<TmUserEx> pageHelper;
 
 	/**
 	 * 
@@ -45,27 +52,36 @@ public class TmUserService {
 	 * @since JDK 1.6
 	 */
 	@Transactional(propagation = Propagation.REQUIRED)
-	public String edit(TmUser tmUser) {
+	public String edit(TmUserEx tmUser) {
 		try {
 			// 判断新增还是更新
 			if (StringUtils.isEmpty(tmUser.getUserId())) {
-				//验证重复性
+				// 验证重复性
 				if (tmUserDao.fetchByLoginId(tmUser.getLoginId()).size() != 0) {
 					return CST.RES_LOGIC_ERROR_1;
 				}
+
+				// 插入用户表
+				String userId = IdGenerator.genId();
 				tmUser.setUpdTime(new Timestamp(System.currentTimeMillis()));
 				tmUser.setPassword(MD5.getHash(CST.PWD_DEFAULT));
 				tmUser.setPwdStatus(CST.PWD_STATUS_INIT);
-				tmUser.setUserId(IdGenerator.genId());
+				tmUser.setUserId(userId);
 				tmUserDao.insert(tmUser);
+				
+				// 插入用户角色表
+				TmUserRole userRole = new TmUserRole();
+				userRole.setRoleId(tmUser.getRoleId());
+				userRole.setUserId(userId);
+				tmUserRoleDao.insert(userRole);
 			} else {
 				tmUser.setUpdTime(new Timestamp(System.currentTimeMillis()));
 				TmUser tmp = dsl.selectFrom(TM_USER).where(TM_USER.USER_ID.eq(Session.getUser().getUserId()))
 						.fetchOneInto(TmUser.class);
 				Integer pwdStatus = tmp.getPwdStatus();
-				if(pwdStatus==null) {
+				if (pwdStatus == null) {
 					tmUser.setPwdStatus(CST.PWD_STATUS_INIT);
-				}else {
+				} else {
 					tmUser.setPwdStatus(pwdStatus);
 				}
 				tmUserDao.update(tmUser);
@@ -85,10 +101,15 @@ public class TmUserService {
 	 * @return
 	 * @since JDK 1.6
 	 */
-	public Page<TmUser> list(UserForm userForm) {
+	public Page<TmUserEx> list(UserForm userForm) {
 		try {
 			TmUser tmUser = userForm.getTmUser();
-			SelectConditionStep<TmUserRecord> sql = dsl.selectFrom(TM_USER).where("1=1");
+			SelectConditionStep<?> sql = dsl
+					.select(TM_USER.LOGIN_ID,TM_USER.MEMO,TM_USER.PHONE_NO,TM_USER.PWD_STATUS,TM_USER.SEX,TM_USER.UPD_TIME,TM_USER.USER_ID,TM_USER.USER_NAME,TM_ROLE.ROLE_NAME)
+					.from(TM_USER)
+					.leftJoin(TM_USER_ROLE).on(TM_USER.USER_ID.eq(TM_USER_ROLE.USER_ID))
+					.leftJoin(TM_ROLE).on(TM_USER_ROLE.ROLE_ID.eq(TM_ROLE.ROLE_ID))
+					.where("1=1");
 
 			if (tmUser != null) {
 				// 用户登录ID是否为空
@@ -115,11 +136,11 @@ public class TmUserService {
 			// 添加排序
 			sql.orderBy(TM_USER.UPD_TIME.asc());
 
-			return pageHelper.get(userForm.getPage(), userForm.getRows(), sql, TmUser.class);
+			return pageHelper.get(userForm.getPage(), userForm.getRows(), sql, TmUserEx.class);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new Page<TmUser>();
+			return new Page<TmUserEx>();
 		}
 	}
 

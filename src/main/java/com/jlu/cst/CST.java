@@ -27,6 +27,9 @@ public class CST {
 
 	/** 业务逻辑错误(2) **/
 	public static final String RES_LOGIC_ERROR_2 = "2";
+	
+	/** 业务逻辑错误(3) **/
+	public static final String RES_LOGIC_ERROR_3 = "3";
 
 	/** 用户性别(1:男) **/
 	public static final String USER_SEX_MALE = "1";
