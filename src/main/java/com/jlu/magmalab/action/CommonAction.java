@@ -117,6 +117,7 @@ public class CommonAction {
 			Session.saveInitialCache(new EchartOpt());
 			Session.saveCrystalSampleCache(new EchartOpt());
 			Session.saveCrystalDrawCache(new EchartOpt());
+			Session.saveCrystalTmpCache(new EchartOpt());
 
 			return Ajax.responseString(CST.RES_SUCCESS);
 		} catch (Exception e) {
@@ -343,7 +344,7 @@ public class CommonAction {
 			// 存入缓存
 			Session.saveInitialCache(Utils.clone(opt));
 			// 渲染图形
-			commonService.render(stdId, opt, Session.getCrystalSampleCache(), Session.getCrystalDrawCache());
+			commonService.render(stdId, opt, Session.getCrystalSampleCache(), Session.getCrystalDrawCache(),Session.getCrystalTmpCache());
 			return Ajax.responseString(CST.RES_SUCCESS, opt);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -383,7 +384,7 @@ public class CommonAction {
 				Session.saveCrystalSampleCache(Utils.clone(opt));
 			}
 			// 渲染图形
-			commonService.render(stdId, opt, Session.getInitialCache(), Session.getCrystalDrawCache());
+			commonService.render(stdId, opt, Session.getInitialCache(), Session.getCrystalDrawCache(),Session.getCrystalTmpCache());
 			return Ajax.responseString(CST.RES_SUCCESS, opt);
 		} catch (Exception e) {
 			e.printStackTrace();

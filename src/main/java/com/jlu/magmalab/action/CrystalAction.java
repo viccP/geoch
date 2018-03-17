@@ -100,7 +100,7 @@ public class CrystalAction {
 			String msg = genChartData(opt, crystalForm);
 			if (!CST.RES_SUCCESS.equals(msg)) {
 				if (crystalForm.isPreview()) {
-					commonService.render(crystalForm.getStdId(), opt, Session.getCrystalSampleCache(), Session.getInitialCache(), Session.getCrystalDrawCache());
+					commonService.render(crystalForm.getStdId(), opt, Session.getCrystalSampleCache(), Session.getInitialCache(), Session.getCrystalDrawCache(), Session.getCrystalTmpCache());
 					return Ajax.responseString(CST.RES_SUCCESS, opt);
 				}
 				return Ajax.responseString(CST.RES_AUTO_DIALOG, msg);
@@ -140,12 +140,24 @@ public class CrystalAction {
 			return si1.compareTo(si2);
 		}).map(s -> s.getValue()).collect(Collectors.toList());
 
-		opt.getRee().add(doDraw(Session.getInitialCache().getRee(), crystalForm, minerals, CST.REE_ELE_INDEX_ARRAY));
-		opt.getTrace().add(doDraw(Session.getInitialCache().getTrace(), crystalForm, minerals, CST.TRACE_ELE_INDEX_ARRAY));
+		// 获取绘图数据
+		Serie reeD = doDraw(Session.getInitialCache().getRee(), crystalForm, minerals, CST.REE_ELE_INDEX_ARRAY);
+		Serie traceD = doDraw(Session.getInitialCache().getTrace(), crystalForm, minerals, CST.TRACE_ELE_INDEX_ARRAY);
+
+		// 加入绘图组
+		opt.getRee().add(reeD);
+		opt.getTrace().add(traceD);
 		opt.getLegend().add(crystalForm.getLegend());
 		// 如果不为预览缓存数据
 		if (!crystalForm.isPreview()) {
 			Session.saveCrystalDrawCache(Utils.clone(opt));
+			Session.saveCrystalTmpCache(new EchartOpt());
+		} else {
+			EchartOpt tmpOpt = new EchartOpt();
+			tmpOpt.getRee().add(reeD);
+			tmpOpt.getTrace().add(traceD);
+			tmpOpt.getLegend().add(crystalForm.getLegend());
+			Session.saveCrystalTmpCache(tmpOpt);
 		}
 		commonService.render(crystalForm.getStdId(), opt, Session.getInitialCache(), Session.getCrystalSampleCache());
 		return CST.RES_SUCCESS;

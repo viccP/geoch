@@ -16,12 +16,13 @@ import com.jlu.magmalab.dao.tables.pojos.TmUser;
 
 public class Session {
 
-	private static final String SAMPLE_CHACH = "sampleCache";
-	private static final String TM_USER = "tmUser";
-	private static final String MELT_DATA = "meltData";
-	private static final String CRYSTAL_DATA = "crystalData";
-	private static final String INITIAL_CHACH = "initialCache";
-	private static final String CRYSTAL_DRAW_CHACH = "drawCache";
+	private static final String TM_USER = "TM_USER";
+	private static final String MELT_DATA = "MELT_DATA";
+	private static final String CRYSTAL_DATA = "CRYSTAL_DATA";
+	private static final String INITIAL_CHACH = "INITIAL_CHACH";
+	private static final String CRYSTAL_SAMPLE_CHACH = "CRYSTAL_SAMPLE_CHACH";
+	private static final String CRYSTAL_DRAW_CHACH = "CRYSTAL_DRAW_CHACH";
+	private static final String CRYSTAL_TMP_CHACH = "CRYSTAL_TMP_CHACH";
 
 	/**
 	 * 
@@ -45,30 +46,6 @@ public class Session {
 			e.printStackTrace();
 			return null;
 		}
-	}
-
-	/**
-	 * 
-	 * saveCrystalData:(存储结晶实验数据). <br/>
-	 * 
-	 * @author liboqiang
-	 * @param data
-	 * @since JDK 1.6
-	 */
-	public static void saveCrystalData(Map<String, List<Map<String, Double>>> data) {
-		getSession().setAttribute(CRYSTAL_DATA, data);
-	}
-
-	/**
-	 * 
-	 * saveMeltData:(存储熔融实验数据). <br/>
-	 * 
-	 * @author liboqiang
-	 * @param data
-	 * @since JDK 1.6
-	 */
-	public static void saveMeltData(Map<String, List<Map<String, Double>>> data) {
-		getSession().setAttribute(MELT_DATA, data);
 	}
 
 	/**
@@ -112,6 +89,90 @@ public class Session {
 
 	/**
 	 * 
+	 * saveInitialCache:(存入初始化岩浆或者熔体数据). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param clone
+	 * @since JDK 1.6
+	 */
+	public static void saveInitialCache(EchartOpt opt) {
+		getSession().setAttribute(Session.INITIAL_CHACH, opt);
+	}
+
+	/**
+	 * 
+	 * saveCrystalData:(存储结晶实验数据). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param data
+	 * @since JDK 1.6
+	 */
+	public static void saveCrystalData(Map<String, List<Map<String, Double>>> data) {
+		getSession().setAttribute(CRYSTAL_DATA, data);
+	}
+
+	/**
+	 * 
+	 * saveCrystalDrawCache:(保存绘图缓存). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param opt
+	 * @since JDK 1.6
+	 */
+	public static void saveCrystalDrawCache(EchartOpt opt) {
+		getSession().setAttribute(Session.CRYSTAL_DRAW_CHACH, opt);
+	}
+
+	/**
+	 * 
+	 * saveCrystalSampleCache:(存入样品数据). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param reeCache
+	 * @since JDK 1.6
+	 */
+	public static void saveCrystalSampleCache(EchartOpt opt) {
+		getSession().setAttribute(Session.CRYSTAL_SAMPLE_CHACH, opt);
+	}
+
+	/**
+	 * 
+	 * saveCrystalTmpCache:(存入结晶临时数据). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param opt
+	 * @since JDK 1.6
+	 */
+	public static void saveCrystalTmpCache(EchartOpt opt) {
+		getSession().setAttribute(Session.CRYSTAL_TMP_CHACH, opt);
+	}
+
+	/**
+	 * 
+	 * saveMeltData:(存储熔融实验数据). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param data
+	 * @since JDK 1.6
+	 */
+	public static void saveMeltData(Map<String, List<Map<String, Double>>> data) {
+		getSession().setAttribute(MELT_DATA, data);
+	}
+
+	/**
+	 * 
+	 * getInitialCache:(获取缓存的初始化岩浆或者熔体数据). <br/>
+	 * 
+	 * @author liboqiang
+	 * @return
+	 * @since JDK 1.6
+	 */
+	public static EchartOpt getInitialCache() {
+		return Optional.of((EchartOpt) getSession().getAttribute(INITIAL_CHACH)).orElseGet(EchartOpt::new);
+	}
+
+	/**
+	 * 
 	 * getCrystalData:(获取结晶数据). <br/>
 	 * 
 	 * @author liboqiang
@@ -130,6 +191,42 @@ public class Session {
 
 	/**
 	 * 
+	 * getDrawCache:(获取绘图数据). <br/>
+	 * 
+	 * @author liboqiang
+	 * @return
+	 * @since JDK 1.6
+	 */
+	public static EchartOpt getCrystalDrawCache() {
+		return Optional.of((EchartOpt) getSession().getAttribute(CRYSTAL_DRAW_CHACH)).orElseGet(EchartOpt::new);
+	}
+
+	/**
+	 * 
+	 * getCrystalTmpCache:(获取结晶临时数据). <br/>
+	 * 
+	 * @author liboqiang
+	 * @return
+	 * @since JDK 1.6
+	 */
+	public static EchartOpt getCrystalTmpCache() {
+		return Optional.of((EchartOpt) getSession().getAttribute(CRYSTAL_TMP_CHACH)).orElseGet(EchartOpt::new);
+	}
+
+	/**
+	 * 
+	 * getCrystalSampleCache:(获取缓存的样品稀土元素数据). <br/>
+	 * 
+	 * @author liboqiang
+	 * @return
+	 * @since JDK 1.6
+	 */
+	public static EchartOpt getCrystalSampleCache() {
+		return Optional.of((EchartOpt) getSession().getAttribute(CRYSTAL_SAMPLE_CHACH)).orElseGet(EchartOpt::new);
+	}
+
+	/**
+	 * 
 	 * getMeltData:(获取熔融数据). <br/>
 	 * 
 	 * @author liboqiang
@@ -144,77 +241,5 @@ public class Session {
 			e.printStackTrace();
 			return new HashMap<String, List<Map<String, Double>>>();
 		}
-	}
-
-	/**
-	 * 
-	 * saveSampleCache:(存入样品数据). <br/>
-	 * 
-	 * @author liboqiang
-	 * @param reeCache
-	 * @since JDK 1.6
-	 */
-	public static void saveCrystalSampleCache(EchartOpt opt) {
-		getSession().setAttribute(Session.SAMPLE_CHACH, opt);
-	}
-
-	/**
-	 * 
-	 * getSampleCache:(获取缓存的样品稀土元素数据). <br/>
-	 * 
-	 * @author liboqiang
-	 * @return
-	 * @since JDK 1.6
-	 */
-	public static EchartOpt getCrystalSampleCache() {
-		return Optional.of((EchartOpt) getSession().getAttribute(SAMPLE_CHACH)).orElseGet(EchartOpt::new);
-	}
-
-	/**
-	 * 
-	 * saveInitialCache:(存入初始化岩浆或者熔体数据). <br/>
-	 * 
-	 * @author liboqiang
-	 * @param clone
-	 * @since JDK 1.6
-	 */
-	public static void saveInitialCache(EchartOpt opt) {
-		getSession().setAttribute(Session.INITIAL_CHACH, opt);
-	}
-
-	/**
-	 * 
-	 * getSampleCache:(获取缓存的初始化岩浆或者熔体数据). <br/>
-	 * 
-	 * @author liboqiang
-	 * @return
-	 * @since JDK 1.6
-	 */
-	public static EchartOpt getInitialCache() {
-		return Optional.of((EchartOpt) getSession().getAttribute(INITIAL_CHACH)).orElseGet(EchartOpt::new);
-	}
-
-	/**
-	 * 
-	 * saveDrawCache:(保存绘图缓存). <br/> 
-	 * 
-	 * @author liboqiang
-	 * @param opt 
-	 * @since JDK 1.6
-	 */
-	public static void saveCrystalDrawCache(EchartOpt opt) {
-		getSession().setAttribute(Session.CRYSTAL_DRAW_CHACH, opt);
-	}
-	
-	/**
-	 * 
-	 * getDrawCache:(获取绘图数据). <br/> 
-	 * 
-	 * @author liboqiang
-	 * @return 
-	 * @since JDK 1.6
-	 */
-	public static EchartOpt getCrystalDrawCache() {
-		return Optional.of((EchartOpt) getSession().getAttribute(CRYSTAL_DRAW_CHACH)).orElseGet(EchartOpt::new);
 	}
 }
