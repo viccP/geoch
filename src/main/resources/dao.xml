@@ -23,4 +23,7 @@
 	<bean id="tmInitialTypeDao" class="com.jlu.magmalab.dao.tables.daos.TmInitialTypeDao">
 		<constructor-arg ref="config" />
 	</bean>
+	<bean id="tmUserRoleDao" class="com.jlu.magmalab.dao.tables.daos.TmUserRoleDao">
+		<constructor-arg ref="config" />
+	</bean>
 </beans>

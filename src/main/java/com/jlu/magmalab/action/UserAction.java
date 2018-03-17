@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jlu.cst.CST;
+import com.jlu.magmalab.bean.TmUserEx;
 import com.jlu.magmalab.bean.UserForm;
 import com.jlu.magmalab.dao.tables.daos.TmUserDao;
 import com.jlu.magmalab.dao.tables.pojos.TmUser;
@@ -50,10 +51,13 @@ public class UserAction {
 	 */
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
 	@ResponseBody
-	public String edit(@RequestBody TmUser tmUser) {
+	public String edit(@RequestBody TmUserEx tmUser) {
 		try {
 			if (tmUser.getSex() == null) {
 				return Ajax.responseString(CST.RES_LOGIC_ERROR_2);
+			}
+			if (tmUser.getRoleId() == null) {
+				return Ajax.responseString(CST.RES_LOGIC_ERROR_3);
 			}
 			String status = tmUserService.edit(tmUser);
 			return Ajax.responseString(status, "操作成功");
@@ -82,7 +86,7 @@ public class UserAction {
 			}
 
 			// 1.查询数据
-			Page<TmUser> pageBean = tmUserService.list(userForm);
+			Page<TmUserEx> pageBean = tmUserService.list(userForm);
 			return Ajax.responseString(CST.RES_SUCCESS, pageBean, true);
 		} catch (Exception e) {
 			e.printStackTrace();

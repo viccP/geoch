@@ -18,6 +18,10 @@ $(function() {
 		width : "100%"
 	});
 	
+	$('#role').chosen({
+		disable_search : true,
+		width : "100%"
+	});
 	
 	// 初始化列表
 	initGrid();
@@ -53,6 +57,11 @@ $(function() {
 				validators : {
 					regexp : {regexp : /^.*$/,message : '请选择性别'}
 				}
+			},
+			role : {
+				validators : {
+					regexp : {regexp : /^.*$/,message : '请选择角色'}
+				}
 			}
 		},
 		submitHandler : function(validator, form, submitButton) {
@@ -68,6 +77,8 @@ $(function() {
 						validator.updateStatus("loginId",'INVALID', "regexp");
 					} else if (data.code == "2") {
 						validator.updateStatus("sex",'INVALID', "regexp");
+					} else if (data.code == "3") {
+						validator.updateStatus("role",'INVALID', "regexp");
 					} else{
 						// 关闭窗口
 						$('#userModal').modal('hide');
@@ -99,11 +110,12 @@ function initGrid() {
 		height : 370,
 		// autowidth : true,
 		width : $(".page-content").width() - 20,
-		colNames : [ '用户ID', '登录用户名', '用户姓名', '用户性别', '联系方式', '更新时间', '密码状态', '备注', '操作' ],
+		colNames : [ '用户ID', '登录用户名', '用户姓名', '用户角色','用户性别', '联系方式', '更新时间', '密码状态', '备注', '操作' ],
 		colModel : [ 
 					{ name : 'userId', align : 'center', index : 'userId', sorttype : "int", editable : false, hidden : true }, 
 					{ name : 'loginId', align : 'center', index : 'login', sorttype : "int", editable : false }, 
 					{ name : 'userName', align : 'center', index : 'userName', sorttype : "int", editable : false },
+					{ name : 'roleName', align : 'center', index : 'roleName', sorttype : "int", editable : false },
 					{ name : 'sex', align : 'center', index : 'sex', sorttype : "int", editable : false, formatter : encodeSex },
 					{ name : 'phoneNo', align : 'center', index : 'phoneNo', sorttype : "int", editable : false },
 					{ name : 'updTime', align : 'center', index : 'updTime', sorttype : "date", editable : false,formatter:"date",formatoptions: {srcformat:'u',newformat:'Y-m-d H:i:s'}}, 
