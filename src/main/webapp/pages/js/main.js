@@ -36,8 +36,15 @@ $(function() {
 				.append(
 					$("<li></li>").append(
 						$("<a></a>").addClass("dropdown-toggle menu-anchor").attr({"href":"#","path":$.cxt+"/pages/crystal.jsp"})
-						.append($("<i></i>").addClass("menu-icon fa fa-sitemap"))
-						.append($("<span></span>").addClass("menu-text").append("结晶过程"))
+						.append($("<i></i>").addClass("menu-icon fa fa-diamond"))
+						.append($("<span></span>").addClass("menu-text").append("结晶实验"))
+					)
+				)
+				.append(
+					$("<li></li>").append(
+						$("<a></a>").addClass("dropdown-toggle menu-anchor").attr({"href":"#","path":$.cxt+"/pages/melt.jsp"})
+						.append($("<i></i>").addClass("menu-icon fa fa-fire"))
+						.append($("<span></span>").addClass("menu-text").append("熔融实验"))
 					)
 				)
 //				.append(

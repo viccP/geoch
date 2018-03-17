@@ -66,7 +66,7 @@ public class LoginFilter implements Filter {
 		if (isExcludedPage) {
 			chain.doFilter(req, rep);
 		} else {
-			if (session.getAttribute("tmUser") == null) {
+			if (session.getAttribute("TM_USER") == null) {
 				if (Utils.isMatch("(?i)^.*\\.jsp$", servletPath)) {
 					response.sendRedirect(context + "/pages/html/timeout.html");
 				} else if (Utils.isMatch("(?i)^.*\\.(js|css|png|jpg|icon|woff|html|json)$", servletPath)) {

@@ -50,7 +50,7 @@
 					<li class="grey">
 						<span class="user-info" id="userInfo">
 							<i class="ace-icon fa fa-user-circle-o"></i>
-							你好，${tmUser.userName}
+							你好，${TM_USER.userName}
 						</span>
 					</li>
 					<li>

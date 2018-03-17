@@ -113,7 +113,7 @@ public class IndexAction {
 	@ResponseBody
 	public String checkSession(HttpSession session) {
 		try {
-			if (session.getAttribute("tmUser") == null) {
+			if (session.getAttribute("TM_USER") == null) {
 				return Ajax.responseString(CST.RES_SESSION_TIME_OUT, "用户已经过期，请重新登陆");
 			}
 			return Ajax.responseString(CST.RES_SUCCESS);
