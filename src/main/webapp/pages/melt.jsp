@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script src="<%=request.getContextPath()%>/pages/js/melt.js"></script>
 <div class="row">
-	<div class="col-xs-12 col-sm-4">
+	<div class="col-xs-12 col-sm-3">
 		<div>
 			<h4 class="header smaller lighter purple">
 				<i class="ace-icon fa fa-cogs"></i>
@@ -19,6 +19,7 @@
 			</select>
 		</div>
 		<hr>
+		<div class="space-12"></div>
 		<div>
 			<label for="form-field-select-3">初始熔体</label>
 			<br>
@@ -27,6 +28,7 @@
 			</select>
 		</div>
 		<hr>
+		<div class="space-12"></div>
 		<div id="sample-data-container">
 			<label for="form-field-select-3">样品数据</label>
 			<br>
@@ -35,14 +37,7 @@
 			</select>
 		</div>
 		<hr>
-		<div>
-			<label for="form-field-select-3">混染物</label>
-			<br>
-			<select class="chosen-select form-control" id="mix-obj" data-placeholder="请选择混染物...">
-				<option value=""></option>
-			</select>
-		</div>
-		<hr>
+		<div class="space-12"></div>
 		<div>
 			<label for="form-field-select-3">标准化值</label>
 			<br>
@@ -52,11 +47,11 @@
 		</div>
 	</div>
 
-	<div class="col-xs-12 col-sm-3 mineral-lst">
+	<div class="col-xs-12 col-sm-4 mineral-lst">
 		<div>
 			<h4 class="header smaller lighter purple">
 				<i class="ace-icon fa fa-sliders"></i>
-				设置矿物比例
+				设置矿物比例（矿物名称/原始固相/熔体）
 			</h4>
 		</div>
 	</div>
@@ -70,16 +65,18 @@
 		</div>
 		<div class="col-xs-12 col-sm-12">
 			<div>
-				<label for="form-field-select-3">结晶定量模型</label>
+				<label for="form-field-select-3">熔融定量模型</label>
 				<br>
-				<select class="chosen-select form-control" id="crystal-style" data-placeholder="请选择结晶定量模型...">
+				<select class="chosen-select form-control" id="crystal-style" data-placeholder="请选择熔融定量模型...">
 					<option value=""></option>
 				</select>
 			</div>
 			<hr>
+			<div class="space-12"></div>
+			<div class="space-12"></div>
 			<div id="crystalFDiv">
 				<label for="form-field-mask-2">
-					结晶程度(F)
+					熔融程度(F)
 					<small class="text-warning">1~100(%)</small>
 				</label>
 				<div class="input-group">
@@ -93,38 +90,11 @@
 				</div>
 			</div>
 			<hr>
-			<div id="crystalBrDiv">
-				<label for="form-field-mask-2">
-					混染程度(R)
-					<small class="text-warning">1~100(%)</small>
-				</label>
-				<div class="input-group" style="position: relative">
-					<span class="input-group-addon">
-						<i class="ace-icon fa fa-window-restore"></i>
-					</span>
-					<input class="form-control input-mask-phone prm-set" id="crystalBr" name="crystalBr" type="text" title="">
-					<span class="input-group-addon">
-						<input class="hidden slider-opts" type="text" id="crystalBrSliderId" data-min="0" data-max="100" data-step="1" value="0" />
-					</span>
-				</div>
-			</div>
-			<hr>
-			<div id="crystalSrDiv">
-				<label for="form-field-mask-2">
-					同化作用速率（Ma）与分离结晶速率（Mc）的比值(r)
-					<small class="text-warning">0~90(%)</small>
-				</label>
-				<div class="input-group">
-					<span class="input-group-addon">
-						<i class="ace-icon fa fa-cubes"></i>
-					</span>
-					<input class="form-control input-mask-phone prm-set" id="crystalSr" name="crystalSr" type="text" title="">
-					<span class="input-group-addon">
-						<input class="hidden slider-opts" type="text" id="crystalSrSliderId" data-min="0" data-max="90" data-step="10" value="0" />
-					</span>
-				</div>
-			</div>
-			<hr>
+			<div class="space-12"></div>
+			<div class="space-12"></div>
+			<div class="space-12"></div>
+			<div class="space-12"></div>
+			<div class="space-12"></div>
 			<div class="pull-left">
 				<a href="#" class="btn btn-app btn-purple btn-xs" id="importData">
 					<i class="ace-icon fa fa-cloud-upload bigger-160"></i>

@@ -28,7 +28,7 @@ $(function() {
 			url : $.cxt+'/chart/initial',
 			type : "POST",
 			dataType:"json",
-			data:{"initialId":$(this).val(),"stdId":$("#std-val").val(),"legend":"初始岩浆"},
+			data:{"initialId":$(this).val(),"stdId":$("#std-val").val(),"legend":"初始熔体"},
 			success : function(json) {
 				renderChart(json.data);
 			}
@@ -39,23 +39,10 @@ $(function() {
 	initSelect({
 		"id":"#sample-data",
 		"url":$.cxt + '/lab/sample',
-		"data":{"sampleType":0},
+		"data":{"sampleType":1},
 		"multiple":true
 	});
 	bindSampleSelectEvent();
-	
-	//混染物类型下拉菜单
-	initSelect({
-		"id":"#mix-obj",
-		"url":$.cxt + '/lab/mixType'
-	});
-	//绑定事件
-	$("#mix-obj").on('change',function(){
-		doDraw($.cxt + "/chart/draw",true);
-	});
-	
-	//默认不可用状态
-	$("#mix-obj").prop('disabled', true).trigger("chosen:updated");
 	
 	//标准化值类型下拉菜单
 	initSelect({
@@ -71,40 +58,16 @@ $(function() {
 	initSelect({
 		"id":"#crystal-style",
 		"url":$.cxt+'/lab/exprType',
-		"data":{"exprType":0}
+		"data":{"exprType":1}
 	});
 	
 	//添加事件
 	$("#crystal-style").on('change',function(){
 		var val=	$(this).val();
-		if(val=="4" || val=="5"){
-			unDisableCoponent("#crystalBrDiv");
-			unDisableCoponent("#crystalSrDiv");
-			disableCoponent("#crystalSrDiv");
-			//解除混染物下拉不可用状态
-			$("#mix-obj").prop('disabled', false).trigger("chosen:updated");
-		}
-		else if(val=="3"){
-			unDisableCoponent("#crystalSrDiv");
-			unDisableCoponent("#crystalrBDiv");
-			disableCoponent("#crystalBrDiv");
-			//解除混染物下拉不可用状态
-			$("#mix-obj").prop('disabled', false).trigger("chosen:updated");
-		}
-		else{
-			unDisableCoponent("#crystalBrDiv");
-			unDisableCoponent("#crystalSrDiv");
-			disableCoponent("#crystalBrDiv");
-			disableCoponent("#crystalSrDiv");
-			//解除混染物下拉不可用状态
-			$("#mix-obj").prop('disabled', true).trigger("chosen:updated");
-		}
-		
 		//绘图
 		if(val!='-1'){
 			doDraw($.cxt + "/chart/draw",true);
 		}
-		
 	});
 	
 	
@@ -128,11 +91,6 @@ $(function() {
 	// 初始化滑动条
 	initSpinner();
 	
-	//设置禁用
-	disableCoponent("#crystalBrDiv");
-	disableCoponent("#crystalSrDiv");
-	
-	
 	/**
 	 * 按钮
 	 */
@@ -142,7 +100,7 @@ $(function() {
 		var fileObj=$("<input id='fileField'></input>").attr("type","file").attr("name","file").on("change",function(){
 			var data = new FormData();
 			data.append('file', fileObj[0].files[0]);
-			data.append('dataType', 0);
+			data.append('dataType', 1);
 			$.ajax({
 	    			url : $.cxt + "/lab/upload",
 	    			data:data,
@@ -187,6 +145,7 @@ function initSelect(opt){
 				$("<option></option>").attr("value","-1").append(_this.attr("data-placeholder"))	
 			)
 		}
+		
 		$.ajax($.extend({data:opt.data},{
 			url:opt.url,
 			type : "POST",
@@ -329,33 +288,6 @@ function spinnerUpdateValue() {
 }
 
 /**
- * 设置禁用
- * @param id
- * @returns
- */
-function disableCoponent(id){
-	 var shadeDiv=$("<div class='disable-coponent' style='opacity:0.55;background:black'></div>").css({ 
-		   position:'absolute', 
-		   top:0, 
-		   left:0, 
-		   zIndex:11,
-		 });
-	 var targetDiv=$(id).children(".input-group");
-	 shadeDiv.width(targetDiv.width())
-	 shadeDiv.height(targetDiv.height())
-	 targetDiv.append(shadeDiv);
-}
-
-/**
- * 解除禁用
- * @param id
- * @returns
- */
-function unDisableCoponent(id){
-	$(id).children(".input-group").children("div.disable-coponent").remove();
-}
-
-/**
  * 初始化矿物spinner
  * @returns
  */
@@ -375,10 +307,16 @@ function initMineralSpinner(){
 						$("<span></span>").addClass("input-group-addon").append(val.value)
 					)
 					.append(
-						$("<input></input>").attr("type","text").addClass("mineral-spinner").width(115)
+						$("<input></input>").attr({"type":"text","name":"originPhases"}).addClass("mineral-spinner").width(60)
 					)
 					.append(
-						$("<input></input>").attr("type","hidden").val(val.code)
+						$("<input></input>").attr({"type":"hidden","name":"originPhases"}).val(val.code)
+					)
+					.append(
+						$("<input></input>").attr({"type":"text","name":"meltPhases"}).addClass("mineral-spinner").width(60)
+					)
+					.append(
+						$("<input></input>").attr({"type":"hidden","name":"meltPhases"}).val(val.code)
 					)
 				)
 			});
@@ -434,7 +372,7 @@ function updateSampleData(json){
 		initSelect({
 			"id":"#sample-data",
 			"url":$.cxt + '/lab/sample',
-			"data":{"sampleType":0}
+			"data":{"sampleType":1}
 		});
 		bindSampleSelectEvent();
 		
@@ -542,7 +480,7 @@ function bindSampleSelectEvent(echartInstance){
 			url : $.cxt+'/chart/sample',
 			type : "POST",
 			dataType:"json",
-			data:{"sampleCodes":sampleCodes,"stdId":stdId,"sampleType":0},
+			data:{"sampleCodes":sampleCodes,"stdId":stdId,"sampleType":1},
 			success : function(json) {
 				//绘图
 				renderChart(json.data);
@@ -646,6 +584,7 @@ function doDraw(url,preview){
  * @returns
  */
 function setMineralStatus(){
+	debugger
 	var sum=0;
 	$.each($(".mineral-lst>div.input-group").find("input[type=text]"),function(index,val){
 		var displayVal=parseFloat($(this).val().replace("%",""))/100;

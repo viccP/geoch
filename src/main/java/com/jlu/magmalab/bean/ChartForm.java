@@ -4,15 +4,15 @@ import java.util.List;
 
 /**
  * 
- * ClassName: CrystalForm <br/>
- * Function: 结晶模块表单. <br/>
+ * ClassName: ChartForm <br/>
+ * Function: 绘图表单. <br/>
  * date: 2018年3月14日 上午9:56:06 <br/>
  * 
  * @author liboqiang
  * @version
  * @since JDK 1.6
  */
-public class CrystalForm {
+public class ChartForm {
 
 	/** 矿物比例 **/
 	private List<Select<Double>> minerals;

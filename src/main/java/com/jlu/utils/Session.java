@@ -17,12 +17,12 @@ import com.jlu.magmalab.dao.tables.pojos.TmUser;
 public class Session {
 
 	private static final String TM_USER = "TM_USER";
-	private static final String MELT_DATA = "MELT_DATA";
 	private static final String CRYSTAL_DATA = "CRYSTAL_DATA";
+	private static final String MELT_DATA = "MELT_DATA";
 	private static final String INITIAL_CHACH = "INITIAL_CHACH";
-	private static final String CRYSTAL_SAMPLE_CHACH = "CRYSTAL_SAMPLE_CHACH";
-	private static final String CRYSTAL_DRAW_CHACH = "CRYSTAL_DRAW_CHACH";
-	private static final String CRYSTAL_TMP_CHACH = "CRYSTAL_TMP_CHACH";
+	private static final String SAMPLE_CHACH = "SAMPLE_CHACH";
+	private static final String DRAW_CHACH = "DRAW_CHACH";
+	private static final String TMP_CHACH = "TMP_CHACH";
 
 	/**
 	 * 
@@ -101,6 +101,42 @@ public class Session {
 
 	/**
 	 * 
+	 * saveDrawCache:(保存绘图缓存). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param opt
+	 * @since JDK 1.6
+	 */
+	public static void saveDrawCache(EchartOpt opt) {
+		getSession().setAttribute(Session.DRAW_CHACH, opt);
+	}
+
+	/**
+	 * 
+	 * saveSampleCache:(存入样品数据). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param reeCache
+	 * @since JDK 1.6
+	 */
+	public static void saveSampleCache(EchartOpt opt) {
+		getSession().setAttribute(Session.SAMPLE_CHACH, opt);
+	}
+
+	/**
+	 * 
+	 * saveTmpCache:(存入临时数据). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param opt
+	 * @since JDK 1.6
+	 */
+	public static void saveTmpCache(EchartOpt opt) {
+		getSession().setAttribute(Session.TMP_CHACH, opt);
+	}
+
+	/**
+	 * 
 	 * saveCrystalData:(存储结晶实验数据). <br/>
 	 * 
 	 * @author liboqiang
@@ -109,42 +145,6 @@ public class Session {
 	 */
 	public static void saveCrystalData(Map<String, List<Map<String, Double>>> data) {
 		getSession().setAttribute(CRYSTAL_DATA, data);
-	}
-
-	/**
-	 * 
-	 * saveCrystalDrawCache:(保存绘图缓存). <br/>
-	 * 
-	 * @author liboqiang
-	 * @param opt
-	 * @since JDK 1.6
-	 */
-	public static void saveCrystalDrawCache(EchartOpt opt) {
-		getSession().setAttribute(Session.CRYSTAL_DRAW_CHACH, opt);
-	}
-
-	/**
-	 * 
-	 * saveCrystalSampleCache:(存入样品数据). <br/>
-	 * 
-	 * @author liboqiang
-	 * @param reeCache
-	 * @since JDK 1.6
-	 */
-	public static void saveCrystalSampleCache(EchartOpt opt) {
-		getSession().setAttribute(Session.CRYSTAL_SAMPLE_CHACH, opt);
-	}
-
-	/**
-	 * 
-	 * saveCrystalTmpCache:(存入结晶临时数据). <br/>
-	 * 
-	 * @author liboqiang
-	 * @param opt
-	 * @since JDK 1.6
-	 */
-	public static void saveCrystalTmpCache(EchartOpt opt) {
-		getSession().setAttribute(Session.CRYSTAL_TMP_CHACH, opt);
 	}
 
 	/**
@@ -158,7 +158,7 @@ public class Session {
 	public static void saveMeltData(Map<String, List<Map<String, Double>>> data) {
 		getSession().setAttribute(MELT_DATA, data);
 	}
-
+	
 	/**
 	 * 
 	 * getInitialCache:(获取缓存的初始化岩浆或者熔体数据). <br/>
@@ -168,7 +168,7 @@ public class Session {
 	 * @since JDK 1.6
 	 */
 	public static EchartOpt getInitialCache() {
-		return Optional.of((EchartOpt) getSession().getAttribute(INITIAL_CHACH)).orElseGet(EchartOpt::new);
+		return Optional.ofNullable((EchartOpt) getSession().getAttribute(INITIAL_CHACH)).orElseGet(EchartOpt::new);
 	}
 
 	/**
@@ -182,7 +182,7 @@ public class Session {
 	@SuppressWarnings("unchecked")
 	public static Map<String, List<Map<String, Double>>> getCrystalData() {
 		try {
-			return Optional.of((Map<String, List<Map<String, Double>>>) getSession().getAttribute(CRYSTAL_DATA)).orElseGet(HashMap::new);
+			return Optional.ofNullable((Map<String, List<Map<String, Double>>>) getSession().getAttribute(CRYSTAL_DATA)).orElseGet(HashMap::new);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new HashMap<String, List<Map<String, Double>>>();
@@ -197,8 +197,8 @@ public class Session {
 	 * @return
 	 * @since JDK 1.6
 	 */
-	public static EchartOpt getCrystalDrawCache() {
-		return Optional.of((EchartOpt) getSession().getAttribute(CRYSTAL_DRAW_CHACH)).orElseGet(EchartOpt::new);
+	public static EchartOpt getDrawCache() {
+		return Optional.ofNullable((EchartOpt) getSession().getAttribute(DRAW_CHACH)).orElseGet(EchartOpt::new);
 	}
 
 	/**
@@ -209,8 +209,8 @@ public class Session {
 	 * @return
 	 * @since JDK 1.6
 	 */
-	public static EchartOpt getCrystalTmpCache() {
-		return Optional.of((EchartOpt) getSession().getAttribute(CRYSTAL_TMP_CHACH)).orElseGet(EchartOpt::new);
+	public static EchartOpt getTmpCache() {
+		return Optional.ofNullable((EchartOpt) getSession().getAttribute(TMP_CHACH)).orElseGet(EchartOpt::new);
 	}
 
 	/**
@@ -221,8 +221,8 @@ public class Session {
 	 * @return
 	 * @since JDK 1.6
 	 */
-	public static EchartOpt getCrystalSampleCache() {
-		return Optional.of((EchartOpt) getSession().getAttribute(CRYSTAL_SAMPLE_CHACH)).orElseGet(EchartOpt::new);
+	public static EchartOpt getSampleCache() {
+		return Optional.ofNullable((EchartOpt) getSession().getAttribute(SAMPLE_CHACH)).orElseGet(EchartOpt::new);
 	}
 
 	/**
@@ -236,7 +236,7 @@ public class Session {
 	@SuppressWarnings("unchecked")
 	public static Map<String, List<Map<String, Double>>> getMeltData() {
 		try {
-			return Optional.of((Map<String, List<Map<String, Double>>>) getSession().getAttribute(MELT_DATA)).orElseGet(HashMap::new);
+			return Optional.ofNullable((Map<String, List<Map<String, Double>>>) getSession().getAttribute(MELT_DATA)).orElseGet(HashMap::new);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new HashMap<String, List<Map<String, Double>>>();
