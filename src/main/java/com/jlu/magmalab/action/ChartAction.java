@@ -265,18 +265,20 @@ public class ChartAction {
 	 */
 	private Serie doDraw(List<Serie> initialData, ChartForm chartForm, List<Double> mineralsD, List<Double> mineralsP, List<Integer> eleIndexArray) throws Exception {
 		// 绘制稀土元素配分模式图
+		Parameter prm = new Parameter();
 		Matrix D = distributeService.sigma(mineralsD, chartForm.getMagmaType(), eleIndexArray);
-		Matrix P = distributeService.sigma(mineralsP, chartForm.getMagmaType(), eleIndexArray);
+		if(!mineralsP.isEmpty()) {
+			Matrix P = distributeService.sigma(mineralsP, chartForm.getMagmaType(), eleIndexArray);
+			prm.setP(P);
+		}
 		Matrix C0 = Matrix.Factory.importFromArray(initialData.stream().findFirst().get().getData());
 		Matrix CA = Matrix.Factory.importFromArray(labService.getMixData(eleIndexArray, chartForm.getMixId()).toArray());
 
 		// 设置参数
-		Parameter prm = new Parameter();
 		prm.setC0(C0);
 		prm.setCA(CA);
 		prm.setCR(chartForm.getcR());
 		prm.setD(D);
-		prm.setP(P);
 		prm.setF(chartForm.getfVal());
 		prm.setMR(chartForm.getmR());
 		// 获取公式

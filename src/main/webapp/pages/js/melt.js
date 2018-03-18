@@ -89,7 +89,7 @@ $(function() {
 	});
 	
 	// 初始化滑动条
-	initSpinner();
+	initSpinner($(".prm-div").width()*0.75);
 	
 	/**
 	 * 按钮
@@ -186,7 +186,7 @@ function initSelect(opt){
  * 初始化滑块
  * @returns
  */
-function initSpinner(){
+function initSpinner(width){
 	var slide_styles = ['', 'green','red','purple','orange', 'dark'];
 	var ii = 0;
 	$(".slider-opts").each(function() {
@@ -195,7 +195,7 @@ function initSpinner(){
 		$this.hide().after('<span />');
 		$this.next().addClass('ui-slider-small')
 		.addClass("inline ui-slider-"+slide_styles[ii++ % slide_styles.length])
-		.css('width','400px').slider({
+		.width(width).slider({
 			value:parseInt($this.val()),
 			range: "min",
 			animate:true,
@@ -229,9 +229,9 @@ function initSpinner(){
 				else if(inVal>max){
 					Tipped.show("#"+$(this).attr("id"));
 					$(this).val(max)
-					spinnerUpdateValue();
+					spinnerUpdateValue(width);
 				}else{
-					spinnerUpdateValue();
+					spinnerUpdateValue(width);
 				}
 			}
 		})
@@ -258,7 +258,7 @@ function spinnerUpdate() {
  * 通过更改值更新滑块
  * @returns
  */
-function spinnerUpdateValue() {
+function spinnerUpdateValue(width) {
 	var slide_styles = ['', 'green','red','purple','orange', 'dark'];
 	var ii = 0;
 	$(".slider-opts").each(function() {
@@ -266,9 +266,9 @@ function spinnerUpdateValue() {
 		$this.parent().find("span").remove();
 		$this.closest('div').find("input.docker-set").val($(this).parent().parent().find("input").val());
 		$this.hide().after('<span />');
-		$this.next().addClass('ui-slider-small').
-		addClass("inline ui-slider-"+slide_styles[ii++ % slide_styles.length]).
-		css('width','400px').slider({
+		$this.next().addClass('ui-slider-small')
+		.addClass("inline ui-slider-"+slide_styles[ii++ % slide_styles.length])
+		.width(width).slider({
 			value:parseInt($(this).parent().parent().find("input").val()),
 			range: "min",
 			animate:true,
