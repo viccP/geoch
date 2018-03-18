@@ -23,8 +23,8 @@ import com.jlu.magmalab.dao.tables.daos.TmExprDao;
 import com.jlu.magmalab.dao.tables.pojos.TmExpr;
 import com.jlu.magmalab.expr.IExpr;
 import com.jlu.magmalab.expr.Parameter;
-import com.jlu.magmalab.service.LabService;
 import com.jlu.magmalab.service.DistributeService;
+import com.jlu.magmalab.service.LabService;
 import com.jlu.utils.Ajax;
 import com.jlu.utils.Session;
 import com.jlu.utils.Utils;
@@ -208,15 +208,27 @@ public class ChartAction {
 			return chkMsg;
 		}
 		// 重新整理矿物比例
-		List<Double> minerals = chartForm.getMinerals().parallelStream().sorted((s1, s2) -> {
+		List<Double> mineralsD = chartForm.getMineralsD().parallelStream().sorted((s1, s2) -> {
 			Integer si1 = Integer.parseInt(s1.getCode());
 			Integer si2 = Integer.parseInt(s2.getCode());
 			return si1.compareTo(si2);
 		}).map(s -> s.getValue()).collect(Collectors.toList());
 
+		List<Double> mineralsP = new ArrayList<>();
+		if (chartForm.getMineralsP() != null) {
+			mineralsP = chartForm.getMineralsP().parallelStream().sorted((s1, s2) -> {
+				Integer si1 = Integer.parseInt(s1.getCode());
+				Integer si2 = Integer.parseInt(s2.getCode());
+				return si1.compareTo(si2);
+			}).map(s -> s.getValue()).collect(Collectors.toList());
+
+			// 重新计算初始熔体矿物比例
+			mineralsD = labService.reCalMinerals(mineralsD, mineralsP, chartForm.getfVal());
+		}
+
 		// 获取绘图数据
-		Serie reeD = doDraw(Session.getInitialCache().getRee(), chartForm, minerals, CST.REE_ELE_INDEX_ARRAY);
-		Serie traceD = doDraw(Session.getInitialCache().getTrace(), chartForm, minerals, CST.TRACE_ELE_INDEX_ARRAY);
+		Serie reeD = doDraw(Session.getInitialCache().getRee(), chartForm, mineralsD, mineralsP, CST.REE_ELE_INDEX_ARRAY);
+		Serie traceD = doDraw(Session.getInitialCache().getTrace(), chartForm, mineralsD, mineralsP, CST.TRACE_ELE_INDEX_ARRAY);
 
 		// 加入绘图组
 		opt.getRee().add(reeD);
@@ -244,15 +256,17 @@ public class ChartAction {
 	 * @author liboqiang
 	 * @param initialData
 	 * @param chartForm
-	 * @param minerals
+	 * @param mineralsD
+	 * @param mineralsP
 	 * @param eleIndexArray
 	 * @return
 	 * @throws Exception
 	 * @since JDK 1.6
 	 */
-	private Serie doDraw(List<Serie> initialData, ChartForm chartForm, List<Double> minerals, List<Integer> eleIndexArray) throws Exception {
+	private Serie doDraw(List<Serie> initialData, ChartForm chartForm, List<Double> mineralsD, List<Double> mineralsP, List<Integer> eleIndexArray) throws Exception {
 		// 绘制稀土元素配分模式图
-		Matrix D = distributeService.sigma(minerals, chartForm.getMagmaType(), eleIndexArray);
+		Matrix D = distributeService.sigma(mineralsD, chartForm.getMagmaType(), eleIndexArray);
+		Matrix P = distributeService.sigma(mineralsP, chartForm.getMagmaType(), eleIndexArray);
 		Matrix C0 = Matrix.Factory.importFromArray(initialData.stream().findFirst().get().getData());
 		Matrix CA = Matrix.Factory.importFromArray(labService.getMixData(eleIndexArray, chartForm.getMixId()).toArray());
 
@@ -262,6 +276,7 @@ public class ChartAction {
 		prm.setCA(CA);
 		prm.setCR(chartForm.getcR());
 		prm.setD(D);
+		prm.setP(P);
 		prm.setF(chartForm.getfVal());
 		prm.setMR(chartForm.getmR());
 		// 获取公式

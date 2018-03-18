@@ -586,7 +586,7 @@ function doDraw(url,preview){
 	data.exprId=$("#crystal-style").val();
 	data.magmaType=$("#melt-style").val();
 	data.stdId=$("#std-val").val();
-	data.minerals=[];
+	data.mineralsD=[];
 	data.fVal=$("#crystalF").val()/100;
 	data.cR=$("#crystalSr").val()/100;
 	data.mR=$("#crystalBr").val()/100;
@@ -597,7 +597,7 @@ function doDraw(url,preview){
 	$.each($(".mineral-lst>div.input-group"),function(index,val){
 		var displayVal=$(val).find("input[type=text]").val().replace("%","");;
 		
-		data.minerals.push({
+		data.mineralsD.push({
 			"code":$(val).find("input[type=hidden]").val(),
 			"value":displayVal/100
 		});
@@ -648,10 +648,10 @@ function doDraw(url,preview){
 function setMineralStatus(){
 	var sum=0;
 	$.each($(".mineral-lst>div.input-group").find("input[type=text]"),function(index,val){
-		var displayVal=parseFloat($(this).val().replace("%",""))/100;
+		var displayVal=parseFloat($(this).val().replace("%",""));
 		sum=sum+displayVal;
 	});
-	if(sum==1){
+	if(sum==100){
 		$.each($(".mineral-lst>div.input-group").find("input[type=text]"),function(){
 			if($(this).val()!='0%'){
 				$(this).css("background-color","yellow");

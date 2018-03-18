@@ -95,4 +95,23 @@ public class LabService {
 			}).map(s -> s.getMixValue()).collect(Collectors.toList());
 		}
 	}
+
+	/**
+	 * 
+	 * reCalMinerals:(重新计算). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param mineralsD
+	 * @param mineralsP
+	 * @param fval
+	 * @return
+	 * @since JDK 1.6
+	 */
+	public List<Double> reCalMinerals(List<Double> mineralsD, List<Double> mineralsP, double fval) {
+		List<Double> res = new ArrayList<>();
+		for (int i = 0; i < mineralsD.size(); i++) {
+			res.add((mineralsD.get(i) - fval * mineralsP.get(i)) / (1 - fval));
+		}
+		return res;
+	}
 }
