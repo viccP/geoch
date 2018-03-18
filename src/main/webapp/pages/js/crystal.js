@@ -126,7 +126,7 @@ $(function() {
 	});
 	
 	// 初始化滑动条
-	initSpinner();
+	initSpinner($(".prm-div").width()*0.75);
 	
 	//设置禁用
 	disableCoponent("#crystalBrDiv");
@@ -227,7 +227,7 @@ function initSelect(opt){
  * 初始化滑块
  * @returns
  */
-function initSpinner(){
+function initSpinner(width){
 	var slide_styles = ['', 'green','red','purple','orange', 'dark'];
 	var ii = 0;
 	$(".slider-opts").each(function() {
@@ -236,7 +236,7 @@ function initSpinner(){
 		$this.hide().after('<span />');
 		$this.next().addClass('ui-slider-small')
 		.addClass("inline ui-slider-"+slide_styles[ii++ % slide_styles.length])
-		.css('width','400px').slider({
+		.width(width).slider({
 			value:parseInt($this.val()),
 			range: "min",
 			animate:true,
@@ -270,9 +270,9 @@ function initSpinner(){
 				else if(inVal>max){
 					Tipped.show("#"+$(this).attr("id"));
 					$(this).val(max)
-					spinnerUpdateValue();
+					spinnerUpdateValue(width);
 				}else{
-					spinnerUpdateValue();
+					spinnerUpdateValue(width);
 				}
 			}
 		})
@@ -299,7 +299,7 @@ function spinnerUpdate() {
  * 通过更改值更新滑块
  * @returns
  */
-function spinnerUpdateValue() {
+function spinnerUpdateValue(width) {
 	var slide_styles = ['', 'green','red','purple','orange', 'dark'];
 	var ii = 0;
 	$(".slider-opts").each(function() {
@@ -309,7 +309,7 @@ function spinnerUpdateValue() {
 		$this.hide().after('<span />');
 		$this.next().addClass('ui-slider-small').
 		addClass("inline ui-slider-"+slide_styles[ii++ % slide_styles.length]).
-		css('width','400px').slider({
+		width(width).slider({
 			value:parseInt($(this).parent().parent().find("input").val()),
 			range: "min",
 			animate:true,
@@ -586,7 +586,7 @@ function doDraw(url,preview){
 	data.exprId=$("#crystal-style").val();
 	data.magmaType=$("#melt-style").val();
 	data.stdId=$("#std-val").val();
-	data.minerals=[];
+	data.mineralsD=[];
 	data.fVal=$("#crystalF").val()/100;
 	data.cR=$("#crystalSr").val()/100;
 	data.mR=$("#crystalBr").val()/100;
@@ -597,7 +597,7 @@ function doDraw(url,preview){
 	$.each($(".mineral-lst>div.input-group"),function(index,val){
 		var displayVal=$(val).find("input[type=text]").val().replace("%","");;
 		
-		data.minerals.push({
+		data.mineralsD.push({
 			"code":$(val).find("input[type=hidden]").val(),
 			"value":displayVal/100
 		});
@@ -648,10 +648,10 @@ function doDraw(url,preview){
 function setMineralStatus(){
 	var sum=0;
 	$.each($(".mineral-lst>div.input-group").find("input[type=text]"),function(index,val){
-		var displayVal=parseFloat($(this).val().replace("%",""))/100;
+		var displayVal=parseFloat($(this).val().replace("%",""));
 		sum=sum+displayVal;
 	});
-	if(sum==1){
+	if(sum==100){
 		$.each($(".mineral-lst>div.input-group").find("input[type=text]"),function(){
 			if($(this).val()!='0%'){
 				$(this).css("background-color","yellow");

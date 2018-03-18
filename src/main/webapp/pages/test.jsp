@@ -14,8 +14,8 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/ace/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
 <link rel="stylesheet" href="<%=request.getContextPath()%>/pages/css/main.css" />
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/ace/css/select2.css" />
+<link rel="stylesheet" href="<%=request.getContextPath()%>/resource/ace/css/bootstrap-editable.css" />
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/ace/css/chosen.css">
-<link rel="stylesheet" href="<%=request.getContextPath()%>/resource/bootstrapvalidator/css/bootstrapValidator.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/tipped/tipped.css">
 
 <!--[if lte IE 9]>
@@ -50,7 +50,7 @@
 					<li class="grey">
 						<span class="user-info" id="userInfo">
 							<i class="ace-icon fa fa-user-circle-o"></i>
-							你好，${tmUser.userName}
+							你好，${TM_USER.userName}
 						</span>
 					</li>
 					<li>
@@ -99,163 +99,28 @@
 		<div class="main-content">
 			<div class="main-content-inner">
 				<div class="page-content" id="pageContent">
-					
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- 修改用户信息模态框 -->
-	<div class="modal fade" id="selfModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog create-user-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">
-						<i class="confirm-close fa fa-times"></i>
-					</button>
-					<h4 class="modal-title">
-						<i class="ace-icon fa fa-address-card"></i>
-						修改个人资料
-					</h4>
-				</div>
-				<div class="modal-body" style="border-radius: 0px 0px 8px 8px;">
-					<div class="signup-box widget-box no-border visible" id="signup-box">
-						<div class="widget-body">
-							<div class="widget-main">
-								<div class="tabbable">
-									<ul class="nav nav-tabs" id="myTab">
-										<li class="active">
-											<a data-toggle="tab" href="#password" aria-expanded="true">
-												<i class="green ace-icon fa fa-lock bigger-120"></i>
-												密码
-											</a>
-										</li>
-
-										<li class="">
-											<a data-toggle="tab" href="#basicInfo" aria-expanded="false">
-												<i class="red ace-icon fa fa-user bigger-120"></i>
-												个人信息
-											</a>
-										</li>
-									</ul>
-									<div class="tab-content">
-										<div id="password" class="tab-pane fade active in">
-											<form id="editPwdfForm">
-												<input class="form-control input-mask-date" type="hidden" name="userId">
-												<div class="form-group">
-													<div class="input-group">
-														<span class="input-group-btn">
-															<button class="btn btn-sm btn-info btn-user-tag" type="button">
-																<i class="ace-icon fa fa-lock bigger-110"></i>
-																旧的密码
-															</button>
-														</span>
-														<input class="form-control input-mask-date" type="password" name="oldPwd">
-													</div>
-												</div>
-												<div class="form-group">
-													<div class="input-group">
-														<span class="input-group-btn">
-															<button class="btn btn-sm btn-info btn-user-tag" type="button">
-																<i class="ace-icon fa fa-unlock bigger-110"></i>
-																新的密码
-															</button>
-														</span>
-														<input class="form-control input-mask-date" type="password" name="newPwd">
-													</div>
-												</div>
-												<div class="form-group">
-													<div class="input-group">
-														<span class="input-group-btn">
-															<button class="btn btn-sm btn-info btn-user-tag" type="button">
-																<i class="ace-icon fa fa-unlock-alt bigger-110"></i>
-																确认密码
-															</button>
-														</span>
-														<input class="form-control input-mask-date" type="password" name="confirmPwd">
-													</div>
-												</div>
-												<div class="space-12"></div>
-												<div class="clearfix" style="width: 200px; margin: 0 auto;">
-													<button class="width-45 pull-left btn btn-sm btn-default btn4" type="reset">
-														<i class="ace-icon fa fa-refresh"></i>
-														<span class="bigger-110">重置</span>
-													</button>
-													<button class="width-45 pull-right btn btn-sm btn-info" type="submit">
-														<span class="bigger-110">确定</span>
-														<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
-													</button>
-												</div>
-											</form>
-										</div>
-										<div id="basicInfo" class="tab-pane fade">
-											<form id="editSelfForm">
-												<input class="form-control input-mask-date" type="hidden" name="userId">
-												<div class="form-group">
-													<div class="input-group">
-														<span class="input-group-btn">
-															<button class="btn btn-sm btn-info btn-user-tag" type="button">
-																<i class="ace-icon fa fa-user bigger-110"></i>
-																登录名称
-															</button>
-														</span>
-														<input class="form-control input-mask-date disabled" type="text" name="loginId" disabled="disabled">
-													</div>
-												</div>
-												<div class="form-group">
-													<div class="input-group">
-														<span class="input-group-btn">
-															<button class="btn btn-sm btn-info btn-user-tag" type="button">
-																<i class="ace-icon fa fa-ticket bigger-110"></i>
-																用户姓名
-															</button>
-														</span>
-														<input class="form-control input-mask-date" type="text" name="userName">
-													</div>
-												</div>
-												<div class="form-group">
-													<div class="input-group">
-														<span class="input-group-btn">
-															<button class="btn btn-sm btn-info btn-user-tag" type="button">
-																<i class="ace-icon fa fa-phone bigger-110"></i>
-																联系方式
-															</button>
-														</span>
-														<input class="form-control input-mask-date" type="text" name="phoneNo">
-													</div>
-												</div>
-												<div class="form-group">
-													<div class="input-group">
-														<span class="input-group-btn">
-															<button class="btn btn-sm btn-info btn-user-tag" type="button">
-																<i class="ace-icon fa fa-male bigger-110"></i>
-																性别
-															</button>
-														</span>
-														<select class="chosen-select form-control" name="sex" id="selfSex" data-placeholder="请选择性别...">
-															<option value=""></option>
-															<option value="0">女</option>
-															<option value="1">男</option>
-														</select>
-													</div>
-												</div>
-												<div class="form-group">
-													<textarea placeholder="请填写备注..." class="form-control" name="memo"></textarea>
-												</div>
-												<div class="space-12"></div>
-												<div class="clearfix" style="width: 200px; margin: 0 auto;">
-													<button class="width-45 pull-left btn btn-sm btn-default btn4" type="reset">
-														<i class="ace-icon fa fa-refresh"></i>
-														<span class="bigger-110">重置</span>
-													</button>
-													<button class="width-45 pull-right btn btn-sm btn-info" type="submit">
-														<span class="bigger-110">确定</span>
-														<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
-													</button>
-												</div>
-											</form>
-										</div>
-									</div>
+					<div class="col-xs-12 col-sm-9">
+						<div class="profile-user-info profile-user-info-striped">
+							<div class="profile-info-row">
+								<div class="profile-info-name">H</div>
+								<div class="profile-info-value">
+									<span class="editable ele-tag">0.025</span>
+								</div>
+								<div class="profile-info-name">H</div>
+								<div class="profile-info-value">
+									<span class="editable ele-tag">0.025</span>
+								</div>
+								<div class="profile-info-name">H</div>
+								<div class="profile-info-value">
+									<span class="editable ele-tag">0.025</span>
+								</div>
+								<div class="profile-info-name">H</div>
+								<div class="profile-info-value">
+									<span class="editable ele-tag">0.025</span>
+								</div>
+								<div class="profile-info-name">H</div>
+								<div class="profile-info-value">
+									<span class="editable ele-tag">0.025</span>
 								</div>
 							</div>
 						</div>
@@ -264,6 +129,7 @@
 			</div>
 		</div>
 	</div>
+
 
 
 	<div class="footer">
@@ -306,6 +172,8 @@
 	<script src="<%=request.getContextPath()%>/resource/ace/js/jquery-ui.custom.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/ace/js/jquery.knob.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/ace/js/fuelux/fuelux.spinner.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/x-editable/bootstrap-editable.js"></script>
+
 	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/elements.scroller.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/elements.colorpicker.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/elements.fileinput.js"></script>
@@ -339,5 +207,17 @@
 	<script src="<%=request.getContextPath()%>/resource/ace/js/jquery-ui.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/tipped/tipped.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/common/md5.js"></script>
+	<script>
+	//editables on first profile page
+	$.fn.editable.defaults.mode = 'inline';
+	$.fn.editableform.loading = "<div class='editableform-loading'><i class='ace-icon fa fa-spinner fa-spin fa-2x light-blue'></i></div>";
+    $.fn.editableform.buttons = '<button type="submit" class="btn btn-info editable-submit"><i class="ace-icon fa fa-check"></i></button>'+
+                                '<button type="button" class="btn editable-cancel"><i class="ace-icon fa fa-times"></i></button>';   
+                                
+    $('.ele-tag').editable({
+		type: 'text'
+    });
+	</script>
+	
 </body>
 </html>

@@ -56,7 +56,7 @@
 		</div>
 	</div>
 
-	<div class="col-xs-12 col-sm-5">
+	<div class="col-xs-12 col-sm-5 prm-div">
 		<div>
 			<h4 class="header smaller lighter purple">
 				<i class="ace-icon fa fa-flask"></i>

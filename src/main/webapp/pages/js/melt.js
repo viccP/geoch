@@ -89,7 +89,7 @@ $(function() {
 	});
 	
 	// 初始化滑动条
-	initSpinner();
+	initSpinner($(".prm-div").width()*0.75);
 	
 	/**
 	 * 按钮
@@ -186,7 +186,7 @@ function initSelect(opt){
  * 初始化滑块
  * @returns
  */
-function initSpinner(){
+function initSpinner(width){
 	var slide_styles = ['', 'green','red','purple','orange', 'dark'];
 	var ii = 0;
 	$(".slider-opts").each(function() {
@@ -195,7 +195,7 @@ function initSpinner(){
 		$this.hide().after('<span />');
 		$this.next().addClass('ui-slider-small')
 		.addClass("inline ui-slider-"+slide_styles[ii++ % slide_styles.length])
-		.css('width','400px').slider({
+		.width(width).slider({
 			value:parseInt($this.val()),
 			range: "min",
 			animate:true,
@@ -229,9 +229,9 @@ function initSpinner(){
 				else if(inVal>max){
 					Tipped.show("#"+$(this).attr("id"));
 					$(this).val(max)
-					spinnerUpdateValue();
+					spinnerUpdateValue(width);
 				}else{
-					spinnerUpdateValue();
+					spinnerUpdateValue(width);
 				}
 			}
 		})
@@ -258,7 +258,7 @@ function spinnerUpdate() {
  * 通过更改值更新滑块
  * @returns
  */
-function spinnerUpdateValue() {
+function spinnerUpdateValue(width) {
 	var slide_styles = ['', 'green','red','purple','orange', 'dark'];
 	var ii = 0;
 	$(".slider-opts").each(function() {
@@ -266,9 +266,9 @@ function spinnerUpdateValue() {
 		$this.parent().find("span").remove();
 		$this.closest('div').find("input.docker-set").val($(this).parent().parent().find("input").val());
 		$this.hide().after('<span />');
-		$this.next().addClass('ui-slider-small').
-		addClass("inline ui-slider-"+slide_styles[ii++ % slide_styles.length]).
-		css('width','400px').slider({
+		$this.next().addClass('ui-slider-small')
+		.addClass("inline ui-slider-"+slide_styles[ii++ % slide_styles.length])
+		.width(width).slider({
 			value:parseInt($(this).parent().parent().find("input").val()),
 			range: "min",
 			animate:true,
@@ -310,13 +310,13 @@ function initMineralSpinner(){
 						$("<input></input>").attr({"type":"text","name":"originPhases"}).addClass("mineral-spinner").width(60)
 					)
 					.append(
-						$("<input></input>").attr({"type":"hidden","name":"originPhases"}).val(val.code)
+						$("<input></input>").attr({"type":"hidden","name":"hOriginPhases"}).val(val.code)
 					)
 					.append(
 						$("<input></input>").attr({"type":"text","name":"meltPhases"}).addClass("mineral-spinner").width(60)
 					)
 					.append(
-						$("<input></input>").attr({"type":"hidden","name":"meltPhases"}).val(val.code)
+						$("<input></input>").attr({"type":"hidden","name":"hMeltPhases"}).val(val.code)
 					)
 				)
 			});
@@ -337,7 +337,8 @@ function initMineralSpinner(){
 			.closest('.ace-spinner')
 			.on('changed.fu.spinbox', function(){
 				//获取矿物比例
-				setMineralStatus();
+				setMineralStatus("originPhases");
+				setMineralStatus("meltPhases");
 				//绘图
 				doDraw($.cxt + "/chart/draw",true);
 			});;
@@ -524,19 +525,28 @@ function doDraw(url,preview){
 	data.exprId=$("#crystal-style").val();
 	data.magmaType=$("#melt-style").val();
 	data.stdId=$("#std-val").val();
-	data.minerals=[];
+	data.mineralsD=[];
+	data.mineralsP=[];
 	data.fVal=$("#crystalF").val()/100;
 	data.cR=$("#crystalSr").val()/100;
 	data.mR=$("#crystalBr").val()/100;
 	data.mixId=$("#mix-obj").val();
 	data.preview=preview;
 	
-	//获取矿物比例
+	//获取矿物比例(D)
 	$.each($(".mineral-lst>div.input-group"),function(index,val){
-		var displayVal=$(val).find("input[type=text]").val().replace("%","");;
-		
-		data.minerals.push({
-			"code":$(val).find("input[type=hidden]").val(),
+		var displayVal=$(val).find("input[name=originPhases]").val().replace("%","");;
+		data.mineralsD.push({
+			"code":$(val).find("input[name=hOriginPhases]").val(),
+			"value":displayVal/100
+		});
+	});
+	
+	//获取矿物比例(P)
+	$.each($(".mineral-lst>div.input-group"),function(index,val){
+		var displayVal=$(val).find("input[name=meltPhases]").val().replace("%","");;
+		data.mineralsP.push({
+			"code":$(val).find("input[name=hMeltPhases]").val(),
 			"value":displayVal/100
 		});
 	});
@@ -583,15 +593,15 @@ function doDraw(url,preview){
  * 设置矿物状态
  * @returns
  */
-function setMineralStatus(){
+function setMineralStatus(name){
 	debugger
 	var sum=0;
-	$.each($(".mineral-lst>div.input-group").find("input[type=text]"),function(index,val){
-		var displayVal=parseFloat($(this).val().replace("%",""))/100;
+	$.each($(".mineral-lst>div.input-group").find("input[name="+name+"]"),function(index,val){
+		var displayVal=parseFloat($(this).val().replace("%",""));
 		sum=sum+displayVal;
 	});
-	if(sum==1){
-		$.each($(".mineral-lst>div.input-group").find("input[type=text]"),function(){
+	if(sum==100){
+		$.each($(".mineral-lst>div.input-group").find("input[name="+name+"]"),function(){
 			if($(this).val()!='0%'){
 				$(this).css("background-color","yellow");
 			}
@@ -601,7 +611,7 @@ function setMineralStatus(){
 		});
 	}
 	else{
-		$.each($(".mineral-lst>div.input-group").find("input[type=text]"),function(){
+		$.each($(".mineral-lst>div.input-group").find("input[name="+name+"]"),function(){
 			if($(this).val()!='0%'){
 				$(this).css("background-color","red");
 			}

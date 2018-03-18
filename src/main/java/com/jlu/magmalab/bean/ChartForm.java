@@ -14,8 +14,11 @@ import java.util.List;
  */
 public class ChartForm {
 
-	/** 矿物比例 **/
-	private List<Select<Double>> minerals;
+	/** 矿物比例(D) **/
+	private List<Select<Double>> mineralsD;
+
+	/** 矿物比例(P) **/
+	private List<Select<Double>> mineralsP;
 
 	/** 公式Id **/
 	private String exprId;
@@ -51,24 +54,45 @@ public class ChartForm {
 	private boolean preview;
 
 	/**
-	 * minerals.
+	 * mineralsD.
 	 * 
-	 * @return the minerals
+	 * @return the mineralsD
 	 * @since JDK 1.6
 	 */
-	public List<Select<Double>> getMinerals() {
-		return minerals;
+	public List<Select<Double>> getMineralsD() {
+		return mineralsD;
 	}
 
 	/**
-	 * minerals.
+	 * mineralsD.
 	 * 
-	 * @param minerals
-	 *            the minerals to set
+	 * @param mineralsD
+	 *            the mineralsD to set
 	 * @since JDK 1.6
 	 */
-	public void setMinerals(List<Select<Double>> minerals) {
-		this.minerals = minerals;
+	public void setMineralsD(List<Select<Double>> mineralsD) {
+		this.mineralsD = mineralsD;
+	}
+
+	/**
+	 * mineralsP.
+	 * 
+	 * @return the mineralsP
+	 * @since JDK 1.6
+	 */
+	public List<Select<Double>> getMineralsP() {
+		return mineralsP;
+	}
+
+	/**
+	 * mineralsP.
+	 * 
+	 * @param mineralsP
+	 *            the mineralsP to set
+	 * @since JDK 1.6
+	 */
+	public void setMineralsP(List<Select<Double>> mineralsP) {
+		this.mineralsP = mineralsP;
 	}
 
 	/**
@@ -239,21 +263,22 @@ public class ChartForm {
 		this.legend = legend;
 	}
 
-	/** 
-	* preview. 
-	* 
-	* @return  the preview 
-	* @since   JDK 1.6 
-	*/
+	/**
+	 * preview.
+	 * 
+	 * @return the preview
+	 * @since JDK 1.6
+	 */
 	public boolean isPreview() {
 		return preview;
 	}
 
-	/** 
-	 * preview. 
+	/**
+	 * preview.
 	 * 
-	 * @param   preview    the preview to set 
-	 * @since   JDK 1.6 
+	 * @param preview
+	 *            the preview to set
+	 * @since JDK 1.6
 	 */
 	public void setPreview(boolean preview) {
 		this.preview = preview;
