@@ -19,13 +19,11 @@ import com.jlu.magmalab.bean.TmUserEx;
 import com.jlu.magmalab.bean.UserForm;
 import com.jlu.magmalab.dao.tables.daos.TmUserDao;
 import com.jlu.magmalab.dao.tables.daos.TmUserRoleDao;
-import com.jlu.magmalab.dao.tables.pojos.TmUser;
 import com.jlu.magmalab.dao.tables.pojos.TmUserRole;
 import com.jlu.magmalab.page.Page;
 import com.jlu.magmalab.page.PageHelper;
 import com.jlu.utils.IdGenerator;
 import com.jlu.utils.MD5;
-import com.jlu.utils.Session;
 
 @Component
 public class TmUserService {
@@ -53,6 +51,7 @@ public class TmUserService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String edit(TmUserEx tmUser) {
+		
 		try {
 			// 判断新增还是更新
 			if (StringUtils.isEmpty(tmUser.getUserId())) {
@@ -76,15 +75,13 @@ public class TmUserService {
 				tmUserRoleDao.insert(userRole);
 			} else {
 				tmUser.setUpdTime(new Timestamp(System.currentTimeMillis()));
-				TmUser tmp = dsl.selectFrom(TM_USER).where(TM_USER.USER_ID.eq(Session.getUser().getUserId()))
-						.fetchOneInto(TmUser.class);
-				Integer pwdStatus = tmp.getPwdStatus();
-				if (pwdStatus == null) {
-					tmUser.setPwdStatus(CST.PWD_STATUS_INIT);
-				} else {
-					tmUser.setPwdStatus(pwdStatus);
-				}
+				String userId=tmUser.getUserId();
 				tmUserDao.update(tmUser);
+				
+				dsl.update(TM_USER_ROLE)
+				.set(TM_USER_ROLE.ROLE_ID,tmUser.getRoleId())
+				.where(TM_USER_ROLE.USER_ID.eq(userId))
+				.execute();
 			}
 			return CST.RES_AUTO_DIALOG;
 		} catch (Exception e) {
@@ -103,9 +100,9 @@ public class TmUserService {
 	 */
 	public Page<TmUserEx> list(UserForm userForm) {
 		try {
-			TmUser tmUser = userForm.getTmUser();
+			TmUserEx tmUser = userForm.getTmUser();
 			SelectConditionStep<?> sql = dsl
-					.select(TM_USER.LOGIN_ID,TM_USER.MEMO,TM_USER.PHONE_NO,TM_USER.PWD_STATUS,TM_USER.SEX,TM_USER.UPD_TIME,TM_USER.USER_ID,TM_USER.USER_NAME,TM_ROLE.ROLE_NAME)
+					.select(TM_USER.LOGIN_ID,TM_USER.MEMO,TM_USER.PHONE_NO,TM_USER.PWD_STATUS,TM_USER.SEX,TM_USER.UPD_TIME,TM_USER.USER_ID,TM_USER.USER_NAME,TM_ROLE.ROLE_NAME,TM_ROLE.ROLE_ID)
 					.from(TM_USER)
 					.leftJoin(TM_USER_ROLE).on(TM_USER.USER_ID.eq(TM_USER_ROLE.USER_ID))
 					.leftJoin(TM_ROLE).on(TM_USER_ROLE.ROLE_ID.eq(TM_ROLE.ROLE_ID))
@@ -131,6 +128,11 @@ public class TmUserService {
 				if (tmUser.getPwdStatus() != null) {
 					sql.and(TM_USER.PWD_STATUS.eq(tmUser.getPwdStatus()));
 				}
+				
+				// 角色是否为空
+				if (!StringUtils.isEmpty(tmUser.getRoleId())) {
+					sql.and(TM_ROLE.ROLE_ID.eq(tmUser.getRoleId()));
+				}
 			}
 
 			// 添加排序
@@ -153,9 +155,13 @@ public class TmUserService {
 	 * @since JDK 1.6
 	 */
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void delete(String userId) {
+	public void delete(String userId,String roleId) {
 		try {
+			//删除用户
 			tmUserDao.deleteById(userId);
+
+			//删除角色
+			dsl.deleteFrom(TM_USER_ROLE).where(TM_USER_ROLE.USER_ID.eq(userId)).and(TM_USER_ROLE.ROLE_ID.eq(roleId)).execute();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
