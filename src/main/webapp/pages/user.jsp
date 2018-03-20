@@ -13,6 +13,13 @@
 					<option value="0">女</option>
 					<option value="1">男</option>
 				</select>
+				<select class="chosen-select fix-select" name="roleId" data-placeholder="请选择角色...">
+					<option value=""></option>
+					<option value="">全部</option>
+					<option value="0">管理员</option>
+					<option value="1">教师</option>
+					<option value="2">学生</option>
+				</select>
 				<select class="chosen-select fix-select" name="pwdStatus" data-placeholder="请选择密码状态...">
 					<option value=""></option>
 					<option value="">全部</option>
@@ -111,7 +118,7 @@
 										</span>
 										<select class="chosen-select form-control" name="roleId" id="role" data-placeholder="请选择角色...">
 											<option value=""></option>
-											<option value="1">老师</option>
+											<option value="1">教师</option>
 											<option value="2">学生</option>
 										</select>
 									</div>

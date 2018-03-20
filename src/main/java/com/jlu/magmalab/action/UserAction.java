@@ -1,7 +1,12 @@
 package com.jlu.magmalab.action;
 
+import static com.jlu.magmalab.dao.tables.TmRole.TM_ROLE;
+import static com.jlu.magmalab.dao.tables.TmUser.TM_USER;
+import static com.jlu.magmalab.dao.tables.TmUserRole.TM_USER_ROLE;
+
 import java.sql.Timestamp;
 
+import org.jooq.impl.DefaultDSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,6 +41,9 @@ public class UserAction {
 
 	@Autowired
 	private TmUserService tmUserService;
+	
+	@Autowired
+	private DefaultDSLContext dsl;
 
 	@Autowired
 	private TmUserDao tmUserDao;
@@ -105,10 +113,10 @@ public class UserAction {
 	 */
 	@RequestMapping(value = "/delete", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
 	@ResponseBody
-	public String delete(String userId) {
+	public String delete(String userId,String roleId) {
 		try {
 			// 1.查询数据
-			tmUserService.delete(userId);
+			tmUserService.delete(userId,roleId);
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, "删除成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -127,12 +135,27 @@ public class UserAction {
 	 */
 	@RequestMapping(value = "/get", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
 	@ResponseBody
-	public String get(String userId) {
+	public String get(String userId,String roleId) {
 		try {
 			// 0.参数调整
 			userId = (userId == null ? Session.getUser().getUserId() : userId);
 			// 1.查询数据
-			TmUser tmUser = tmUserDao.fetchOneByUserId(userId);
+			TmUserEx tmUser = dsl
+					.select(
+							TM_USER.LOGIN_ID,
+							TM_USER.SEX,
+							TM_USER.MEMO,
+							TM_USER.PHONE_NO,
+							TM_USER.USER_ID,
+							TM_USER.USER_NAME,
+							TM_ROLE.ROLE_ID
+					 )
+					.from(TM_USER)
+					.leftJoin(TM_USER_ROLE).on(TM_USER.USER_ID.eq(TM_USER_ROLE.USER_ID).and(TM_USER_ROLE.ROLE_ID.eq(roleId)))
+					.leftJoin(TM_ROLE).on(TM_USER_ROLE.ROLE_ID.eq(TM_ROLE.ROLE_ID))
+					.where(TM_USER.USER_ID.eq(userId))
+					.fetchOneInto(TmUserEx.class);
+			
 			return Ajax.responseString(CST.RES_SUCCESS, tmUser);
 		} catch (Exception e) {
 			e.printStackTrace();

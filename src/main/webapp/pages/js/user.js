@@ -110,9 +110,10 @@ function initGrid() {
 		height : 370,
 		// autowidth : true,
 		width : $(".page-content").width() - 20,
-		colNames : [ '用户ID', '登录用户名', '用户姓名', '用户角色','用户性别', '联系方式', '更新时间', '密码状态', '备注', '操作' ],
+		colNames : [ '用户ID', '角色ID','登录用户名', '用户姓名', '用户角色','用户性别', '联系方式', '更新时间', '密码状态', '备注', '操作' ],
 		colModel : [ 
 					{ name : 'userId', align : 'center', index : 'userId', sorttype : "int", editable : false, hidden : true }, 
+					{ name : 'roleId', align : 'center', index : 'roleId', sorttype : "int", editable : false, hidden : true },
 					{ name : 'loginId', align : 'center', index : 'login', sorttype : "int", editable : false }, 
 					{ name : 'userName', align : 'center', index : 'userName', sorttype : "int", editable : false },
 					{ name : 'roleName', align : 'center', index : 'roleName', sorttype : "int", editable : false },
@@ -202,14 +203,14 @@ function renderOperation(cellvalue, options, cell) {
 				.append(
 					$("<button></button>")
 					.append($("<i></i>").addClass("ace-icon bigger-130 fa fa-pencil-square-o green"))
-					.attr("onclick", "editUser('" + cell.userId + "')")
+					.attr("onclick", "editUser('" + cell.userId + "','"+cell.roleId + "')")
 					.addClass("btn btn-xs grid-btn grids-btn")
 					.attr("title", "编辑")
 				)
 				.append(
 					$("<button></button>")
 					.append($("<i></i>").addClass("ui-icon bigger-130 fa fa fa-trash-o red"))
-					.attr("onclick","delUser('" + cell.userId + "')")
+					.attr("onclick","delUser('" + cell.userId + "','"+cell.roleId+"')")
 					.addClass("btn btn-xs grid-btn grids-btn")
 					.attr("title", "删除")
 				)
@@ -241,7 +242,7 @@ function doSearch(){
  * @param userId
  * @returns
  */
-function delUser(userId){
+function delUser(userId,roleId){
 	//提示框打开
     bootbox.confirm({
         title: "消息提示",
@@ -259,7 +260,7 @@ function delUser(userId){
         		if(result){
         			$.ajax({
         				url : $.cxt + '/user/delete',
-        				data : {"userId" : userId},
+        				data : {"userId" : userId,"roleId":roleId},
         				type : "POST",
         				dataType:"json",
         				success : function(data) {
@@ -277,10 +278,10 @@ function delUser(userId){
  * @param userId
  * @returns
  */
-function editUser(userId){
+function editUser(userId,roleId){
 	$.ajax({
 		url : $.cxt + '/user/get',
-		data : {"userId" : userId},
+		data : {"userId" : userId,"roleId":roleId},
 		type : "POST",
 		dataType:"json",
 		success : function(json) {
@@ -292,6 +293,11 @@ function editUser(userId){
 					if(key=="sex"){
 						$("#sex").val(value);
 						$("#sex").trigger('chosen:updated');
+					}
+					
+					if(key=="roleId"){
+						$("#role").val(value);
+						$("#role").trigger('chosen:updated');
 					}
 					
 					if(key=="memo"){
@@ -356,10 +362,13 @@ function openModal(flag){
 	//清除下拉框状态
 	$("#sex").val("");
 	$("#sex").trigger("chosen:updated");
+	$("#role").val("");
+	$("#role").trigger("chosen:updated");
 	
 	// 清除form的验证状态
 	$('#createUserForm').bootstrapValidator('resetForm', 'true');
 	document.getElementById("createUserForm").reset();
+	$("#createUserForm>input[name=userId]").val("");
 	if(!flag){
 		$("#userModal .modal-title").empty().append($("<i></i>").addClass("ace-icon fa fa-pencil-square-o")).append("编辑用户");
 	}
