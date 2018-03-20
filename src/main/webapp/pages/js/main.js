@@ -35,6 +35,13 @@ $(function() {
 				$("#menuCtn")
 				.append(
 					$("<li></li>").append(
+						$("<a></a>").addClass("dropdown-toggle menu-anchor").attr({"href":"#","path":$.cxt+"/pages/parameter.jsp"})
+						.append($("<i></i>").addClass("menu-icon fa fa-diamond"))
+						.append($("<span></span>").addClass("menu-text").append("参数设置"))
+					)
+				)
+				.append(
+					$("<li></li>").append(
 						$("<a></a>").addClass("dropdown-toggle menu-anchor").attr({"href":"#","path":$.cxt+"/pages/crystal.jsp"})
 						.append($("<i></i>").addClass("menu-icon fa fa-diamond"))
 						.append($("<span></span>").addClass("menu-text").append("结晶实验"))

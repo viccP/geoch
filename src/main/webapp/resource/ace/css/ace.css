@@ -13156,27 +13156,31 @@ li.item-default {
 .profile-user-info {
   display: table;
   width: 98%;
-  width: calc(100% - 24px);
+  /* modify by lbq */
+  width: calc(100% - 145px);
   margin: 0 auto;
 }
 .profile-info-row {
   display: table-row;
 }
 .profile-info-name {
-  text-align: right;
+  text-align: center;
   padding: 6px 10px 6px 4px;
   font-weight: normal;
   color: #667E99;
   background-color: transparent;
   border-top: 1px dotted #D5E4F1;
   display: table-cell;
-  width: 110px;
+  /* alter by lbq for element edit */
+  width: 1%;
   vertical-align: middle;
 }
 .profile-info-value {
   display: table-cell;
   padding: 6px 4px 6px 6px;
   border-top: 1px dotted #D5E4F1;
+  /* add by lbq */
+  width:1%;
 }
 .profile-info-value > span + span:before {
   /* for a list of values (such as location city & country) put a comma between them */
@@ -16067,7 +16071,7 @@ img.editable-click:hover {
   margin-left: 1px;
 }
 .editable-buttons .btn {
-  padding: 0;
+  padding: 6px;
   width: 28px;
   line-height: 24px;
   border-width: 3px;

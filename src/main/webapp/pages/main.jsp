@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/ace/css/font-awesome.css" />
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/ace/css/ace-fonts.css" />
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/ace/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
+<link rel="stylesheet" href="<%=request.getContextPath()%>/resource/ace/css/bootstrap-editable.css" />
 <link rel="stylesheet" href="<%=request.getContextPath()%>/pages/css/main.css" />
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/ace/css/select2.css" />
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/ace/css/chosen.css">
@@ -304,6 +305,8 @@
 	<script src="<%=request.getContextPath()%>/resource/ace/js/jquery-ui.custom.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/ace/js/jquery.knob.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/ace/js/fuelux/fuelux.spinner.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/x-editable/bootstrap-editable.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/x-editable/ace-editable.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/elements.scroller.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/elements.colorpicker.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/elements.fileinput.js"></script>
