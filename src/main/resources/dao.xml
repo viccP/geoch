@@ -5,10 +5,7 @@
 	<bean id="tmUserDao" class="com.jlu.magmalab.dao.tables.daos.TmUserDao">
 		<constructor-arg ref="config" />
 	</bean>
-	<bean id="tmMixTypeDao" class="com.jlu.magmalab.dao.tables.daos.TmMixTypeDao">
-		<constructor-arg ref="config" />
-	</bean>
-	<bean id="tmStdTypeDao" class="com.jlu.magmalab.dao.tables.daos.TmStdTypeDao">
+	<bean id="tmBasicDataTypeDao" class="com.jlu.magmalab.dao.tables.daos.TmBasicDataTypeDao">
 		<constructor-arg ref="config" />
 	</bean>
 	<bean id="tmDistributeValueDao" class="com.jlu.magmalab.dao.tables.daos.TmDistributeValueDao">
@@ -18,9 +15,6 @@
 		<constructor-arg ref="config" />
 	</bean>
 	<bean id="tmExprDao" class="com.jlu.magmalab.dao.tables.daos.TmExprDao">
-		<constructor-arg ref="config" />
-	</bean>
-	<bean id="tmInitialTypeDao" class="com.jlu.magmalab.dao.tables.daos.TmInitialTypeDao">
 		<constructor-arg ref="config" />
 	</bean>
 	<bean id="tmUserRoleDao" class="com.jlu.magmalab.dao.tables.daos.TmUserRoleDao">

@@ -4,18 +4,14 @@
 package com.jlu.magmalab.dao;
 
 
+import com.jlu.magmalab.dao.tables.TmBasicDataType;
+import com.jlu.magmalab.dao.tables.TmBasicDataValue;
 import com.jlu.magmalab.dao.tables.TmDistributeValue;
 import com.jlu.magmalab.dao.tables.TmElement;
 import com.jlu.magmalab.dao.tables.TmExpr;
-import com.jlu.magmalab.dao.tables.TmInitialType;
-import com.jlu.magmalab.dao.tables.TmInitialValue;
 import com.jlu.magmalab.dao.tables.TmMeltType;
 import com.jlu.magmalab.dao.tables.TmMineral;
-import com.jlu.magmalab.dao.tables.TmMixType;
-import com.jlu.magmalab.dao.tables.TmMixValue;
 import com.jlu.magmalab.dao.tables.TmRole;
-import com.jlu.magmalab.dao.tables.TmStdType;
-import com.jlu.magmalab.dao.tables.TmStdValue;
 import com.jlu.magmalab.dao.tables.TmUser;
 import com.jlu.magmalab.dao.tables.TmUserRole;
 
@@ -36,6 +32,16 @@ import javax.annotation.Generated;
 public class Tables {
 
     /**
+     * The table <code>magmLab.TM_BASIC_DATA_TYPE</code>.
+     */
+    public static final TmBasicDataType TM_BASIC_DATA_TYPE = com.jlu.magmalab.dao.tables.TmBasicDataType.TM_BASIC_DATA_TYPE;
+
+    /**
+     * The table <code>magmLab.TM_BASIC_DATA_VALUE</code>.
+     */
+    public static final TmBasicDataValue TM_BASIC_DATA_VALUE = com.jlu.magmalab.dao.tables.TmBasicDataValue.TM_BASIC_DATA_VALUE;
+
+    /**
      * The table <code>magmLab.TM_DISTRIBUTE_VALUE</code>.
      */
     public static final TmDistributeValue TM_DISTRIBUTE_VALUE = com.jlu.magmalab.dao.tables.TmDistributeValue.TM_DISTRIBUTE_VALUE;
@@ -51,16 +57,6 @@ public class Tables {
     public static final TmExpr TM_EXPR = com.jlu.magmalab.dao.tables.TmExpr.TM_EXPR;
 
     /**
-     * The table <code>magmLab.TM_INITIAL_TYPE</code>.
-     */
-    public static final TmInitialType TM_INITIAL_TYPE = com.jlu.magmalab.dao.tables.TmInitialType.TM_INITIAL_TYPE;
-
-    /**
-     * The table <code>magmLab.TM_INITIAL_VALUE</code>.
-     */
-    public static final TmInitialValue TM_INITIAL_VALUE = com.jlu.magmalab.dao.tables.TmInitialValue.TM_INITIAL_VALUE;
-
-    /**
      * The table <code>magmLab.TM_MELT_TYPE</code>.
      */
     public static final TmMeltType TM_MELT_TYPE = com.jlu.magmalab.dao.tables.TmMeltType.TM_MELT_TYPE;
@@ -71,29 +67,9 @@ public class Tables {
     public static final TmMineral TM_MINERAL = com.jlu.magmalab.dao.tables.TmMineral.TM_MINERAL;
 
     /**
-     * The table <code>magmLab.TM_MIX_TYPE</code>.
-     */
-    public static final TmMixType TM_MIX_TYPE = com.jlu.magmalab.dao.tables.TmMixType.TM_MIX_TYPE;
-
-    /**
-     * The table <code>magmLab.TM_MIX_VALUE</code>.
-     */
-    public static final TmMixValue TM_MIX_VALUE = com.jlu.magmalab.dao.tables.TmMixValue.TM_MIX_VALUE;
-
-    /**
      * The table <code>magmLab.TM_ROLE</code>.
      */
     public static final TmRole TM_ROLE = com.jlu.magmalab.dao.tables.TmRole.TM_ROLE;
-
-    /**
-     * The table <code>magmLab.TM_STD_TYPE</code>.
-     */
-    public static final TmStdType TM_STD_TYPE = com.jlu.magmalab.dao.tables.TmStdType.TM_STD_TYPE;
-
-    /**
-     * The table <code>magmLab.TM_STD_VALUE</code>.
-     */
-    public static final TmStdValue TM_STD_VALUE = com.jlu.magmalab.dao.tables.TmStdValue.TM_STD_VALUE;
 
     /**
      * 用户表

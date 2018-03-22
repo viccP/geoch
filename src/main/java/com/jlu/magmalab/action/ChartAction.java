@@ -132,13 +132,35 @@ public class ChartAction {
 		try {
 			EchartOpt opt = new EchartOpt();
 			// 获取初始岩浆或者熔体数据
-			opt.getRee().addAll((getInitialSeries(labService.getInitialData(CST.REE_ELE_INDEX_ARRAY, initialId), legend)));
-			opt.getTrace().addAll((getInitialSeries(labService.getInitialData(CST.TRACE_ELE_INDEX_ARRAY, initialId), legend)));
+			opt.getRee().addAll((getInitialSeries(labService.getBasicData(CST.REE_ELE_INDEX_ARRAY, initialId), legend)));
+			opt.getTrace().addAll((getInitialSeries(labService.getBasicData(CST.TRACE_ELE_INDEX_ARRAY, initialId), legend)));
 			opt.getLegend().add(legend);
 			// 存入缓存
 			Session.saveInitialCache(Utils.clone(opt));
 			// 渲染图形
 			render(stdId, opt, Session.getSampleCache(), Session.getDrawCache(), Session.getTmpCache());
+			return Ajax.responseString(CST.RES_SUCCESS, opt);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, CST.MSG_SYS_ERR);
+		}
+	}
+
+	/**
+	 * 
+	 * standard:(获取标准化值图形). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param stdId
+	 * @return
+	 * @since JDK 1.6
+	 */
+	@RequestMapping(value = "/standard", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
+	@ResponseBody
+	public String standard(String stdId) {
+		try {
+			EchartOpt opt = new EchartOpt();
+			render(stdId, opt, Session.getSampleCache(), Session.getInitialCache(), Session.getDrawCache(), Session.getTmpCache());
 			return Ajax.responseString(CST.RES_SUCCESS, opt);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -267,7 +289,7 @@ public class ChartAction {
 		// 绘制稀土元素配分模式图
 		Parameter prm = new Parameter();
 		Matrix D = distributeService.sigma(mineralsD, chartForm.getMagmaType(), eleIndexArray);
-		if(!mineralsP.isEmpty()) {
+		if (!mineralsP.isEmpty()) {
 			Matrix P = distributeService.sigma(mineralsP, chartForm.getMagmaType(), eleIndexArray);
 			prm.setP(P);
 		}
@@ -407,8 +429,8 @@ public class ChartAction {
 	 */
 	public void render(String stdId, EchartOpt opt, EchartOpt... opts) {
 		// 获取标准化值
-		List<Double> stdReeData = labService.getStdData(CST.REE_ELE_INDEX_ARRAY, stdId);
-		List<Double> stdTraceData = labService.getStdData(CST.TRACE_ELE_INDEX_ARRAY, stdId);
+		List<Double> stdReeData = labService.getBasicData(CST.REE_ELE_INDEX_ARRAY, stdId);
+		List<Double> stdTraceData = labService.getBasicData(CST.TRACE_ELE_INDEX_ARRAY, stdId);
 
 		// 当前数据
 		if (!opt.getRee().isEmpty()) {

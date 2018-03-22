@@ -19,8 +19,8 @@ $(function() {
 	//初始岩浆下拉菜单
 	initSelect({
 		"id":"#inital-magma",
-		"url":$.cxt + '/lab/initial',
-		"data":{"initialType":0}
+		"url":$.cxt + '/basic/dataName',
+		"data":{"dataType":0}
 	});
 	//绑定事件
 	$("#inital-magma").on('change',function(){
@@ -47,7 +47,8 @@ $(function() {
 	//混染物类型下拉菜单
 	initSelect({
 		"id":"#mix-obj",
-		"url":$.cxt + '/lab/mixType'
+		"url":$.cxt + '/basic/dataName',
+		"data":{"dataType":3}
 	});
 	//绑定事件
 	$("#mix-obj").on('change',function(){
@@ -60,11 +61,20 @@ $(function() {
 	//标准化值类型下拉菜单
 	initSelect({
 		"id":"#std-val",
-		"url":$.cxt + '/lab/stdType'
+		"url":$.cxt + '/basic/dataName',
+		"data":{"dataType":2}
 	});
 	//绑定事件
 	$("#std-val").on('change',function(){
-		doDraw($.cxt + "/chart/draw",true);
+		$.ajax({
+			url : $.cxt+'/chart/standard',
+			type : "POST",
+			dataType:"json",
+			data:{"stdId":$(this).val()},
+			success : function(json) {
+				renderChart(json.data);
+			}
+		});
 	});
 	
 	//定量模型下拉菜单
@@ -99,20 +109,16 @@ $(function() {
 			//解除混染物下拉不可用状态
 			$("#mix-obj").prop('disabled', true).trigger("chosen:updated");
 		}
-		
 		//绘图
 		if(val!='-1'){
 			doDraw($.cxt + "/chart/draw",true);
 		}
-		
 	});
-	
 	
 	/**
 	 * 矿物比例
 	 */
 	initMineralSpinner();
-	
 	
 	/**
 	 * 参数
@@ -131,7 +137,6 @@ $(function() {
 	//设置禁用
 	disableCoponent("#crystalBrDiv");
 	disableCoponent("#crystalSrDiv");
-	
 	
 	/**
 	 * 按钮

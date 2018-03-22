@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TmElement extends TableImpl<TmElementRecord> {
 
-    private static final long serialVersionUID = 2125788659;
+    private static final long serialVersionUID = -626576065;
 
     /**
      * The reference instance of <code>magmLab.TM_ELEMENT</code>
@@ -54,19 +54,24 @@ public class TmElement extends TableImpl<TmElementRecord> {
     }
 
     /**
-     * The column <code>magmLab.TM_ELEMENT.INDEX</code>.
+     * The column <code>magmLab.TM_ELEMENT.INDEX</code>. 序号
      */
-    public final TableField<TmElementRecord, Integer> INDEX = createField("INDEX", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+    public final TableField<TmElementRecord, Integer> INDEX = createField("INDEX", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "序号");
 
     /**
-     * The column <code>magmLab.TM_ELEMENT.ELEMENT_NAME</code>.
+     * The column <code>magmLab.TM_ELEMENT.ELEMENT_CODE</code>. 元素编码
      */
-    public final TableField<TmElementRecord, String> ELEMENT_NAME = createField("ELEMENT_NAME", org.jooq.impl.SQLDataType.CHAR(200), this, "");
+    public final TableField<TmElementRecord, String> ELEMENT_CODE = createField("ELEMENT_CODE", org.jooq.impl.SQLDataType.CHAR(200), this, "元素编码");
 
     /**
-     * The column <code>magmLab.TM_ELEMENT.MEMO</code>.
+     * The column <code>magmLab.TM_ELEMENT.ELEMENT_NAME</code>. 元素名称
      */
-    public final TableField<TmElementRecord, String> MEMO = createField("MEMO", org.jooq.impl.SQLDataType.CHAR(200), this, "");
+    public final TableField<TmElementRecord, String> ELEMENT_NAME = createField("ELEMENT_NAME", org.jooq.impl.SQLDataType.CHAR(200), this, "元素名称");
+
+    /**
+     * The column <code>magmLab.TM_ELEMENT.ELEMENT_PRONOUNCE</code>. 元素发音
+     */
+    public final TableField<TmElementRecord, String> ELEMENT_PRONOUNCE = createField("ELEMENT_PRONOUNCE", org.jooq.impl.SQLDataType.CHAR(200), this, "元素发音");
 
     /**
      * Create a <code>magmLab.TM_ELEMENT</code> table reference

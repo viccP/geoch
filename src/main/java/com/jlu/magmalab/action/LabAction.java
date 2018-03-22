@@ -19,15 +19,9 @@ import com.jlu.magmalab.bean.EchartOpt;
 import com.jlu.magmalab.bean.ImportData;
 import com.jlu.magmalab.bean.Select;
 import com.jlu.magmalab.dao.tables.daos.TmExprDao;
-import com.jlu.magmalab.dao.tables.daos.TmInitialTypeDao;
 import com.jlu.magmalab.dao.tables.daos.TmMineralDao;
-import com.jlu.magmalab.dao.tables.daos.TmMixTypeDao;
-import com.jlu.magmalab.dao.tables.daos.TmStdTypeDao;
 import com.jlu.magmalab.dao.tables.pojos.TmExpr;
-import com.jlu.magmalab.dao.tables.pojos.TmInitialType;
 import com.jlu.magmalab.dao.tables.pojos.TmMineral;
-import com.jlu.magmalab.dao.tables.pojos.TmMixType;
-import com.jlu.magmalab.dao.tables.pojos.TmStdType;
 import com.jlu.magmalab.service.ExcelService;
 import com.jlu.utils.Ajax;
 import com.jlu.utils.Session;
@@ -48,15 +42,6 @@ import com.jlu.utils.Utils;
 public class LabAction {
 
 	@Autowired
-	private TmMixTypeDao tmMixTypeDao;
-
-	@Autowired
-	private TmStdTypeDao tmStdTypeDao;
-
-	@Autowired
-	private TmInitialTypeDao tmInitialTypeDao;
-
-	@Autowired
 	private TmMineralDao tmMineralDao;
 
 	@Autowired
@@ -64,34 +49,6 @@ public class LabAction {
 
 	@Autowired
 	private ExcelService excelService;
-
-	/**
-	 * 
-	 * mixType:(获取混染物类型). <br/>
-	 * 
-	 * @author liboqiang
-	 * @return
-	 * @since JDK 1.6
-	 */
-	@RequestMapping(value = "/mixType", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
-	@ResponseBody
-	public String mixType() {
-		try {
-
-			List<TmMixType> record = tmMixTypeDao.findAll();
-			List<Select<String>> res = record.stream().map(rs -> {
-				Select<String> bean = new Select<>();
-				bean.setCode(rs.getMixId());
-				bean.setValue(rs.getMixName());
-				return bean;
-			}).collect(Collectors.toList());
-
-			return Ajax.responseString(CST.RES_SUCCESS, res);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Ajax.responseString(CST.RES_AUTO_DIALOG, CST.MSG_SYS_ERR);
-		}
-	}
 
 	/**
 	 * 
@@ -112,34 +69,6 @@ public class LabAction {
 			Session.saveTmpCache(new EchartOpt());
 
 			return Ajax.responseString(CST.RES_SUCCESS);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Ajax.responseString(CST.RES_AUTO_DIALOG, CST.MSG_SYS_ERR);
-		}
-	}
-
-	/**
-	 * 
-	 * stdType:(获取标准化值类型). <br/>
-	 * 
-	 * @author liboqiang
-	 * @return
-	 * @since JDK 1.6
-	 */
-	@RequestMapping(value = "/stdType", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
-	@ResponseBody
-	public String stdType() {
-		try {
-
-			List<TmStdType> record = tmStdTypeDao.findAll();
-			List<Select<String>> res = record.stream().map(rs -> {
-				Select<String> bean = new Select<String>();
-				bean.setCode(rs.getStdId());
-				bean.setValue(rs.getStdName());
-				return bean;
-			}).collect(Collectors.toList());
-
-			return Ajax.responseString(CST.RES_SUCCESS, res);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, CST.MSG_SYS_ERR);
@@ -193,34 +122,6 @@ public class LabAction {
 				Select<String> bean = new Select<>();
 				bean.setCode(rs.getExprId());
 				bean.setValue(rs.getExprName());
-				return bean;
-			}).collect(Collectors.toList());
-
-			return Ajax.responseString(CST.RES_SUCCESS, res);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Ajax.responseString(CST.RES_AUTO_DIALOG, CST.MSG_SYS_ERR);
-		}
-	}
-
-	/**
-	 * 
-	 * initial:(获取初始岩浆/熔体). <br/>
-	 * 
-	 * @author liboqiang
-	 * @param initialType
-	 * @return
-	 * @since JDK 1.6
-	 */
-	@RequestMapping(value = "/initial", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
-	@ResponseBody
-	public String initial(int initialType) {
-		try {
-			List<TmInitialType> record = tmInitialTypeDao.fetchByInitialTyp(initialType);
-			List<Select<String>> res = record.stream().map(rs -> {
-				Select<String> bean = new Select<>();
-				bean.setCode(rs.getInitialId());
-				bean.setValue(rs.getInitialName());
 				return bean;
 			}).collect(Collectors.toList());
 

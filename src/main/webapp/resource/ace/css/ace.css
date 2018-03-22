@@ -13157,7 +13157,7 @@ li.item-default {
   display: table;
   width: 98%;
   /* modify by lbq */
-  width: calc(100% - 145px);
+  width: calc(100% - 51px);
   margin: 0 auto;
 }
 .profile-info-row {

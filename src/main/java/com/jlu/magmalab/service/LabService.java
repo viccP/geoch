@@ -1,8 +1,6 @@
 package com.jlu.magmalab.service;
 
-import static com.jlu.magmalab.dao.tables.TmInitialValue.TM_INITIAL_VALUE;
-import static com.jlu.magmalab.dao.tables.TmMixValue.TM_MIX_VALUE;
-import static com.jlu.magmalab.dao.tables.TmStdValue.TM_STD_VALUE;
+import static com.jlu.magmalab.dao.tables.TmBasicDataValue.TM_BASIC_DATA_VALUE;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jlu.cst.CST;
-import com.jlu.magmalab.dao.tables.pojos.TmInitialValue;
-import com.jlu.magmalab.dao.tables.pojos.TmMixValue;
-import com.jlu.magmalab.dao.tables.pojos.TmStdValue;
+import com.jlu.magmalab.dao.tables.pojos.TmBasicDataValue;;
 
 /**
  * 
@@ -36,7 +32,7 @@ public class LabService {
 
 	/**
 	 * 
-	 * getStdData:(获取标准化值). <br/>
+	 * getBasicData:(获取基础数据). <br/>
 	 * 
 	 * @author liboqiang
 	 * @param eleIndexArray
@@ -44,31 +40,14 @@ public class LabService {
 	 * @return
 	 * @since JDK 1.6
 	 */
-	public List<Double> getStdData(List<Integer> eleIndexArray, String stdId) {
-		return dsl.select(TM_STD_VALUE.STD_VALUE, TM_STD_VALUE.ELE_INDEX).from(TM_STD_VALUE).where(TM_STD_VALUE.ELE_INDEX.in(eleIndexArray)).and(TM_STD_VALUE.STD_ID.eq(stdId)).fetchInto(TmStdValue.class).stream().sorted((s1, s2) -> {
+	public List<Double> getBasicData(List<Integer> eleIndexArray, String dataId) {
+		return dsl.select(TM_BASIC_DATA_VALUE.DATA_VALUE, TM_BASIC_DATA_VALUE.ELE_INDEX).from(TM_BASIC_DATA_VALUE).where(TM_BASIC_DATA_VALUE.ELE_INDEX.in(eleIndexArray)).and(TM_BASIC_DATA_VALUE.DATA_ID.eq(dataId)).fetchInto(TmBasicDataValue.class).stream().sorted((s1, s2) -> {
 			int io1 = eleIndexArray.indexOf(s1.getEleIndex());
 			int io2 = eleIndexArray.indexOf(s2.getEleIndex());
 			return io1 - io2;
-		}).map(s -> s.getStdValue()).collect(Collectors.toList());
+		}).map(s -> s.getDataValue()).collect(Collectors.toList());
 	}
 
-	/**
-	 * 
-	 * getInitialData:(获取初始岩浆或者熔体). <br/>
-	 * 
-	 * @author liboqiang
-	 * @param eleIndexArray
-	 * @param stdId
-	 * @return
-	 * @since JDK 1.6
-	 */
-	public List<Double> getInitialData(List<Integer> eleIndexArray, String initialId) {
-		return dsl.select(TM_INITIAL_VALUE.INITIAL_VALUE, TM_INITIAL_VALUE.ELE_INDEX).from(TM_INITIAL_VALUE).where(TM_INITIAL_VALUE.ELE_INDEX.in(eleIndexArray)).and(TM_INITIAL_VALUE.INITIAL_ID.eq(initialId)).fetchInto(TmInitialValue.class).stream().sorted((s1, s2) -> {
-			int io1 = eleIndexArray.indexOf(s1.getEleIndex());
-			int io2 = eleIndexArray.indexOf(s2.getEleIndex());
-			return io1 - io2;
-		}).map(s -> s.getInitialValue()).collect(Collectors.toList());
-	}
 
 	/**
 	 * 
@@ -88,11 +67,7 @@ public class LabService {
 			}
 			return rtn;
 		} else {
-			return dsl.select(TM_MIX_VALUE.MIX_VALUE, TM_MIX_VALUE.ELE_INDEX).from(TM_MIX_VALUE).where(TM_MIX_VALUE.ELE_INDEX.in(eleIndexArray)).and(TM_MIX_VALUE.MIX_ID.eq(mixId)).fetchInto(TmMixValue.class).stream().sorted((s1, s2) -> {
-				int io1 = eleIndexArray.indexOf(s1.getEleIndex());
-				int io2 = eleIndexArray.indexOf(s2.getEleIndex());
-				return io1 - io2;
-			}).map(s -> s.getMixValue()).collect(Collectors.toList());
+			return getBasicData(eleIndexArray,mixId);
 		}
 	}
 

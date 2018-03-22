@@ -65,6 +65,13 @@ public class TmElementDao extends DAOImpl<TmElementRecord, com.jlu.magmalab.dao.
     }
 
     /**
+     * Fetch records that have <code>ELEMENT_CODE IN (values)</code>
+     */
+    public List<com.jlu.magmalab.dao.tables.pojos.TmElement> fetchByElementCode(String... values) {
+        return fetch(TmElement.TM_ELEMENT.ELEMENT_CODE, values);
+    }
+
+    /**
      * Fetch records that have <code>ELEMENT_NAME IN (values)</code>
      */
     public List<com.jlu.magmalab.dao.tables.pojos.TmElement> fetchByElementName(String... values) {
@@ -72,9 +79,9 @@ public class TmElementDao extends DAOImpl<TmElementRecord, com.jlu.magmalab.dao.
     }
 
     /**
-     * Fetch records that have <code>MEMO IN (values)</code>
+     * Fetch records that have <code>ELEMENT_PRONOUNCE IN (values)</code>
      */
-    public List<com.jlu.magmalab.dao.tables.pojos.TmElement> fetchByMemo(String... values) {
-        return fetch(TmElement.TM_ELEMENT.MEMO, values);
+    public List<com.jlu.magmalab.dao.tables.pojos.TmElement> fetchByElementPronounce(String... values) {
+        return fetch(TmElement.TM_ELEMENT.ELEMENT_PRONOUNCE, values);
     }
 }

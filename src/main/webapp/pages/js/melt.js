@@ -2,7 +2,6 @@
  * 
  */
 $(function() {
-
 	//初始化图表
 	initEchart();
 	
@@ -19,8 +18,8 @@ $(function() {
 	//初始岩浆下拉菜单
 	initSelect({
 		"id":"#inital-magma",
-		"url":$.cxt + '/lab/initial',
-		"data":{"initialType":0}
+		"url":$.cxt + '/basic/dataName',
+		"data":{"dataType":1}
 	});
 	//绑定事件
 	$("#inital-magma").on('change',function(){
@@ -47,11 +46,20 @@ $(function() {
 	//标准化值类型下拉菜单
 	initSelect({
 		"id":"#std-val",
-		"url":$.cxt + '/lab/stdType'
+		"url":$.cxt + '/basic/dataName',
+		"data":{"dataType":2}
 	});
 	//绑定事件
 	$("#std-val").on('change',function(){
-		doDraw($.cxt + "/chart/draw",true);
+		$.ajax({
+			url : $.cxt+'/chart/standard',
+			type : "POST",
+			dataType:"json",
+			data:{"stdId":$(this).val()},
+			success : function(json) {
+				renderChart(json.data);
+			}
+		});
 	});
 	
 	//定量模型下拉菜单
@@ -70,12 +78,10 @@ $(function() {
 		}
 	});
 	
-	
 	/**
 	 * 矿物比例
 	 */
 	initMineralSpinner();
-	
 	
 	/**
 	 * 参数
@@ -130,7 +136,6 @@ $(function() {
 	});
 });
 
-
 /**
  * 获取下拉菜单
  * @param opt{id,url,data}
@@ -145,7 +150,6 @@ function initSelect(opt){
 				$("<option></option>").attr("value","-1").append(_this.attr("data-placeholder"))	
 			)
 		}
-		
 		$.ajax($.extend({data:opt.data},{
 			url:opt.url,
 			type : "POST",
@@ -180,7 +184,6 @@ function initSelect(opt){
 		});
 	}
 }
-
 
 /**
  * 初始化滑块
@@ -510,9 +513,6 @@ function renderChart(chartOpt){
 	traceOption.legend[0].data=chartOpt.legend;
 	traceOption.series=chartOpt.trace;
 	echartInstance.traceSpiderChart.setOption(traceOption,true);
-
-	//显示图形
-//	$("#ace-settings-btn").trigger("click");
 }
 
 /**

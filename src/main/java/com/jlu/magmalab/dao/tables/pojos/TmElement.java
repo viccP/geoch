@@ -22,28 +22,32 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TmElement implements Serializable {
 
-    private static final long serialVersionUID = 761902511;
+    private static final long serialVersionUID = -687154767;
 
     private Integer index;
+    private String  elementCode;
     private String  elementName;
-    private String  memo;
+    private String  elementPronounce;
 
     public TmElement() {}
 
     public TmElement(TmElement value) {
         this.index = value.index;
+        this.elementCode = value.elementCode;
         this.elementName = value.elementName;
-        this.memo = value.memo;
+        this.elementPronounce = value.elementPronounce;
     }
 
     public TmElement(
         Integer index,
+        String  elementCode,
         String  elementName,
-        String  memo
+        String  elementPronounce
     ) {
         this.index = index;
+        this.elementCode = elementCode;
         this.elementName = elementName;
-        this.memo = memo;
+        this.elementPronounce = elementPronounce;
     }
 
     public Integer getIndex() {
@@ -54,6 +58,14 @@ public class TmElement implements Serializable {
         this.index = index;
     }
 
+    public String getElementCode() {
+        return this.elementCode;
+    }
+
+    public void setElementCode(String elementCode) {
+        this.elementCode = elementCode;
+    }
+
     public String getElementName() {
         return this.elementName;
     }
@@ -62,12 +74,12 @@ public class TmElement implements Serializable {
         this.elementName = elementName;
     }
 
-    public String getMemo() {
-        return this.memo;
+    public String getElementPronounce() {
+        return this.elementPronounce;
     }
 
-    public void setMemo(String memo) {
-        this.memo = memo;
+    public void setElementPronounce(String elementPronounce) {
+        this.elementPronounce = elementPronounce;
     }
 
     @Override
@@ -75,8 +87,9 @@ public class TmElement implements Serializable {
         StringBuilder sb = new StringBuilder("TmElement (");
 
         sb.append(index);
+        sb.append(", ").append(elementCode);
         sb.append(", ").append(elementName);
-        sb.append(", ").append(memo);
+        sb.append(", ").append(elementPronounce);
 
         sb.append(")");
         return sb.toString();
