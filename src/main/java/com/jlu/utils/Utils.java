@@ -10,6 +10,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -225,5 +226,17 @@ public class Utils {
 			e.printStackTrace();
 		}
 		return cloneObj;
+	}
+
+	/**
+	 * 
+	 * genId:(生成Id). <br/>
+	 * 
+	 * @author liboqiang
+	 * @return
+	 * @since JDK 1.6
+	 */
+	public static String genId() {
+		return UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
 	}
 }

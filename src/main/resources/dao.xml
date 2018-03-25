@@ -8,6 +8,9 @@
 	<bean id="tmBasicDataTypeDao" class="com.jlu.magmalab.dao.tables.daos.TmBasicDataTypeDao">
 		<constructor-arg ref="config" />
 	</bean>
+	<bean id="tmBasicDataValueDao" class="com.jlu.magmalab.dao.tables.daos.TmBasicDataValueDao">
+		<constructor-arg ref="config" />
+	</bean>
 	<bean id="tmDistributeValueDao" class="com.jlu.magmalab.dao.tables.daos.TmDistributeValueDao">
 		<constructor-arg ref="config" />
 	</bean>

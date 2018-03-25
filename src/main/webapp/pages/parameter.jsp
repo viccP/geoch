@@ -13,11 +13,11 @@
 				</select>
 				<select class="chosen-select" name="dataName" data-placeholder="请选择数据名称...">
 				</select>
-				<button type="button" class="btn btn-info btn-sm" id="addUser">
+				<button type="button" class="btn btn-info btn-sm" id="addBasicData">
 					<i class="ace-icon fa fa-plus-square-o bigger-110"></i>
 					新建
 				</button>
-				<button type="button" class="btn btn-info btn-sm" id="addUser">
+				<button type="button" class="btn btn-info btn-sm" id="importBasicData">
 					<i class="ace-icon fa fa-cloud-upload bigger-110"></i>
 					导入
 				</button>
@@ -29,19 +29,6 @@
 				<div class="profile-user-info profile-user-info-striped" id="ele-tbl"></div>
 			</div>
 		</div>
-		<div class="clearfix form-actions">
-			<div class="col-md-offset-3 col-md-9">
-				<button class="btn btn-info" type="button">
-					<i class="ace-icon fa fa-check bigger-110"></i>
-					Save
-				</button>
-
-				&nbsp; &nbsp;
-				<button class="btn" type="reset">
-					<i class="ace-icon fa fa-undo bigger-110"></i>
-					Reset
-				</button>
-			</div>
-		</div>
+		<div class="clearfix form-actions" id="basic-save-div"></div>
 	</div>
 </div>

@@ -22,8 +22,8 @@ import com.jlu.magmalab.dao.tables.daos.TmUserRoleDao;
 import com.jlu.magmalab.dao.tables.pojos.TmUserRole;
 import com.jlu.magmalab.page.Page;
 import com.jlu.magmalab.page.PageHelper;
-import com.jlu.utils.IdGenerator;
 import com.jlu.utils.MD5;
+import com.jlu.utils.Utils;
 
 @Component
 public class TmUserService {
@@ -61,7 +61,7 @@ public class TmUserService {
 				}
 
 				// 插入用户表
-				String userId = IdGenerator.genId();
+				String userId = Utils.genId();
 				tmUser.setUpdTime(new Timestamp(System.currentTimeMillis()));
 				tmUser.setPassword(MD5.getHash(CST.PWD_DEFAULT));
 				tmUser.setPwdStatus(CST.PWD_STATUS_INIT);

@@ -185,7 +185,7 @@ public class IndexAction {
 			return Ajax.responseString(CST.RES_SUCCESS);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, CST.MSG_SYS_ERR);
 		}
 	}
 

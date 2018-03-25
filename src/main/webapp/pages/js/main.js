@@ -23,20 +23,13 @@ $(function() {
 						.append($("<span></span>").addClass("menu-text").append("用户管理"))
 					)
 				)
-//				.append(
-//					$("<li></li>").append(
-//						$("<a></a>").addClass("dropdown-toggle menu-anchor").attr({"href":"#","path":$.cxt+"/pages/applyRecord.jsp"})
-//						.append($("<i></i>").addClass("menu-icon fa fa-history"))
-//						.append($("<span></span>").addClass("menu-text").append("申请记录"))
-//					)
-//				)
 			}
 			else{
 				$("#menuCtn")
 				.append(
 					$("<li></li>").append(
 						$("<a></a>").addClass("dropdown-toggle menu-anchor").attr({"href":"#","path":$.cxt+"/pages/parameter.jsp"})
-						.append($("<i></i>").addClass("menu-icon fa fa-diamond"))
+						.append($("<i></i>").addClass("menu-icon fa fa-gears"))
 						.append($("<span></span>").addClass("menu-text").append("参数设置"))
 					)
 				)
@@ -54,13 +47,6 @@ $(function() {
 						.append($("<span></span>").addClass("menu-text").append("熔融实验"))
 					)
 				)
-//				.append(
-//					$("<li></li>").append(
-//						$("<a></a>").addClass("dropdown-toggle menu-anchor").attr({"href":"#","path":$.cxt+"/pages/applyRecord.jsp"})
-//						.append($("<i></i>").addClass("menu-icon fa fa-history"))
-//						.append($("<span></span>").addClass("menu-text").append("申请记录"))
-//					)
-//				)
 			}
 		}
 	});

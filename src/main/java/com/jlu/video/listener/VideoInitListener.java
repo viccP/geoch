@@ -17,8 +17,8 @@ import com.jlu.cst.CST;
 import com.jlu.exception.ConfigException;
 import com.jlu.exception.SystemException;
 import com.jlu.utils.FFmpegUtils;
-import com.jlu.utils.IdGenerator;
 import com.jlu.utils.PropUtil;
+import com.jlu.utils.Utils;
 import com.jlu.video.bean.VideoInfo;
 
 public class VideoInitListener implements ServletContextListener {
@@ -86,7 +86,7 @@ public class VideoInitListener implements ServletContextListener {
 				String extType = fileUrl.substring(lastDotPos + 1, fileUrl.length());
 
 				// 定义需要的参数
-				String rndId = IdGenerator.genId();
+				String rndId = Utils.genId();
 				String desFileName = rndId + "." + extType;
 				String desFileUrl = CST.VIDEO_WORK_DIR + desFileName;
 				String snapShotPicName = rndId + ".jpg";
