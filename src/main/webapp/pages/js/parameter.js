@@ -12,6 +12,21 @@ $(function($) {
 		refreshTbl();
 	});
 	
+	$(".chosen-select[name=dataTypeM]").chosen({
+		disable_search : true,
+		width : "100%"
+	});
+	
+	//模态框按钮事件
+	$("#mClose").on("click",function(){
+		$("#basicDataModal").modal('hide');
+	});
+	$("#mSubmit").on('click',function(){
+		addBasicData();
+	});
+	
+	
+	
 	//初始数据名称下拉菜单
 	initSelect({
 		"id":".chosen-select[name=dataName]",
@@ -106,16 +121,16 @@ function initEleTbl(dataType,dataId){
 						{
 							name:"另存为",
 							click:function(){
-								addBasicData();
+								openBasicModal();
 							},
 							color:"btn-warning"
 						},
 						{
 							name:"删除",
 							click:function(){
-								addBasicData();
+								openBasicModal();
 							},
-							icon:"ace-icon fa fa-remove bigger-110",
+							icon:"ace-icon fa fa-trash bigger-110",
 							color:"btn-danger",
 							click:function(){
 								delBasicData();
@@ -144,7 +159,7 @@ function initEleTbl(dataType,dataId){
 						{
 							name:"保存",
 							click:function(){
-								addBasicData();
+								openBasicModal();
 							}
 						}
 					],
@@ -218,40 +233,51 @@ function initSelect(opt){
 }
 
 /**
+ * 打开添加窗口
+ * @returns
+ */
+function openBasicModal(){
+	
+	$("#basicDataModal").modal({
+		backdrop : 'static',
+		keyboard : false,
+		show : true
+	});
+	
+	$("#dataNameM").val("");
+	$(".chosen-select[name=dataTypeM]").val("0");
+	$(".chosen-select[name=dataTypeM]").trigger("chosen:updated");
+}
+
+/**
  * 添加基础数据
  * @returns
  */
 function addBasicData(){
-	bootbox.prompt({ 
-		size: "small",
-		title: "请输入基础数据名称", 
-		callback: function(name){
-			if(name!=null){
-				var json={dataType:{},dataValLst:{}};
-				json.dataType.dataType=$(".chosen-select[name=dataType]").val();
-				json.dataType.dataName=name;
-				json.dataValLst=[];
-				$.each($("#ele-tbl").find(".profile-info-value>span"),function(){
-					json.dataValLst.push({
-						eleIndex:$(this).attr("ele-key"),
-						dataValue:$(this).text()
-					});
-				});
-				
-			    	$.ajax({
-			    		url : $.cxt + "/basic/addDataValue",
-			    		data:JSON.stringify(json),
-			    		type : "POST",
-			    		contentType: "application/json",
-			    		dataType: "json",
-			    		success : function(json) {
-			    			refreshTbl();
-			    		}
-			    	});
+	var json={dataType:{},dataValLst:{}};
+	json.dataType.dataType=$(".chosen-select[name=dataTypeM]").val();
+	json.dataType.dataName=$("#dataNameM").val();
+	json.dataValLst=[];
+	$.each($("#ele-tbl").find(".profile-info-value>span"),function(){
+		json.dataValLst.push({
+			eleIndex:$(this).attr("ele-key"),
+			dataValue:$(this).text()
+		});
+	});
+	
+	$.ajax({
+		url : $.cxt + "/basic/addDataValue",
+		data:JSON.stringify(json),
+		type : "POST",
+		contentType: "application/json",
+		dataType: "json",
+		success : function(json) {
+			$("#basicDataModal").modal('hide');
+			refreshTbl();
 			}
-		}
 	});
 }
+ 
 
 /**
  * 删除基础数据
