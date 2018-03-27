@@ -209,21 +209,29 @@ public class Utils {
 	@SuppressWarnings("unchecked")
 	public static <T extends Serializable> T clone(T obj) {
 		T cloneObj = null;
+		ByteArrayOutputStream out = null;
+		ObjectOutputStream obs = null;
+		ObjectInputStream ois = null;
 		try {
 			// 写入字节流
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			ObjectOutputStream obs = new ObjectOutputStream(out);
+			out = new ByteArrayOutputStream();
+			obs = new ObjectOutputStream(out);
 			obs.writeObject(obj);
-			obs.close();
-
 			// 分配内存，写入原始对象，生成新对象
 			ByteArrayInputStream ios = new ByteArrayInputStream(out.toByteArray());
-			ObjectInputStream ois = new ObjectInputStream(ios);
+			ois = new ObjectInputStream(ios);
 			// 返回生成的新对象
 			cloneObj = (T) ois.readObject();
-			ois.close();
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				obs.close();
+				out.close();
+				ois.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		return cloneObj;
 	}
@@ -238,5 +246,66 @@ public class Utils {
 	 */
 	public static String genId() {
 		return UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
+	}
+	
+	/**
+	 * 
+	 * java2Stream:(JavaBean转Byte). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param obj
+	 * @return
+	 * @since JDK 1.6
+	 */
+	public static <T> byte[] java2Stream(T obj) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ObjectOutputStream out = null;
+		try {
+			out = new ObjectOutputStream(baos);
+			out.writeObject(obj);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				out.close();
+				baos.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return baos.toByteArray();
+	}
+
+	/**
+	 * 
+	 * stream2Java:(Byte转JavaBean). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param bytes
+	 * @return
+	 * @since JDK 1.6
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T stream2Java(byte[] bytes) {
+
+		ByteArrayInputStream bais = null;
+		ObjectInputStream in = null;
+		try {
+			bais = new ByteArrayInputStream(bytes);
+			in = new ObjectInputStream(bais);
+			return (T) in.readObject();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+					bais.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 }

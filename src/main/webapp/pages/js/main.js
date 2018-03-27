@@ -28,6 +28,13 @@ $(function() {
 				$("#menuCtn")
 				.append(
 					$("<li></li>").append(
+						$("<a></a>").addClass("dropdown-toggle menu-anchor").attr({"href":"#","path":$.cxt+"/pages/knowledge.jsp"})
+						.append($("<i></i>").addClass("menu-icon fa fa-suitcase"))
+						.append($("<span></span>").addClass("menu-text").append("知识库"))
+					)
+				)
+				.append(
+					$("<li></li>").append(
 						$("<a></a>").addClass("dropdown-toggle menu-anchor").attr({"href":"#","path":$.cxt+"/pages/parameter.jsp"})
 						.append($("<i></i>").addClass("menu-icon fa fa-gears"))
 						.append($("<span></span>").addClass("menu-text").append("参数设置"))

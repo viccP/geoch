@@ -88,6 +88,12 @@ public class CST {
 	/** 图像类型:line **/
 	public static final String CHART_TYPE_LINE = "line";
 
+	/** JSP头文件 **/
+	public static final String JSP_HEADER = "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" pageEncoding=\"UTF-8\"%>";
+
+	/** JSP后缀 **/
+	public static final String SUFFIX_JSP = ".jsp";
+
 	/** 上传文件夹地址 **/
 	public static String UPLOAD_DIR = "";
 
