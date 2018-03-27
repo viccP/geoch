@@ -94,6 +94,9 @@ public class CST {
 	/** JSP后缀 **/
 	public static final String SUFFIX_JSP = ".jsp";
 
+	/** 角色ID(1:教师) **/
+	public static final String ROLE_ID_TEARCH = "1";
+
 	/** 上传文件夹地址 **/
 	public static String UPLOAD_DIR = "";
 

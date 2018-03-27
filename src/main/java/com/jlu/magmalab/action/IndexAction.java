@@ -1,6 +1,7 @@
 package com.jlu.magmalab.action;
 
 import static com.jlu.magmalab.dao.tables.TmUser.TM_USER;
+import static com.jlu.magmalab.dao.tables.TmUserRole.TM_USER_ROLE;
 
 import javax.servlet.http.HttpSession;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jlu.cst.CST;
+import com.jlu.magmalab.bean.TmUserEx;
 import com.jlu.magmalab.dao.tables.pojos.TmUser;
 import com.jlu.utils.Ajax;
 import com.jlu.utils.Session;
@@ -52,6 +54,25 @@ public class IndexAction {
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
 		}
 	}
+	
+	/**
+	 * 
+	 * isAdmin:(是否管理员). <br/>
+	 * 
+	 * @author liboqiang
+	 * @return
+	 * @since JDK 1.6
+	 */
+	@RequestMapping(value = "/isTeacher", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
+	@ResponseBody
+	public String isTeacher() {
+		try {
+			return Ajax.responseString(CST.RES_SUCCESS, Session.isTeacher());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
+		}
+	}
 
 	/**
 	 * 
@@ -66,8 +87,22 @@ public class IndexAction {
 	public String login(String loginId, String password) {
 
 		try {
-			TmUser result = dsl.selectFrom(TM_USER).where(TM_USER.LOGIN_ID.eq(loginId))
-					.and(TM_USER.PASSWORD.eq(password.toUpperCase())).fetchOneInto(TmUser.class);
+			TmUserEx result = dsl.select(
+					TM_USER.LOGIN_ID,
+					TM_USER.USER_ID,
+					TM_USER.USER_NAME,
+					TM_USER.PHONE_NO,
+					TM_USER.MEMO,
+					TM_USER.PASSWORD,
+					TM_USER.PWD_STATUS,
+					TM_USER.SEX,
+					TM_USER.UPD_TIME,
+					TM_USER_ROLE.ROLE_ID
+					)
+					.from(TM_USER)
+					.leftJoin(TM_USER_ROLE).on(TM_USER.USER_ID.eq(TM_USER_ROLE.USER_ID))
+					.where(TM_USER.LOGIN_ID.eq(loginId))
+					.and(TM_USER.PASSWORD.eq(password.toUpperCase())).fetchOneInto(TmUserEx.class);
 
 			if (result != null) {
 				Session.getSession().setAttribute("TM_USER", result);

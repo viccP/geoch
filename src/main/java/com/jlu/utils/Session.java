@@ -12,6 +12,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.jlu.cst.CST;
 import com.jlu.magmalab.bean.EchartOpt;
+import com.jlu.magmalab.bean.TmUserEx;
 import com.jlu.magmalab.dao.tables.pojos.TmUser;
 
 public class Session {
@@ -78,12 +79,12 @@ public class Session {
 	 * @return
 	 * @since JDK 1.6
 	 */
-	public static TmUser getUser() {
+	public static TmUserEx getUser() {
 		try {
-			return Optional.of((TmUser) getSession().getAttribute(TM_USER)).orElseGet(TmUser::new);
+			return Optional.of((TmUserEx) getSession().getAttribute(TM_USER)).orElseGet(TmUserEx::new);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new TmUser();
+			return new TmUserEx();
 		}
 	}
 
@@ -240,6 +241,28 @@ public class Session {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new HashMap<String, List<Map<String, Double>>>();
+		}
+	}
+
+	/**
+	 * 
+	 * isTeacher:(这里用一句话描述这个方法的作用). <br/> 
+	 * 
+	 * @author liboqiang
+	 * @return 
+	 * @since JDK 1.6
+	 */
+	public static boolean isTeacher() {
+		try {
+			TmUserEx tmUserEx = getUser();
+			if (CST.ROLE_ID_TEARCH.equals(tmUserEx.getRoleId())) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 }
