@@ -292,7 +292,7 @@ function initBasicInfo(){
 		},
 		submitHandler : function(validator, form, submitButton) {
 			$.ajax({
-				url : $.cxt + '/user/edit',
+				url : $.cxt + '/user/editSelf',
 				data : JSON.stringify($('#editSelfForm').serializeObject()),
 				type : "POST",
 				contentType: "application/json",

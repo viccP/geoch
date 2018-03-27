@@ -50,7 +50,7 @@ public class UserAction {
 
 	/**
 	 * 
-	 * add:(新增用户). <br/>
+	 * edit:(新增/编辑用户). <br/>
 	 * 
 	 * @author liboqiang
 	 * @param tmUser
@@ -66,6 +66,30 @@ public class UserAction {
 			}
 			if (tmUser.getRoleId() == null) {
 				return Ajax.responseString(CST.RES_LOGIC_ERROR_3);
+			}
+			String status = tmUserService.edit(tmUser);
+			return Ajax.responseString(status, "操作成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
+		}
+	}
+	
+	/**
+	 * 
+	 * editSelf:(编辑自身). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param tmUser
+	 * @return
+	 * @since JDK 1.6
+	 */
+	@RequestMapping(value = "/editSelf", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
+	@ResponseBody
+	public String editSelf(@RequestBody TmUserEx tmUser) {
+		try {
+			if (tmUser.getSex() == null) {
+				return Ajax.responseString(CST.RES_LOGIC_ERROR_2);
 			}
 			String status = tmUserService.edit(tmUser);
 			return Ajax.responseString(status, "操作成功");

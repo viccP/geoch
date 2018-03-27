@@ -476,13 +476,6 @@ function initEchart(){
 			    legend: {
 			        data:[]
 			    },
-			    toolbox: {
-			        show : true,
-			        feature : {
-			            dataView : {show: true, readOnly: false},
-			            saveAsImage : {show: true}
-			        }
-			    },
 			    calculable : true,
 			    xAxis : [
 			        {
@@ -506,13 +499,6 @@ function initEchart(){
 			    },
 			    legend: {
 			        data:[]
-			    },
-			    toolbox: {
-			        show : true,
-			        feature : {
-			            dataView : {show: true, readOnly: false},
-			            saveAsImage : {show: true}
-			        }
 			    },
 			    calculable : true,
 			    xAxis : [
