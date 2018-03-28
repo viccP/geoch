@@ -202,12 +202,12 @@ hr {
 	position: absolute;
 	right: 0;
 	top: 26%;
-	z-index: 12;
+	z-index: 9999999;
 }
 
 .ace-settings-container-2 {
 	position: absolute;
 	right: 0;
 	top: 34%;
-	z-index: 12;
+	z-index: 9999999;
 }

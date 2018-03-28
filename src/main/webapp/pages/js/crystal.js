@@ -1,9 +1,11 @@
 /**
  * 
  */
-$(function() {
-
-	//初始化图表
+ $(function() {
+	// 初始化IntroJs
+	initIntroJs();
+	
+	// 初始化图表
 	initEchart();
 	
 	/**
@@ -118,8 +120,8 @@ $(function() {
 	/**
 	 * 矿物比例
 	 */
-	initMineralSpinner();
-	
+	 initMineralSpinner();
+
 	/**
 	 * 参数
 	 */
@@ -149,16 +151,16 @@ $(function() {
 			data.append('file', fileObj[0].files[0]);
 			data.append('dataType', 0);
 			$.ajax({
-	    			url : $.cxt + "/lab/upload",
-	    			data:data,
-	    			type : "POST",
-	    			dataType: "json",
-	    			loading:true,
-	    			contentType: false, 
-	    			processData: false,
-	    			success:function(json){
-	    				updateSampleData(json);
-	    			}
+				url : $.cxt + "/lab/upload",
+				data:data,
+				type : "POST",
+				dataType: "json",
+				loading:true,
+				contentType: false, 
+				processData: false,
+				success:function(json){
+					updateSampleData(json);
+				}
 			});
 		});
 		fileObj.trigger("click");
@@ -183,14 +185,14 @@ $(function() {
  * @param opt{id,url,data}
  * @returns
  */
-function initSelect(opt){
-	var _this=$(opt.id);
-	if(opt.url){
+ function initSelect(opt){
+ 	var _this=$(opt.id);
+ 	if(opt.url){
 		//增加提示值
 		if(!opt.multiple){
 			_this.append(
 				$("<option></option>").attr("value","-1").append(_this.attr("data-placeholder"))	
-			)
+				)
 		}
 		$.ajax($.extend({data:opt.data},{
 			url:opt.url,
@@ -203,7 +205,7 @@ function initSelect(opt){
 					_this
 					.append(
 						$("<option></option>").attr("value",val.code).append(val.value)
-					)
+						)
 				});
 				
 				//初始化下拉菜单
@@ -218,7 +220,7 @@ function initSelect(opt){
 		if(!opt.multiple){
 			_this.prepend(
 				$("<option></option>").attr("value","-1").append(_this.attr("data-placeholder"))	
-			)
+				)
 		}
 		//初始化下拉菜单
 		_this.chosen({
@@ -232,70 +234,70 @@ function initSelect(opt){
  * 初始化滑块
  * @returns
  */
-function initSpinner(width){
-	var slide_styles = ['', 'green','red','purple','orange', 'dark'];
-	var ii = 0;
-	$(".slider-opts").each(function() {
-		var $this = $(this);
-		$this.closest('div').find("input.prm-set").val($this.val());
-		$this.hide().after('<span />');
-		$this.next().addClass('ui-slider-small')
-		.addClass("inline ui-slider-"+slide_styles[ii++ % slide_styles.length])
-		.width(width).slider({
-			value:parseInt($this.val()),
-			range: "min",
-			animate:true,
-			min: parseInt($this.attr('data-min')),
-			max: parseInt($this.attr('data-max')),
-			step: parseFloat($this.attr('data-step')) || 1,
-			slide: function( event, ui ) {
-				$this.val(ui.value);
-				$this.closest('div').find("input.prm-set").val(ui.value);
-				spinnerUpdate();
-			}
-		});
-	});
-	
-	$(".prm-set").each(function(){
-		var twinsObj=$(this).closest('div').find("input.slider-opts");
-		var min=parseInt(twinsObj.attr('data-min'));
-		var max=parseInt(twinsObj.attr('data-max'));
-		$(this).on("blur",function(){
-			var inStr=$(this).val();
-			if(!inStr.match(/^[0-9]*$/)){
-				Tipped.show("#"+$(this).attr("id"));
-				$(this).val(0);
-			}
-			else{
-				var inVal=parseInt(inStr);
-				if(inVal<min){
-					Tipped.show("#"+$(this).attr("id"));
-					$(this).val(min)
-				}
-				else if(inVal>max){
-					Tipped.show("#"+$(this).attr("id"));
-					$(this).val(max)
-					spinnerUpdateValue(width);
-				}else{
-					spinnerUpdateValue(width);
-				}
-			}
-		})
-	});
-}
+ function initSpinner(width){
+ 	var slide_styles = ['', 'green','red','purple','orange', 'dark'];
+ 	var ii = 0;
+ 	$(".slider-opts").each(function() {
+ 		var $this = $(this);
+ 		$this.closest('div').find("input.prm-set").val($this.val());
+ 		$this.hide().after('<span />');
+ 		$this.next().addClass('ui-slider-small')
+ 		.addClass("inline ui-slider-"+slide_styles[ii++ % slide_styles.length])
+ 		.width(width).slider({
+ 			value:parseInt($this.val()),
+ 			range: "min",
+ 			animate:true,
+ 			min: parseInt($this.attr('data-min')),
+ 			max: parseInt($this.attr('data-max')),
+ 			step: parseFloat($this.attr('data-step')) || 1,
+ 			slide: function( event, ui ) {
+ 				$this.val(ui.value);
+ 				$this.closest('div').find("input.prm-set").val(ui.value);
+ 				spinnerUpdate();
+ 			}
+ 		});
+ 	});
+
+ 	$(".prm-set").each(function(){
+ 		var twinsObj=$(this).closest('div').find("input.slider-opts");
+ 		var min=parseInt(twinsObj.attr('data-min'));
+ 		var max=parseInt(twinsObj.attr('data-max'));
+ 		$(this).on("blur",function(){
+ 			var inStr=$(this).val();
+ 			if(!inStr.match(/^[0-9]*$/)){
+ 				Tipped.show("#"+$(this).attr("id"));
+ 				$(this).val(0);
+ 			}
+ 			else{
+ 				var inVal=parseInt(inStr);
+ 				if(inVal<min){
+ 					Tipped.show("#"+$(this).attr("id"));
+ 					$(this).val(min)
+ 				}
+ 				else if(inVal>max){
+ 					Tipped.show("#"+$(this).attr("id"));
+ 					$(this).val(max)
+ 					spinnerUpdateValue(width);
+ 				}else{
+ 					spinnerUpdateValue(width);
+ 				}
+ 			}
+ 		})
+ 	});
+ }
 
 /**
  * 更新滑块
  * @returns
  */
-function spinnerUpdate() {
-	var opts = {};
-	$('#spinner-opts input[type=text]').each(function() {
-		opts[this.name] = parseFloat(this.value);
-	});
-	opts['left'] = 'auto';
-	$('#spinner-preview').spin(opts);
-	
+ function spinnerUpdate() {
+ 	var opts = {};
+ 	$('#spinner-opts input[type=text]').each(function() {
+ 		opts[this.name] = parseFloat(this.value);
+ 	});
+ 	opts['left'] = 'auto';
+ 	$('#spinner-preview').spin(opts);
+
 	//绘图
 	doDraw($.cxt + "/chart/draw",true);
 }
@@ -304,31 +306,31 @@ function spinnerUpdate() {
  * 通过更改值更新滑块
  * @returns
  */
-function spinnerUpdateValue(width) {
-	var slide_styles = ['', 'green','red','purple','orange', 'dark'];
-	var ii = 0;
-	$(".slider-opts").each(function() {
-		var $this = $(this);
-		$this.parent().find("span").remove();
-		$this.closest('div').find("input.docker-set").val($(this).parent().parent().find("input").val());
-		$this.hide().after('<span />');
-		$this.next().addClass('ui-slider-small').
-		addClass("inline ui-slider-"+slide_styles[ii++ % slide_styles.length]).
-		width(width).slider({
-			value:parseInt($(this).parent().parent().find("input").val()),
-			range: "min",
-			animate:true,
-			min: parseInt($this.attr('data-min')),
-			max: parseInt($this.attr('data-max')),
-			step: parseFloat($this.attr('data-step')) || 1,
-			slide: function( event, ui ) {
-				$this.val(ui.value);
-				$this.closest('div').find("input.prm-set").val(ui.value);
-				spinnerUpdate();
-			}
-		});
-	});
-	
+ function spinnerUpdateValue(width) {
+ 	var slide_styles = ['', 'green','red','purple','orange', 'dark'];
+ 	var ii = 0;
+ 	$(".slider-opts").each(function() {
+ 		var $this = $(this);
+ 		$this.parent().find("span").remove();
+ 		$this.closest('div').find("input.docker-set").val($(this).parent().parent().find("input").val());
+ 		$this.hide().after('<span />');
+ 		$this.next().addClass('ui-slider-small').
+ 		addClass("inline ui-slider-"+slide_styles[ii++ % slide_styles.length]).
+ 		width(width).slider({
+ 			value:parseInt($(this).parent().parent().find("input").val()),
+ 			range: "min",
+ 			animate:true,
+ 			min: parseInt($this.attr('data-min')),
+ 			max: parseInt($this.attr('data-max')),
+ 			step: parseFloat($this.attr('data-step')) || 1,
+ 			slide: function( event, ui ) {
+ 				$this.val(ui.value);
+ 				$this.closest('div').find("input.prm-set").val(ui.value);
+ 				spinnerUpdate();
+ 			}
+ 		});
+ 	});
+
 	//绘图
 	doDraw($.cxt + "/chart/draw",true);
 }
@@ -338,39 +340,39 @@ function spinnerUpdateValue(width) {
  * @param id
  * @returns
  */
-function disableCoponent(id){
-	 var shadeDiv=$("<div class='disable-coponent' style='opacity:0.55;background:black'></div>").css({ 
-		   position:'absolute', 
-		   top:0, 
-		   left:0, 
-		   zIndex:11,
-		 });
-	 var targetDiv=$(id).children(".input-group");
-	 shadeDiv.width(targetDiv.width())
-	 shadeDiv.height(targetDiv.height())
-	 targetDiv.append(shadeDiv);
-}
+ function disableCoponent(id){
+ 	var shadeDiv=$("<div class='disable-coponent' style='opacity:0.55;background:black'></div>").css({ 
+ 		position:'absolute', 
+ 		top:0, 
+ 		left:0, 
+ 		zIndex:11,
+ 	});
+ 	var targetDiv=$(id).children(".input-group");
+ 	shadeDiv.width(targetDiv.width())
+ 	shadeDiv.height(targetDiv.height())
+ 	targetDiv.append(shadeDiv);
+ }
 
 /**
  * 解除禁用
  * @param id
  * @returns
  */
-function unDisableCoponent(id){
-	$(id).children(".input-group").children("div.disable-coponent").remove();
-}
+ function unDisableCoponent(id){
+ 	$(id).children(".input-group").children("div.disable-coponent").remove();
+ }
 
 /**
  * 初始化矿物spinner
  * @returns
  */
-function initMineralSpinner(){
-	$.ajax({
-		url : $.cxt+'/lab/mineralType',
-		type : "POST",
-		dataType:"json",
-		async:false,
-		success : function(json) {
+ function initMineralSpinner(){
+ 	$.ajax({
+ 		url : $.cxt+'/lab/mineralType',
+ 		type : "POST",
+ 		dataType:"json",
+ 		async:false,
+ 		success : function(json) {
 			//增加矿物列
 			$.each(json.data,function(index,val){
 				$(".mineral-lst")
@@ -378,14 +380,14 @@ function initMineralSpinner(){
 					$("<div></div>").addClass("input-group")
 					.append(
 						$("<span></span>").addClass("input-group-addon").append(val.value)
-					)
+						)
 					.append(
 						$("<input></input>").attr("type","text").addClass("mineral-spinner").width(115)
-					)
+						)
 					.append(
 						$("<input></input>").attr("type","hidden").val(val.code)
+						)
 					)
-				)
 			});
 			
 			//初始化矿物spinner
@@ -410,21 +412,21 @@ function initMineralSpinner(){
 			});;
 		}
 	});
-}
+ }
 
 /**
  * 更新熔体类型下拉菜单
  * @param json
  * @returns
  */
-function updateSampleData(json){
-	if(json.code=='0'){
+ function updateSampleData(json){
+ 	if(json.code=='0'){
 		//清除下拉菜单
 		$("#sample-data-container").empty();
 		$("#sample-data-container")
 		.append(
 			$("<label></label>").attr("for","form-field-select-3").append("样品数据")
-		)
+			)
 		.append("<br>")
 		.append(
 			$("<select></select>")
@@ -432,8 +434,8 @@ function updateSampleData(json){
 			.attr({"id":"sample-data","data-placeholder":"请选择样品...","multiple":"multiple"})
 			.append(
 				$("<option></option>").attr("value","")
+				)
 			)
-		)
 		
 		//样品数据下拉菜单
 		initSelect({
@@ -457,7 +459,7 @@ function updateSampleData(json){
 /**
  * 初始化echart图表
  */
-function initEchart(){
+ function initEchart(){
 	//定义echart实例
 	$.ajax({
 		url : $.cxt+'/lab/clearCache',
@@ -470,50 +472,50 @@ function initEchart(){
 
 			//稀土元素配分模式图
 			rtn.reeChart.setOption({
-			    tooltip : {
-			        trigger: 'axis'
-			    },
-			    legend: {
-			        data:[]
-			    },
-			    calculable : true,
-			    xAxis : [
-			        {
-			            type : 'category',
-			            boundaryGap : false,
-			            data : ['La','Ce','Pr','Nd','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu']
-			        }
-			    ],
-			    yAxis : [
-			        {
-			            type : 'log'
-			        }
-			    ],
-			    series : []
+				tooltip : {
+					trigger: 'axis'
+				},
+				legend: {
+					data:[]
+				},
+				calculable : true,
+				xAxis : [
+				{
+					type : 'category',
+					boundaryGap : false,
+					data : ['La','Ce','Pr','Nd','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu']
+				}
+				],
+				yAxis : [
+				{
+					type : 'log'
+				}
+				],
+				series : []
 			});
 			
 			//微量元素蛛网图
 			rtn.traceSpiderChart.setOption({
-			    tooltip : {
-			        trigger: 'axis'
-			    },
-			    legend: {
-			        data:[]
-			    },
-			    calculable : true,
-			    xAxis : [
-			        {
-			            type : 'category',
-			            boundaryGap : false,
-			            data : ['Rb','Ba','Th','U','Nb','La','Ce','Pr','Sr','Nd','Zr','Hf','Sm','Eu','Y','Ho','Yb','Yb']
-			        }
-			    ],
-			    yAxis : [
-			        {
-			            type : 'log'
-			        }
-			    ],
-			    series : []
+				tooltip : {
+					trigger: 'axis'
+				},
+				legend: {
+					data:[]
+				},
+				calculable : true,
+				xAxis : [
+				{
+					type : 'category',
+					boundaryGap : false,
+					data : ['Rb','Ba','Th','U','Nb','La','Ce','Pr','Sr','Nd','Zr','Hf','Sm','Eu','Y','Ho','Yb','Yb']
+				}
+				],
+				yAxis : [
+				{
+					type : 'log'
+				}
+				],
+				series : []
 			});
 			
 			$("body").data("echarts",rtn);
@@ -525,29 +527,29 @@ function initEchart(){
  * 样品下拉框绑定事件
  * @returns
  */
-function bindSampleSelectEvent(echartInstance){
-	$("#sample-data").on('change',function(){
-		var sampleCodes=$(this).val()||['-1'];
-		var stdId=$("#std-val").val();
-		$.ajax({
-			url : $.cxt+'/chart/sample',
-			type : "POST",
-			dataType:"json",
-			data:{"sampleCodes":sampleCodes,"stdId":stdId,"sampleType":0},
-			success : function(json) {
+ function bindSampleSelectEvent(echartInstance){
+ 	$("#sample-data").on('change',function(){
+ 		var sampleCodes=$(this).val()||['-1'];
+ 		var stdId=$("#std-val").val();
+ 		$.ajax({
+ 			url : $.cxt+'/chart/sample',
+ 			type : "POST",
+ 			dataType:"json",
+ 			data:{"sampleCodes":sampleCodes,"stdId":stdId,"sampleType":0},
+ 			success : function(json) {
 				//绘图
 				renderChart(json.data);
 			}
 		});
-	});
-}
+ 	});
+ }
 
 /**
  * 渲染图形
  * @param sampleOpt
  * @returns
  */
-function renderChart(chartOpt){
+ function renderChart(chartOpt){
 	//获取echart实例
 	var echartInstance=$("body").data("echarts");
 	
@@ -572,18 +574,18 @@ function renderChart(chartOpt){
  * @param url
  * @returns
  */
-function doDraw(url,preview){
-	var data={};
-	data.exprId=$("#crystal-style").val();
-	data.magmaType=$("#melt-style").val();
-	data.stdId=$("#std-val").val();
-	data.mineralsD=[];
-	data.fVal=$("#crystalF").val()/100;
-	data.cR=$("#crystalSr").val()/100;
-	data.mR=$("#crystalBr").val()/100;
-	data.mixId=$("#mix-obj").val();
-	data.preview=preview;
-	
+ function doDraw(url,preview){
+ 	var data={};
+ 	data.exprId=$("#crystal-style").val();
+ 	data.magmaType=$("#melt-style").val();
+ 	data.stdId=$("#std-val").val();
+ 	data.mineralsD=[];
+ 	data.fVal=$("#crystalF").val()/100;
+ 	data.cR=$("#crystalSr").val()/100;
+ 	data.mR=$("#crystalBr").val()/100;
+ 	data.mixId=$("#mix-obj").val();
+ 	data.preview=preview;
+
 	//获取矿物比例
 	$.each($(".mineral-lst>div.input-group"),function(index,val){
 		var displayVal=$(val).find("input[type=text]").val().replace("%","");;
@@ -636,30 +638,160 @@ function doDraw(url,preview){
  * 设置矿物状态
  * @returns
  */
-function setMineralStatus(){
-	var sum=0;
-	$.each($(".mineral-lst>div.input-group").find("input[type=text]"),function(index,val){
-		var displayVal=parseFloat($(this).val().replace("%",""));
-		sum=sum+displayVal;
+ function setMineralStatus(){
+ 	var sum=0;
+ 	$.each($(".mineral-lst>div.input-group").find("input[type=text]"),function(index,val){
+ 		var displayVal=parseFloat($(this).val().replace("%",""));
+ 		sum=sum+displayVal;
+ 	});
+ 	if(sum==100){
+ 		$.each($(".mineral-lst>div.input-group").find("input[type=text]"),function(){
+ 			if($(this).val()!='0%'){
+ 				$(this).css("background-color","yellow");
+ 			}
+ 			else{
+ 				$(this).css("background-color","");
+ 			}
+ 		});
+ 	}
+ 	else{
+ 		$.each($(".mineral-lst>div.input-group").find("input[type=text]"),function(){
+ 			if($(this).val()!='0%'){
+ 				$(this).css("background-color","red");
+ 			}
+ 			else{
+ 				$(this).css("background-color","");
+ 			}
+ 		});
+ 	}
+ }
+ 
+/**
+ * 初始化介绍
+ * @returns
+ */
+ function initIntroJs() {
+	$.ajax({
+		url : $.cxt + '/intro/crystal/get',
+		type : "GET",
+		dataType : "json",
+		success : function(json) {
+			var intro = introJs();
+			intro.setOptions({
+				skipLabel : "跳过",
+				doneLabel : "完成",
+				prevLabel : '后退',
+				nextLabel : '前进',
+				steps : json.data,
+				exitOnOverlayClick : false,
+				keyboardNavigation : false
+			});
+			intro.onexit(function(){
+				$("#ace-settings-container-2").empty();
+			});
+			intro.start();
+			
+			$("body").data("intro",intro);
+			
+			$.ajax({
+				url : $.cxt+'/index/isTeacher',
+				type : "POST",
+				dataType:"json",
+				success : function(json) {
+					if(json.data){
+						$(".introjs-tooltipbuttons")
+						.prepend(
+							$("<a></a>").addClass("introjs-button").append("编辑").on('click',function(){
+								doEdit(this);
+							})
+						);
+					}
+				}
+			});
+		}
 	});
-	if(sum==100){
-		$.each($(".mineral-lst>div.input-group").find("input[type=text]"),function(){
-			if($(this).val()!='0%'){
-				$(this).css("background-color","yellow");
-			}
-			else{
-				$(this).css("background-color","");
-			}
-		});
-	}
-	else{
-		$.each($(".mineral-lst>div.input-group").find("input[type=text]"),function(){
-			if($(this).val()!='0%'){
-				$(this).css("background-color","red");
-			}
-			else{
-				$(this).css("background-color","");
-			}
-		});
-	}
+}
+
+/**
+ * 初始化编辑器
+ * @returns
+ */
+function initSummerNode(){
+	$('.introjs-tooltip').width(800);
+	$('.introjs-tooltiptext').summernote({
+		focus : true,
+		lang : 'zh-CN',
+		toolbar: [
+			['style', ['style']],
+			['font', ['bold', 'underline', 'clear','superscript', 'subscript']],
+			['fontname', ['fontname']],
+			['color', ['color']],
+			['para', ['ul', 'ol', 'paragraph']],
+			['table', ['table']],
+			['insert', ['link', 'picture', 'video']],
+			['view', ['fullscreen', 'codeview', 'help']]
+	    ],
+	});
+ }
+
+/**
+ * 添加保存按钮
+ * @returns
+ */
+function addSaveTipBtn(){
+	$(".introjs-tooltipbuttons").prepend(
+			$("<a></a>").addClass("introjs-button").append("保存").on('click',function(){
+				var markup = $('.introjs-tooltiptext').summernote('code');
+				$('.introjs-tooltiptext').summernote('destroy');
+				var base64Markup=Base64.encode(markup);
+				var index=$(".introjs-helperNumberLayer").text();
+				$.ajax({
+					url : $.cxt + '/intro/crystal/save',
+					type : "POST",
+					dataType : "json",
+					data : {"index" : index,"html" : base64Markup},
+					success:function(json){
+						$("body").data("intro")._introItems[index-1].intro=markup;
+						$('.introjs-tooltip').css('width','');
+						$(".introjs-tooltipbuttons>a:eq(0)").remove();
+						$(".introjs-tooltipbuttons>a:eq(0)").empty().append("编辑");
+						$(".introjs-tooltipbuttons>a:eq(0)").off();
+						$(".introjs-tooltipbuttons>a:eq(0)").on('click',function(){
+							doEdit(this);
+						})
+					}
+				});
+			})
+		)
+}
+
+/**
+ * 编辑按钮
+ * @param _this
+ * @returns
+ */
+function doEdit(_this){
+	initSummerNode();
+	addSaveTipBtn();
+	$(_this).off();
+	$(_this).empty().append("取消编辑");
+	$(_this).on('click',function(){
+		cancelEdit(_this);
+	})
+}
+
+/**
+ * 取消编辑
+ * @param _this
+ * @returns
+ */
+function cancelEdit(_this){
+	$(".introjs-tooltipbuttons>a:eq(0)").remove();
+	$('.introjs-tooltip').css('width','');  
+	$('.introjs-tooltiptext').summernote('destroy');
+	$(_this).empty().append("编辑");
+	$(_this).off();
+	$(_this).on('click',function(){
+		doEdit(_this);
+	})
 }
