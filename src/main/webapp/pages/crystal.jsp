@@ -144,6 +144,10 @@
 					<i class="ace-icon fa fa-pencil bigger-160"></i>
 					保存
 				</a>
+				<a href="<%=request.getContextPath()%>/pages/report.jsp" class="btn btn-app btn-pink btn-xs intro-step16"  target="_blank">
+					<i class="ace-icon fa fa-send-o bigger-160"></i>
+					提交
+				</a>
 			</div>
 		</div>
 	</div>
@@ -158,8 +162,8 @@
 		</div>
 	</div>
 </div>
-<div class="row intro-step16">
-	<div class="col-xs-12 col-sm-6 intro-step17">
+<div class="row intro-step17">
+	<div class="col-xs-12 col-sm-6 intro-step18">
 		<div class="widget-box">
 			<div class="widget-header">
 				<h6 class="widget-title">稀土元素配分模式图</h6>
@@ -171,7 +175,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-xs-12 col-sm-6 intro-step18">
+	<div class="col-xs-12 col-sm-6 intro-step19">
 		<div class="widget-box">
 			<div class="widget-header">
 				<h6 class="widget-title">微量元素蛛网图</h6>

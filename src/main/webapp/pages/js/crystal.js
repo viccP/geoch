@@ -672,9 +672,10 @@
  */
  function initIntroJs() {
 	$.ajax({
-		url : $.cxt + '/intro/crystal/get',
+		url : $.cxt + '/intro/get',
 		type : "GET",
 		dataType : "json",
+		data:{"type":"crystal","size":19},
 		success : function(json) {
 			var intro = introJs();
 			intro.setOptions({
@@ -725,6 +726,7 @@ function initSummerNode(){
 			['style', ['style']],
 			['font', ['bold', 'underline', 'clear','superscript', 'subscript']],
 			['fontname', ['fontname']],
+			['fontsize', ['fontsize']],
 			['color', ['color']],
 			['para', ['ul', 'ol', 'paragraph']],
 			['table', ['table']],
@@ -746,10 +748,10 @@ function addSaveTipBtn(){
 				var base64Markup=Base64.encode(markup);
 				var index=$(".introjs-helperNumberLayer").text();
 				$.ajax({
-					url : $.cxt + '/intro/crystal/save',
+					url : $.cxt + '/intro/save',
 					type : "POST",
 					dataType : "json",
-					data : {"index" : index,"html" : base64Markup},
+					data : {"index" : index,"html" : base64Markup,"type":"crystal"},
 					success:function(json){
 						$("body").data("intro")._introItems[index-1].intro=markup;
 						$('.introjs-tooltip').css('width','');
