@@ -9,6 +9,7 @@ import com.jlu.magmalab.dao.tables.TmBasicDataValue;
 import com.jlu.magmalab.dao.tables.TmDistributeValue;
 import com.jlu.magmalab.dao.tables.TmElement;
 import com.jlu.magmalab.dao.tables.TmExpr;
+import com.jlu.magmalab.dao.tables.TmLabReport;
 import com.jlu.magmalab.dao.tables.TmMeltType;
 import com.jlu.magmalab.dao.tables.TmMineral;
 import com.jlu.magmalab.dao.tables.TmRole;
@@ -39,7 +40,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Magmlab extends SchemaImpl {
 
-    private static final long serialVersionUID = 43311568;
+    private static final long serialVersionUID = 127590162;
 
     /**
      * The reference instance of <code>magmLab</code>
@@ -70,6 +71,11 @@ public class Magmlab extends SchemaImpl {
      * The table <code>magmLab.TM_EXPR</code>.
      */
     public final TmExpr TM_EXPR = com.jlu.magmalab.dao.tables.TmExpr.TM_EXPR;
+
+    /**
+     * The table <code>magmLab.TM_LAB_REPORT</code>.
+     */
+    public final TmLabReport TM_LAB_REPORT = com.jlu.magmalab.dao.tables.TmLabReport.TM_LAB_REPORT;
 
     /**
      * The table <code>magmLab.TM_MELT_TYPE</code>.
@@ -126,6 +132,7 @@ public class Magmlab extends SchemaImpl {
             TmDistributeValue.TM_DISTRIBUTE_VALUE,
             TmElement.TM_ELEMENT,
             TmExpr.TM_EXPR,
+            TmLabReport.TM_LAB_REPORT,
             TmMeltType.TM_MELT_TYPE,
             TmMineral.TM_MINERAL,
             TmRole.TM_ROLE,

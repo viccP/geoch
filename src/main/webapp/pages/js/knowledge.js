@@ -73,6 +73,7 @@ function initSummerNode(){
             ['style', ['style']],
             ['font', ['bold', 'underline', 'clear','superscript', 'subscript']],
             ['fontname', ['fontname']],
+            ['fontsize', ['fontsize']],
             ['color', ['color']],
             ['para', ['ul', 'ol', 'paragraph']],
             ['table', ['table']],

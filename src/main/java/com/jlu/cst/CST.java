@@ -27,7 +27,7 @@ public class CST {
 
 	/** 业务逻辑错误(2) **/
 	public static final String RES_LOGIC_ERROR_2 = "2";
-	
+
 	/** 业务逻辑错误(3) **/
 	public static final String RES_LOGIC_ERROR_3 = "3";
 
@@ -74,13 +74,16 @@ public class CST {
 	public static final List<Integer> REE_ELE_INDEX_ARRAY = Arrays.asList(new Integer[] { 35, 13, 51, 44, 62, 21, 25, 66, 19, 30, 20, 72, 77, 37 });
 
 	/** 稀土元素名称列表 **/
-	public static final List<String> REE_ELE_NAME_ARRAY = Arrays.asList(new String[] { "La", "Ce", "Pr", "Nd", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu" });
+	public static final List<String> REE_ELE_NAME_ARRAY =
+			Arrays.asList(new String[] { "La", "Ce", "Pr", "Nd", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu" });
 
 	/** 微量元素序号列表 **/
-	public static final List<Integer> TRACE_ELE_INDEX_ARRAY = Arrays.asList(new Integer[] { 53, 6, 69, 73, 43, 35, 13, 51, 64, 44, 79, 28, 62, 21, 76, 30, 77 });
+	public static final List<Integer> TRACE_ELE_INDEX_ARRAY =
+			Arrays.asList(new Integer[] { 53, 6, 69, 73, 43, 35, 13, 51, 64, 44, 79, 28, 62, 21, 76, 30, 77 });
 
 	/** 微量元素名称列表 **/
-	public static final List<String> TRACE_ELE_NAME_ARRAY = Arrays.asList(new String[] { "Rb", "Ba", "Th", "U", "Nb", "La", "Ce", "Pr", "Sr", "Nd", "Zr", "Hf", "Sm", "Eu", "Y", "Ho", "Yb", "Yb" });
+	public static final List<String> TRACE_ELE_NAME_ARRAY =
+			Arrays.asList(new String[] { "Rb", "Ba", "Th", "U", "Nb", "La", "Ce", "Pr", "Sr", "Nd", "Zr", "Hf", "Sm", "Eu", "Y", "Ho", "Yb", "Yb" });
 
 	/** 下拉框未选择状态(-1) **/
 	public static final String NOT_EXIST = "-1";
@@ -96,6 +99,12 @@ public class CST {
 
 	/** 角色ID(1:教师) **/
 	public static final String ROLE_ID_TEARCH = "1";
+
+	/** 未读(0) **/
+	public static final int NON_READ = 0;
+	
+	/** 已读(1) **/
+	public static final int HAS_READED = 1;
 
 	/** 上传文件夹地址 **/
 	public static String UPLOAD_DIR = "";

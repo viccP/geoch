@@ -5,8 +5,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.jlu.cst.CST;
 import com.jlu.utils.Session;
@@ -34,7 +32,6 @@ public class knowledgeService {
 	 * @throws Exception
 	 * @since JDK 1.6
 	 */
-	@Transactional(propagation = Propagation.REQUIRED)
 	public void save(int index, String html) throws Exception {
 		try {
 			String path = Session.getSession().getServletContext().getRealPath("/template/");

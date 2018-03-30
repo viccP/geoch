@@ -2,6 +2,10 @@
  * 
  */
 $(function() {
+
+	// 初始化IntroJs
+	initIntroJs();
+
 	//初始化图表
 	initEchart();
 	
@@ -606,4 +610,136 @@ function setMineralStatus(name){
 			}
 		});
 	}
+}
+
+/**
+ * 初始化介绍
+ * @returns
+ */
+ function initIntroJs() {
+	$.ajax({
+		url : $.cxt + '/intro/get',
+		type : "GET",
+		dataType : "json",
+		data:{"type":"melt","size":15},
+		success : function(json) {
+			var intro = introJs();
+			intro.setOptions({
+				skipLabel : "跳过",
+				doneLabel : "完成",
+				prevLabel : '后退',
+				nextLabel : '前进',
+				steps : json.data,
+				exitOnOverlayClick : false,
+				keyboardNavigation : false
+			});
+			intro.onexit(function(){
+				$("#ace-settings-container-2").empty();
+			});
+			intro.start();
+			
+			$("body").data("intro",intro);
+			
+			$.ajax({
+				url : $.cxt+'/index/isTeacher',
+				type : "POST",
+				dataType:"json",
+				success : function(json) {
+					if(json.data){
+						$(".introjs-tooltipbuttons")
+						.prepend(
+							$("<a></a>").addClass("introjs-button").append("编辑").on('click',function(){
+								doEdit(this);
+							})
+						);
+					}
+				}
+			});
+		}
+	});
+}
+
+/**
+ * 初始化编辑器
+ * @returns
+ */
+function initSummerNode(){
+	$('.introjs-tooltip').width(800);
+	$('.introjs-tooltiptext').summernote({
+		focus : true,
+		lang : 'zh-CN',
+		toolbar: [
+			['style', ['style']],
+			['font', ['bold', 'underline', 'clear','superscript', 'subscript']],
+			['fontname', ['fontname']],
+			['fontsize', ['fontsize']],
+			['color', ['color']],
+			['para', ['ul', 'ol', 'paragraph']],
+			['table', ['table']],
+			['insert', ['link', 'picture', 'video']],
+			['view', ['fullscreen', 'codeview', 'help']]
+	    ],
+	});
+ }
+
+/**
+ * 添加保存按钮
+ * @returns
+ */
+function addSaveTipBtn(){
+	$(".introjs-tooltipbuttons").prepend(
+			$("<a></a>").addClass("introjs-button").append("保存").on('click',function(){
+				var markup = $('.introjs-tooltiptext').summernote('code');
+				$('.introjs-tooltiptext').summernote('destroy');
+				var base64Markup=Base64.encode(markup);
+				var index=$(".introjs-helperNumberLayer").text();
+				$.ajax({
+					url : $.cxt + '/intro/save',
+					type : "POST",
+					dataType : "json",
+					data : {"index" : index,"html" : base64Markup,"type":"melt"},
+					success:function(json){
+						$("body").data("intro")._introItems[index-1].intro=markup;
+						$('.introjs-tooltip').css('width','');
+						$(".introjs-tooltipbuttons>a:eq(0)").remove();
+						$(".introjs-tooltipbuttons>a:eq(0)").empty().append("编辑");
+						$(".introjs-tooltipbuttons>a:eq(0)").off();
+						$(".introjs-tooltipbuttons>a:eq(0)").on('click',function(){
+							doEdit(this);
+						})
+					}
+				});
+			})
+		)
+}
+
+/**
+ * 编辑按钮
+ * @param _this
+ * @returns
+ */
+function doEdit(_this){
+	initSummerNode();
+	addSaveTipBtn();
+	$(_this).off();
+	$(_this).empty().append("取消编辑");
+	$(_this).on('click',function(){
+		cancelEdit(_this);
+	})
+}
+
+/**
+ * 取消编辑
+ * @param _this
+ * @returns
+ */
+function cancelEdit(_this){
+	$(".introjs-tooltipbuttons>a:eq(0)").remove();
+	$('.introjs-tooltip').css('width','');  
+	$('.introjs-tooltiptext').summernote('destroy');
+	$(_this).empty().append("编辑");
+	$(_this).off();
+	$(_this).on('click',function(){
+		doEdit(_this);
+	})
 }

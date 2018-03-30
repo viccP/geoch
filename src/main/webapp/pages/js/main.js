@@ -79,7 +79,7 @@ $(function() {
 	//提示栏事件
 	$("#viewAll").on("click",function(){
 		//加载页面
-		$.get($.cxt+"/pages/applyRecord.jsp", function(data) {
+		$.get($.cxt+"/pages/reportGrid.jsp", function(data) {
 			$("#pageContent").html(data);//初始化加载界面  
 		});
 	});
@@ -102,7 +102,7 @@ $(function() {
 	validatePwd();
 	
 	//初始化待办列表
-	//initTodoList();
+	initTodoList();
 	
 	//初始化登出按钮
 	$("#logout").on("click",function(){
@@ -332,22 +332,27 @@ function initTodoList(){
 			$("#todoList").empty();
 			$.each(json.data,function(index,val){
 				$("#todoList").append($("<li></li>").append(
-					$("<a></a>").attr({"href":"#","applyId":val.applyId}).addClass("clearfix").append(
+					$("<a></a>").attr({"href":"#","reportId":val.reportId}).addClass("clearfix").append(
 						$("<span></span>").addClass("msg-body")
 						.append(
-							$("<span></span>").addClass("msg-title").append($("<span></span>").addClass("blue").append(val.applyUser+":")).append(val.proType)
+							$("<span></span>").addClass("msg-title").append($("<span></span>").addClass("blue").append(val.submitUser+":")).append(val.prompt)
 						)
 						.append(
 							$("<span></span>").addClass("msg-time")
 							.append($("<i></i>").addClass("ace-icon fa fa-clock-o"))
-							.append($($("<span></span>")).append(val.applyTime))
+							.append($($("<span></span>")).append(val.submitTime))
 						)
 					)
 					.on("click",function(){
-						//加载页面
-						$.get($.cxt+"/pages/applyRecord.jsp?", function(data) {
-							$("body").data("applyIdArgs",val.applyId);
-							$("#pageContent").html(data);//初始化加载界面  
+						$.ajax({
+							url : $.cxt+'/report/refresh',
+							type : "POST",
+							dataType:"json",
+							data:{id:val.reportId},
+							success:function(){
+								initTodoList();
+								window.open($.cxt + '/pages/reportView.jsp?reportId='+val.reportId);
+							}
 						});
 					})
 				));
