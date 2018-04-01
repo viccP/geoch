@@ -54,15 +54,19 @@ public class IndexAction {
 	 * @return
 	 * @since JDK 1.6
 	 */
-	@RequestMapping(value = "/isAdmin", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
+	@RequestMapping(value = "/privilege", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
 	@ResponseBody
-	public String isAdmin() {
-
+	public String privilege() {
 		try {
-			return Ajax.responseString(CST.RES_SUCCESS, Session.isSuperAdmin());
+			String roleId = Session.getRoleId();
+			if (!CST.RES_EXCEPTION.equals(roleId)) {
+				return Ajax.responseString(CST.RES_SUCCESS,null, roleId);
+			} else {
+				return Ajax.responseString(CST.RES_AUTO_DIALOG,null, CST.MSG_SYS_ERR);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, CST.MSG_SYS_ERR);
 		}
 	}
 
@@ -81,7 +85,7 @@ public class IndexAction {
 			return Ajax.responseString(CST.RES_SUCCESS, Session.isTeacher());
 		} catch (Exception e) {
 			e.printStackTrace();
-			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, CST.MSG_SYS_ERR);
 		}
 	}
 
@@ -112,7 +116,7 @@ public class IndexAction {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, CST.MSG_SYS_ERR);
 		}
 	}
 
@@ -133,7 +137,7 @@ public class IndexAction {
 			return Ajax.responseString(CST.RES_SUCCESS);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, CST.MSG_SYS_ERR);
 		}
 	}
 
@@ -154,7 +158,7 @@ public class IndexAction {
 			return Ajax.responseString(CST.RES_SUCCESS);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, CST.MSG_SYS_ERR);
 		}
 	}
 
@@ -196,7 +200,7 @@ public class IndexAction {
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, "密码修改成功");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, CST.MSG_SYS_ERR);
 		}
 	}
 
@@ -238,17 +242,11 @@ public class IndexAction {
 			// 定义别名
 			com.jlu.magmalab.dao.tables.TmUser t1 = TM_USER.as("t1");
 			com.jlu.magmalab.dao.tables.TmLabReport t2 = TM_LAB_REPORT.as("t2");
-			List<Map<String, String>> res=new ArrayList<>();
-			if(Session.isTeacher()) {
-				res = dsl.select(
-						t1.USER_NAME, 
-						t2.REPORT_ID, 
-						DSL.field("date_format({0},'%Y%m%d%H%i%s')", String.class, t2.UPD_TIME)
-					)
-					.from(t2).leftJoin(t1)
-					.on(t2.USER_ID.eq(t1.USER_ID))
-					.where(t2.REPORT_TEACHER_STATUS.eq(CST.NON_READ))
-					.fetch().parallelStream().map(s -> {
+			List<Map<String, String>> res = new ArrayList<>();
+			if (Session.isTeacher()) {
+				res = dsl.select(t1.USER_NAME, t2.REPORT_ID, DSL.field("date_format({0},'%Y%m%d%H%i%s')", String.class, t2.UPD_TIME)).from(t2)
+						.leftJoin(t1).on(t2.USER_ID.eq(t1.USER_ID)).where(t2.REPORT_TEACHER_STATUS.eq(CST.NON_READ)).fetch().parallelStream()
+						.map(s -> {
 							Map<String, String> map = new HashMap<>();
 							map.put("submitTime", resetTime(s.value3()));
 							map.put("reportId", s.value2());
@@ -256,18 +254,12 @@ public class IndexAction {
 							map.put("prompt", "提交了实验报告");
 							return map;
 						}).collect(Collectors.toList());
-			}
-			else {
-				res = dsl.select(
-						DSL.val(Session.getUser().getUserName()), 
-						t2.REPORT_ID, 
-						DSL.field("date_format({0},'%Y%m%d%H%i%s')", String.class, t2.UPD_TIME)
-					)
-					.from(t2).leftJoin(t1)
-					.on(t2.USER_ID.eq(t1.USER_ID))
-					.where(t2.REPORT_STUDENT_STATUS.eq(CST.NON_READ))
-					.and(t2.USER_ID.eq(Session.getUser().getUserId()))
-					.fetch().parallelStream().map(s -> {
+			} else {
+				res = dsl
+						.select(DSL.val(Session.getUser().getUserName()), t2.REPORT_ID,
+								DSL.field("date_format({0},'%Y%m%d%H%i%s')", String.class, t2.UPD_TIME))
+						.from(t2).leftJoin(t1).on(t2.USER_ID.eq(t1.USER_ID)).where(t2.REPORT_STUDENT_STATUS.eq(CST.NON_READ))
+						.and(t2.USER_ID.eq(Session.getUser().getUserId())).fetch().parallelStream().map(s -> {
 							Map<String, String> map = new HashMap<>();
 							map.put("submitTime", resetTime(s.value3()));
 							map.put("reportId", s.value2());

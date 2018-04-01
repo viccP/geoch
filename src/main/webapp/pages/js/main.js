@@ -9,12 +9,12 @@ $(function() {
 	//根据权限重置菜单
 	$("#menuCtn").empty();
 	$.ajax({
-		url : $.cxt + '/index/isAdmin',
+		url : $.cxt + '/index/privilege',
 		type : "POST",
 		dataType:"json",
 		async:false,
 		success : function(json) {
-			if(json.data){
+			if(json.data=="0"){
 				$("#menuCtn")
 				.append(
 					$("<li></li>").append(
@@ -25,6 +25,7 @@ $(function() {
 				)
 			}
 			else{
+				
 				$("#menuCtn")
 				.append(
 					$("<li></li>").append(
@@ -33,13 +34,19 @@ $(function() {
 						.append($("<span></span>").addClass("menu-text").append("知识库"))
 					)
 				)
-				.append(
-					$("<li></li>").append(
-						$("<a></a>").addClass("dropdown-toggle menu-anchor").attr({"href":"#","path":$.cxt+"/pages/parameter.jsp"})
-						.append($("<i></i>").addClass("menu-icon fa fa-gears"))
-						.append($("<span></span>").addClass("menu-text").append("参数设置"))
+				
+				if(json.data=="1"){
+					$("#menuCtn")
+					.append(
+						$("<li></li>").append(
+							$("<a></a>").addClass("dropdown-toggle menu-anchor").attr({"href":"#","path":$.cxt+"/pages/parameter.jsp"})
+							.append($("<i></i>").addClass("menu-icon fa fa-gears"))
+							.append($("<span></span>").addClass("menu-text").append("参数设置"))
+						)
 					)
-				)
+				}
+				
+				$("#menuCtn")
 				.append(
 					$("<li></li>").append(
 						$("<a></a>").addClass("dropdown-toggle menu-anchor").attr({"href":"#","path":$.cxt+"/pages/crystal.jsp"})
@@ -54,7 +61,7 @@ $(function() {
 						.append($("<span></span>").addClass("menu-text").append("熔融实验"))
 					)
 				)
-			}
+			} 
 		}
 	});
 	
@@ -326,7 +333,7 @@ function initTodoList(){
 			if(tipNum>0){
 				$("#tipNum").append(tipNum);
 			}
-			$("#titleNum").empty().append($("<i></i>").addClass("ace-icon fa fa-envelope-o")).append(tipNum+"条待办");
+			$("#titleNum").empty().append($("<i></i>").addClass("ace-icon fa fa-envelope-o")).append(tipNum+"件待查阅实验报告");
 			
 			//生成下拉菜单
 			$("#todoList").empty();

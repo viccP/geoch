@@ -138,6 +138,9 @@ $(function() {
 		e.preventDefault();
 		doDraw($.cxt + "/chart/reDraw",false);
 	});
+	
+	//添加提交按钮
+	addSubmitButn();
 });
 
 /**
@@ -742,4 +745,26 @@ function cancelEdit(_this){
 	$(_this).on('click',function(){
 		doEdit(_this);
 	})
+}
+
+
+/**
+ * 添加提交按钮
+ * @returns
+ */
+function addSubmitButn(){
+	$.ajax({
+		url : $.cxt+'/index/isTeacher',
+		type : "POST",
+		dataType:"json",
+		success : function(json) {
+			if(!json.data){
+				$(".melt-btn-area").append(
+					$("<a></a>").attr({"href":$.cxt+"/pages/report.jsp","target":"_blank"}).addClass("btn btn-app btn-pink btn-xs intro-step16")
+					.append($("<i></i>").addClass("ace-icon fa fa-send-o bigger-160"))
+					.append("提交")
+				)
+			}
+		}
+	});
 }

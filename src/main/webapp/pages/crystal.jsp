@@ -131,7 +131,7 @@
 				</div>
 			</div>
 			<hr>
-			<div class="pull-left">
+			<div class="pull-left crystal-btn-area">
 				<a href="#" class="btn btn-app btn-purple btn-xs intro-step13" id="importData">
 					<i class="ace-icon fa fa-cloud-upload bigger-160"></i>
 					导入
@@ -143,10 +143,6 @@
 				<a href="#" class="btn btn-app btn-warning btn-xs intro-step15" id="drawChart">
 					<i class="ace-icon fa fa-pencil bigger-160"></i>
 					保存
-				</a>
-				<a href="<%=request.getContextPath()%>/pages/report.jsp" class="btn btn-app btn-pink btn-xs intro-step16"  target="_blank">
-					<i class="ace-icon fa fa-send-o bigger-160"></i>
-					提交
 				</a>
 			</div>
 		</div>

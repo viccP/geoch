@@ -23,7 +23,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TmLabReport implements Serializable {
 
-    private static final long serialVersionUID = -341548668;
+    private static final long serialVersionUID = -1766869834;
 
     private String    reportId;
     private String    userId;
@@ -31,6 +31,7 @@ public class TmLabReport implements Serializable {
     private Integer   reportScore;
     private Integer   reportTeacherStatus;
     private Integer   reportStudentStatus;
+    private Integer   reportStatus;
 
     public TmLabReport() {}
 
@@ -41,6 +42,7 @@ public class TmLabReport implements Serializable {
         this.reportScore = value.reportScore;
         this.reportTeacherStatus = value.reportTeacherStatus;
         this.reportStudentStatus = value.reportStudentStatus;
+        this.reportStatus = value.reportStatus;
     }
 
     public TmLabReport(
@@ -49,7 +51,8 @@ public class TmLabReport implements Serializable {
         Timestamp updTime,
         Integer   reportScore,
         Integer   reportTeacherStatus,
-        Integer   reportStudentStatus
+        Integer   reportStudentStatus,
+        Integer   reportStatus
     ) {
         this.reportId = reportId;
         this.userId = userId;
@@ -57,6 +60,7 @@ public class TmLabReport implements Serializable {
         this.reportScore = reportScore;
         this.reportTeacherStatus = reportTeacherStatus;
         this.reportStudentStatus = reportStudentStatus;
+        this.reportStatus = reportStatus;
     }
 
     public String getReportId() {
@@ -107,6 +111,14 @@ public class TmLabReport implements Serializable {
         this.reportStudentStatus = reportStudentStatus;
     }
 
+    public Integer getReportStatus() {
+        return this.reportStatus;
+    }
+
+    public void setReportStatus(Integer reportStatus) {
+        this.reportStatus = reportStatus;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("TmLabReport (");
@@ -117,6 +129,7 @@ public class TmLabReport implements Serializable {
         sb.append(", ").append(reportScore);
         sb.append(", ").append(reportTeacherStatus);
         sb.append(", ").append(reportStudentStatus);
+        sb.append(", ").append(reportStatus);
 
         sb.append(")");
         return sb.toString();

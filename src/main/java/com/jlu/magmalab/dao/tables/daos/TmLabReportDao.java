@@ -99,4 +99,11 @@ public class TmLabReportDao extends DAOImpl<TmLabReportRecord, com.jlu.magmalab.
     public List<com.jlu.magmalab.dao.tables.pojos.TmLabReport> fetchByReportStudentStatus(Integer... values) {
         return fetch(TmLabReport.TM_LAB_REPORT.REPORT_STUDENT_STATUS, values);
     }
+
+    /**
+     * Fetch records that have <code>REPORT_STATUS IN (values)</code>
+     */
+    public List<com.jlu.magmalab.dao.tables.pojos.TmLabReport> fetchByReportStatus(Integer... values) {
+        return fetch(TmLabReport.TM_LAB_REPORT.REPORT_STATUS, values);
+    }
 }

@@ -39,7 +39,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TmLabReport extends TableImpl<TmLabReportRecord> {
 
-    private static final long serialVersionUID = 1772965879;
+    private static final long serialVersionUID = 615745383;
 
     /**
      * The reference instance of <code>magmLab.TM_LAB_REPORT</code>
@@ -83,6 +83,11 @@ public class TmLabReport extends TableImpl<TmLabReportRecord> {
      * The column <code>magmLab.TM_LAB_REPORT.REPORT_STUDENT_STATUS</code>. 0:未读  1:已读
      */
     public final TableField<TmLabReportRecord, Integer> REPORT_STUDENT_STATUS = createField("REPORT_STUDENT_STATUS", org.jooq.impl.SQLDataType.INTEGER, this, "0:未读  1:已读");
+
+    /**
+     * The column <code>magmLab.TM_LAB_REPORT.REPORT_STATUS</code>. 0:未批阅 1:已批阅
+     */
+    public final TableField<TmLabReportRecord, Integer> REPORT_STATUS = createField("REPORT_STATUS", org.jooq.impl.SQLDataType.INTEGER, this, "0:未批阅 1:已批阅");
 
     /**
      * Create a <code>magmLab.TM_LAB_REPORT</code> table reference

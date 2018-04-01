@@ -73,6 +73,37 @@ public class Session {
 
 	/**
 	 * 
+	 * isTeacher:(这里用一句话描述这个方法的作用). <br/>
+	 * 
+	 * @author liboqiang
+	 * @return
+	 * @since JDK 1.6
+	 */
+	public static boolean isTeacher() {
+		try {
+			TmUserEx tmUserEx = getUser();
+			if (CST.ROLE_ID_TEARCH.equals(tmUserEx.getRoleId())) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public static String getRoleId() {
+		try {
+			return getUser().getRoleId();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return CST.RES_EXCEPTION;
+		}
+	}
+
+	/**
+	 * 
 	 * getUser:(获取用户). <br/>
 	 * 
 	 * @author liboqiang
@@ -159,7 +190,7 @@ public class Session {
 	public static void saveMeltData(Map<String, List<Map<String, Double>>> data) {
 		getSession().setAttribute(MELT_DATA, data);
 	}
-	
+
 	/**
 	 * 
 	 * getInitialCache:(获取缓存的初始化岩浆或者熔体数据). <br/>
@@ -241,28 +272,6 @@ public class Session {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new HashMap<String, List<Map<String, Double>>>();
-		}
-	}
-
-	/**
-	 * 
-	 * isTeacher:(这里用一句话描述这个方法的作用). <br/> 
-	 * 
-	 * @author liboqiang
-	 * @return 
-	 * @since JDK 1.6
-	 */
-	public static boolean isTeacher() {
-		try {
-			TmUserEx tmUserEx = getUser();
-			if (CST.ROLE_ID_TEARCH.equals(tmUserEx.getRoleId())) {
-				return true;
-			} else {
-				return false;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
 		}
 	}
 }

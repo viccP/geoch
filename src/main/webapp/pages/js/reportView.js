@@ -12,24 +12,35 @@ $(function(){
  * @returns
  */
 function initReport(){
-	$(".page-content").empty()
-	.append($("<div></div>").attr("id","pageContent"))
-	.append(
-		$("<div></div>").addClass("clearfix form-actions")
-		.append(
-			$("<div></div>").addClass("col-md-offset-9 col-md-3")
-			.append(
-				$("<button></button>").addClass("btn btn-info pull-right").attr("type","button")
-				.append($("<i></i>").addClass("ace-icon fa fa-check bigger-110").append("批阅"))
-				.on('click',function(){
-					alterReport(this);
-				})
-			)
-		)
-	);
-	
-	$.get($.cxt+'/labreport/'+$("body").data("reportId"), function(data) {
-		$('#pageContent').html(data);//初始化加载界面  
+	$.ajax({
+		url : $.cxt+'/index/isTeacher',
+		type : "POST",
+		dataType:"json",
+		success : function(json) {
+			$(".page-content").empty()
+			.append($("<div></div>").attr("id","pageContent"));
+			
+			if(json.data){
+				$(".page-content")
+				.append(
+					$("<div></div>").addClass("clearfix form-actions")
+					.append(
+						$("<div></div>").addClass("col-md-offset-9 col-md-3")
+						.append(
+							$("<button></button>").addClass("btn btn-info pull-right").attr("type","button")
+							.append($("<i></i>").addClass("ace-icon fa fa-check bigger-110").append("批阅"))
+							.on('click',function(){
+								alterReport(this);
+							})
+						)
+					)
+				);
+			}
+			
+			$.get($.cxt+'/labreport/'+$("body").data("reportId"), function(data) {
+				$('#pageContent').html(data);//初始化加载界面  
+			});
+		}
 	});
 }
 
@@ -71,7 +82,7 @@ function submitReport(_this){
 				$('#pageContent').summernote('destroy');
 				var base64Markup=Base64.encode(markup);
 				$.ajax({
-					url : $.cxt+'/report/update',
+					url : $.cxt+'/report/check',
 					type : "POST",
 					dataType:"json",
 					data:{html:base64Markup,reportId:$("body").data("reportId"),score:name}

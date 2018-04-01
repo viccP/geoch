@@ -101,7 +101,7 @@
 			<div class="space-12"></div>
 			<div class="space-12"></div>
 			<div class="space-12"></div>
-			<div class="pull-left">
+			<div class="pull-left melt-btn-area">
 				<a href="#" class="btn btn-app btn-purple btn-xs intro-step10" id="importData">
 					<i class="ace-icon fa fa-cloud-upload bigger-160"></i>
 					导入

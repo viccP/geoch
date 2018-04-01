@@ -13,6 +13,9 @@ public class CST {
 	/** 默认用户ID **/
 	public static final String USER_ID_DEFAULT = "0";
 
+	/** 异常标识(-1) **/
+	public static final String RES_EXCEPTION = "-1";
+
 	/** 自动消息提示标识(-1) **/
 	public static final String RES_AUTO_DIALOG = "-1";
 
@@ -102,9 +105,12 @@ public class CST {
 
 	/** 未读(0) **/
 	public static final int NON_READ = 0;
-	
+
 	/** 已读(1) **/
 	public static final int HAS_READED = 1;
+
+	/** "无" **/
+	public static final String NOTHING = "无";
 
 	/** 上传文件夹地址 **/
 	public static String UPLOAD_DIR = "";
