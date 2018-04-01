@@ -85,6 +85,7 @@ function submitReport(_this){
 					url : $.cxt+'/report/check',
 					type : "POST",
 					dataType:"json",
+					loading:true,
 					data:{html:base64Markup,reportId:$("body").data("reportId"),score:name}
 				});
 			}

@@ -29,6 +29,7 @@ function initReport(){
 						url : $.cxt+'/report/save',
 						type : "POST",
 						dataType:"json",
+						loading:true,
 						data:{html:base64Markup}
 					});
 				})
