@@ -6,4 +6,4 @@
 /.metadata/
 /.name
 /.idea
-/.iml
+*.iml
