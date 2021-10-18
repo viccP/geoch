@@ -145,7 +145,6 @@ function initGrid() {
  * @returns
  */
 function arrageGrid(table) {
-	
 	// 1.标题居中
 	$('.ui-jqgrid-sortable').css("text-align", "center");
 	

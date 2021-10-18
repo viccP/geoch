@@ -46,7 +46,7 @@ public class IntroAction {
 	public String get(String type,int size) {
 		try {
 			List<Map<String,String>> res=new ArrayList<>();
-			String path = Session.getSession().getServletContext().getRealPath("/template/"+type+"/");
+			String path = Session.getSession().getServletContext().getRealPath("/template/"+type+"/")+"/";
 			for (int i=1;i<size+1;i++) {
 				String content=Files.lines(Paths.get(path+type+"_intro_"+i)).reduce((s1,s2)->{
 					return s1+s2;
@@ -80,7 +80,7 @@ public class IntroAction {
 	public String save(int index,String html,String type) {
 		try {
 			String context=Utils.base64Decode(html);
-			String path = Session.getSession().getServletContext().getRealPath("/template/"+type+"/");
+			String path = Session.getSession().getServletContext().getRealPath("/template/"+type+"/")+"/";
 			String fileName = path + type+"_intro_"+index;
 			Files.write(Paths.get(fileName), context.getBytes());
 			return Ajax.responseString(CST.RES_SUCCESS,"保存成功");

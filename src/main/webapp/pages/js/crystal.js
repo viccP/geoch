@@ -530,7 +530,7 @@
  * 样品下拉框绑定事件
  * @returns
  */
- function bindSampleSelectEvent(echartInstance){
+ function bindSampleSelectEvent(){
  	$("#sample-data").on('change',function(){
  		var sampleCodes=$(this).val()||['-1'];
  		var stdId=$("#std-val").val();

@@ -12,26 +12,26 @@ import com.jlu.utils.Ajax;
 import com.jlu.utils.Utils;
 
 /**
- * 
+ *
  * ClassName: IntroduceAction <br/>
  * Function: 知识库控制器. <br/>
  * date: 2018年3月26日 下午4:42:40 <br/>
- * 
+ *
  * @author liboqiang
  * @version
  * @since JDK 1.6
  */
 @Controller
 @RequestMapping(value = "/knowledge")
-public class knowledgeAction {
+public class KnowledgeAction {
 
 	@Autowired
 	private knowledgeService knowledgeService;
 
 	/**
-	 * 
+	 *
 	 * save:(保存知识库). <br/>
-	 * 
+	 *
 	 * @author liboqiang
 	 * @param index
 	 * @param html

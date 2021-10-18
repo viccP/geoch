@@ -132,13 +132,14 @@ public class LabAction {
 		}
 	}
 
+
 	/**
 	 * 
-	 * meltBody:(获取初始熔体下拉菜单). <br/>
+	 * sampleData:(获取样品下拉菜单). <br/> 
 	 * 
 	 * @author liboqiang
-	 * @param dataType
-	 * @return
+	 * @param sampleType
+	 * @return 
 	 * @since JDK 1.6
 	 */
 	@RequestMapping(value = "/sample", method = RequestMethod.POST, produces = "text/html;charset=utf-8")

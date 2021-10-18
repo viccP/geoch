@@ -4,3 +4,6 @@
 /.settings/
 .DS_Store
 /.metadata/
+/.name
+/.idea
+/.iml
